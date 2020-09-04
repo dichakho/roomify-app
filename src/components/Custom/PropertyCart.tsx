@@ -28,18 +28,33 @@ const PropertyCart: FC<Props> = ({ data, onPress }: Props) => (
         display: 'flex',
         justifyContent: 'space-between',
         flexDirection: 'row',
-      }}>
+      }}
+    >
       <QuickView
         style={{
           display: 'flex',
           flexDirection: 'row',
-        }}>
+        }}
+      >
         <Text> 1,200 sq.ft </Text>
-        <Text fontWeight="bold"> {data.totalBed} Beds </Text>
-        <Text fontWeight="bold"> {data.totalBath} Bath </Text>
+        <Text fontWeight="bold">
+          {' '}
+          {data.totalBed}
+          {' '}
+          Beds
+          {' '}
+        </Text>
+        <Text fontWeight="bold">
+          {' '}
+          {data.totalBath}
+          {' '}
+          Bath
+          {' '}
+        </Text>
       </QuickView>
       <Text color="#DC2F2F" fontSize="large" fontWeight="bold">
-        ${vndPriceFormat(data.price)}
+        $
+        {vndPriceFormat(data.price)}
       </Text>
     </QuickView>
     <Text
@@ -51,7 +66,8 @@ const PropertyCart: FC<Props> = ({ data, onPress }: Props) => (
         size: 13,
       }}
       fontSize="small"
-      color="#77858C">
+      color="#77858C"
+    >
       {data.address}
     </Text>
   </TouchableOpacity>

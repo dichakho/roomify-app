@@ -30,8 +30,7 @@ export class CategoryList extends PureComponent<Props> {
             size: 12,
           }}
           fontSize="tiny"
-          color="#77858C"
-        >
+          color="#77858C">
           {item.address}
         </Text>
       </QuickView>
@@ -45,8 +44,7 @@ export class CategoryList extends PureComponent<Props> {
           source: { uri: item.coverUrl },
           imageStyle: { borderRadius: 20 },
         }}
-        width={300}
-      >
+        width={300}>
         <QuickView
           marginTop={100}
           marginRight={20}
@@ -54,12 +52,10 @@ export class CategoryList extends PureComponent<Props> {
           borderRadius={10}
           backgroundColor="#FFFFFF"
           padding={5}
-          row
-        >
+          row>
           <Text>Chỉ </Text>
           <Text bold color={lightPrimaryColor}>
-            {vndPriceFormat(item.price)}
-            / căn/ tháng
+            {vndPriceFormat(item.price)}/ căn/ tháng
           </Text>
         </QuickView>
       </QuickView>
@@ -115,8 +111,7 @@ export class CategoryList extends PureComponent<Props> {
           marginTop={40}
           row
           alignItems="center"
-          justifyContent="space-between"
-        >
+          justifyContent="space-between">
           <Text type="title" bold>
             {categoryName}
           </Text>

@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import {
-  QuickView, Text, Container, Header, Body,
-} from '@components';
+import { QuickView, Text, Container, Header, Body } from '@components';
 import { compose } from 'recompose';
 import { withTranslation } from 'react-i18next';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -12,7 +10,7 @@ import PropertyCart from '@components/Custom/PropertyCart';
 interface Props {
   t: any;
 }
-const SavedListScreen = ({ t }) => {
+const SavedListScreen: FC<Props> = ({ t }: Props) => {
   const DATA = [
     {
       id: '92922929',

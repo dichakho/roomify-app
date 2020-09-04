@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { Container, Header, Text, Body } from '@components';
+import {
+  Container, Header, Text, Body,
+} from '@components';
 import { SearchBar } from 'react-native-elements';
 import { throws } from 'assert';
 import { Color } from '@themes/Theme';

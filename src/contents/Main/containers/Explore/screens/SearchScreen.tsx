@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Body, Container, Header, Text } from '@components';
+import {
+  Body, Container, Header, Text,
+} from '@components';
 import { Color } from '@themes/Theme';
 import React, { PureComponent } from 'react';
 import { SearchBar } from 'react-native-elements';

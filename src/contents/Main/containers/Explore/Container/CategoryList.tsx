@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { PureComponent } from 'react';
 import { FlatList as RNFlatList, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
@@ -63,7 +64,6 @@ export class CategoryList extends PureComponent<Props> {
   );
 
   renderRowItem = ({ item }: { item: any }) => {
-    console.log('renderRowItem');
     const { mode } = this.props;
     let theme = null;
     switch (mode) {

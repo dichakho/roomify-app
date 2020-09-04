@@ -83,7 +83,8 @@ class ExploreScreen extends PureComponent<Props> {
       padding={5}
       onPress={() => {
         NavigationService.navigate(exploreStack.searchScreen);
-      }}>
+      }}
+    >
       <Icon name="filter-outline" type="material-community" color="#000" />
     </QuickView>
   );

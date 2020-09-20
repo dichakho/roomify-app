@@ -149,10 +149,10 @@ class Header extends PureComponent<HeaderProps> {
         containerStyle:
           leftIconBackgroundColor !== 'transparent'
             ? {
-                padding: 8,
-                backgroundColor: leftIconBackgroundColor,
-                borderRadius: 20,
-              }
+              padding: 8,
+              backgroundColor: leftIconBackgroundColor,
+              borderRadius: 20,
+            }
             : null,
       };
     } else if (closeIcon) {
@@ -169,10 +169,10 @@ class Header extends PureComponent<HeaderProps> {
         containerStyle:
           leftIconBackgroundColor !== 'transparent'
             ? {
-                padding: 8,
-                backgroundColor: leftIconBackgroundColor,
-                borderRadius: 20,
-              }
+              padding: 8,
+              backgroundColor: leftIconBackgroundColor,
+              borderRadius: 20,
+            }
             : null,
       };
     }
@@ -198,11 +198,12 @@ class Header extends PureComponent<HeaderProps> {
         <QuickView
           testID="centerComponentLogo"
           marginLeft={
-            (backIcon && placement === 'center') ||
-            (closeIcon && placement === 'center')
+            (backIcon && placement === 'center')
+            || (closeIcon && placement === 'center')
               ? -20
               : 0
-          }>
+          }
+        >
           <Image
             style={styles.defaultLogoStyle}
             source={require('@images/headerLogo.png')}

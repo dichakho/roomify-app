@@ -40,7 +40,6 @@ class ExploreScreen extends PureComponent<Props> {
       },
     ];
 
-    console.log('renderLeftComponent');
     return (
       <QuickView row center style={{ borderWidth: 0 }}>
         <QuickView>
@@ -79,18 +78,16 @@ class ExploreScreen extends PureComponent<Props> {
     );
   };
 
-  renderRightComponent = () => {
-    console.log('renderRightComponent');
-    return (
-      <QuickView
-        padding={5}
-        onPress={() => {
-          NavigationService.navigate(exploreStack.searchScreen);
-        }}>
-        <Icon name="filter-outline" type="material-community" color="#000" />
-      </QuickView>
-    );
-  };
+  renderRightComponent = () => (
+    <QuickView
+      padding={5}
+      onPress={() => {
+        NavigationService.navigate(exploreStack.searchScreen);
+      }}
+    >
+      <Icon name="filter-outline" type="material-community" color="#000" />
+    </QuickView>
+  );
 
   render() {
     const { t } = this.props;

@@ -32,9 +32,7 @@ function MainBottomTab(props: any) {
     },
     t,
   } = props;
-  const loginSelectorData = useSelector((state) =>
-    applyObjectSelector(loginSelector, state),
-  );
+  const loginSelectorData = useSelector((state) => applyObjectSelector(loginSelector, state));
   const isNotLogin = !loginSelectorData.data.get('token');
 
   return (
@@ -74,133 +72,126 @@ function MainBottomTab(props: any) {
           fontSize: 12,
         },
         keyboardHidesTabBar: true,
-      }}>
+      }}
+    >
       <BottomTabs.Screen
         name={mainBottomTab.exploreStack}
         component={HomeStack}
         options={{
-          tabBarLabel: ({ focused, color }) =>
-            focused ? (
-              <Text
-                color={lightPrimaryColor}
-                fontSize="medium"
-                t="bottom_tab:explore"
-              />
-            ) : (
-              <Text
-                fontSize="small"
-                color="#000000"
-                type="subtitle"
-                t="bottom_tab:explore"
-              />
-            ),
-          tabBarIcon: ({ focused, color, size }) =>
-            focused ? (
-              <Icon name="search" type="ionicons" color={color} size={28} />
-            ) : (
-              <Icon name="search" type="ionicons" color="#000000" size={24} />
-            ),
+          tabBarLabel: ({ focused, color }) => focused ? (
+            <Text
+              color={lightPrimaryColor}
+              fontSize="medium"
+              t="bottom_tab:explore"
+            />
+          ) : (
+            <Text
+              fontSize="small"
+              color="#000000"
+              type="subtitle"
+              t="bottom_tab:explore"
+            />
+          ),
+          tabBarIcon: ({ focused, color, size }) => focused ? (
+            <Icon name="search" type="ionicons" color={color} size={28} />
+          ) : (
+            <Icon name="search" type="ionicons" color="#000000" size={24} />
+          ),
         }}
       />
       <BottomTabs.Screen
         name={mainBottomTab.savedStack}
         component={SavedStack}
         options={{
-          tabBarLabel: ({ focused, color }) =>
-            focused ? (
-              <Text
-                color={lightPrimaryColor}
-                fontSize="medium"
-                t="bottom_tab:saved"
-              />
-            ) : (
-              <Text
-                fontSize="small"
-                color="#000000"
-                type="subtitle"
-                t="bottom_tab:saved"
-              />
-            ),
-          tabBarIcon: ({ focused, color, size }) =>
-            focused ? (
-              <Icon
-                name="heart-outline"
-                type="material-community"
-                color={color}
-                size={26}
-              />
-            ) : (
-              <Icon
-                name="heart-outline"
-                type="material-community"
-                color="#000000"
-                size={22}
-              />
-            ),
+          tabBarLabel: ({ focused, color }) => focused ? (
+            <Text
+              color={lightPrimaryColor}
+              fontSize="medium"
+              t="bottom_tab:saved"
+            />
+          ) : (
+            <Text
+              fontSize="small"
+              color="#000000"
+              type="subtitle"
+              t="bottom_tab:saved"
+            />
+          ),
+          tabBarIcon: ({ focused, color, size }) => focused ? (
+            <Icon
+              name="heart-outline"
+              type="material-community"
+              color={color}
+              size={26}
+            />
+          ) : (
+            <Icon
+              name="heart-outline"
+              type="material-community"
+              color="#000000"
+              size={22}
+            />
+          ),
         }}
       />
       <BottomTabs.Screen
         name={mainBottomTab.alertStack}
         component={MailStack}
         options={{
-          tabBarLabel: ({ focused, color }) =>
-            focused ? (
-              <Text
-                color={lightPrimaryColor}
-                fontSize="medium"
-                t="bottom_tab:alert"
-              />
-            ) : (
-              <Text
-                fontSize="small"
-                color="#000000"
-                type="subtitle"
-                t="bottom_tab:alert"
-              />
-            ),
-          tabBarIcon: ({ focused, color, size }) =>
-            focused ? (
-              <Icon name="bell" type="fontisto" color={color} size={25} />
-            ) : (
-              <Icon name="bell" type="fontisto" color="#000000" size={20} />
-            ),
+          tabBarLabel: ({ focused, color }) => focused ? (
+            <Text
+              color={lightPrimaryColor}
+              fontSize="medium"
+              t="bottom_tab:alert"
+            />
+          ) : (
+            <Text
+              fontSize="small"
+              color="#000000"
+              type="subtitle"
+              t="bottom_tab:alert"
+            />
+          ),
+          tabBarIcon: ({ focused, color, size }) => focused ? (
+            <Icon name="bell" type="fontisto" color={color} size={25} />
+          ) : (
+            <Icon name="bell" type="fontisto" color="#000000" size={20} />
+          ),
         }}
       />
       <BottomTabs.Screen
         name={mainBottomTab.profileStack}
         component={MoreStack}
         options={{
-          tabBarLabel: ({ focused, color }) =>
-            focused ? (
-              <Text
-                color={lightPrimaryColor}
-                fontSize="medium"
-                t="bottom_tab:profile"
-              />
-            ) : (
-              <Text
-                fontSize="small"
-                color="#000000"
-                type="subtitle"
-                t="bottom_tab:profile"
-              />
-            ),
-          tabBarIcon: ({ focused, color, size }) =>
-            focused ? (
-              <Icon
-                name="person-outline"
-                type="ionicons"
-                color={color}
-                size={26}
-              />
-            ) : (
-              <Icon
-                name="person-outline"
-                type="ionicons"
-                color="#000000"
-                size={22}
-              />
-            ),
+          tabBarLabel: ({ focused, color }) => focused ? (
+            <Text
+              color={lightPrimaryColor}
+              fontSize="medium"
+              t="bottom_tab:profile"
+            />
+          ) : (
+            <Text
+              fontSize="small"
+              color="#000000"
+              type="subtitle"
+              t="bottom_tab:profile"
+            />
+          ),
+          tabBarIcon: ({ focused, color, size }) => focused ? (
+            <Icon
+              name="person-outline"
+              type="ionicons"
+              color={color}
+              size={26}
+            />
+          ) : (
+            <Icon
+              name="person-outline"
+              type="ionicons"
+              color="#000000"
+              size={22}
+            />
+          ),
         }}
       />
     </BottomTabs.Navigator>

@@ -1,4 +1,4 @@
-import { Color, lightPrimaryColor, darkPrimaryColor } from './Common/Color';
+import { Color, darkPrimaryColor } from './Common/Color';
 
 /**
  * Header

@@ -4,7 +4,6 @@ import {
   Color,
   darkPrimaryColor,
   darkSecondaryColor,
-  lightPrimaryColor,
   lightSecondaryColor,
 } from './Color';
 

@@ -21,8 +21,8 @@ import _ from 'lodash';
 
 export interface QuickViewProps
   extends ViewProps,
-    TouchableOpacityProps,
-    ScrollViewProps {
+  TouchableOpacityProps,
+  ScrollViewProps {
   width?: number | string;
   height?: number | string;
   margin?: number;
@@ -59,25 +59,25 @@ export interface QuickViewProps
   rowReverse?: boolean;
   columnReverse?: boolean;
   justifyContent?:
-    | 'center'
-    | 'flex-start'
-    | 'flex-end'
-    | 'space-around'
-    | 'space-between';
+  | 'center'
+  | 'flex-start'
+  | 'flex-end'
+  | 'space-around'
+  | 'space-between';
   alignSelf?:
-    | 'auto'
-    | 'center'
-    | 'flex-start'
-    | 'flex-end'
-    | 'stretch'
-    | 'baseline';
+  | 'auto'
+  | 'center'
+  | 'flex-start'
+  | 'flex-end'
+  | 'stretch'
+  | 'baseline';
   alignItems?:
-    | 'auto'
-    | 'center'
-    | 'flex-start'
-    | 'flex-end'
-    | 'stretch'
-    | 'baseline';
+  | 'auto'
+  | 'center'
+  | 'flex-start'
+  | 'flex-end'
+  | 'stretch'
+  | 'baseline';
   backgroundColor?: string;
   flex?: number;
   backgroundImage?: ImageBackgroundProps;
@@ -242,12 +242,12 @@ class QuickView extends PureComponent<QuickViewProps> {
         alignItems: 'center',
         justifyContent: 'center',
       },
-      ((horizontalCenter && !(row || rowReverse)) ||
-        (verticalCenter && (row || rowReverse))) && {
+      ((horizontalCenter && !(row || rowReverse))
+        || (verticalCenter && (row || rowReverse))) && {
         alignItems: 'center',
       },
-      ((horizontalCenter && (row || rowReverse)) ||
-        (verticalCenter && !(row || rowReverse))) && {
+      ((horizontalCenter && (row || rowReverse))
+        || (verticalCenter && !(row || rowReverse))) && {
         justifyContent: 'center',
       },
       row && { flexDirection: 'row' },

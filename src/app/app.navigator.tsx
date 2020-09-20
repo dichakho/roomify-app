@@ -44,8 +44,7 @@ class AppNavigator extends Component<Props, State> {
       const newTheme = lightTheme.key === themeRedux ? lightTheme : darkTheme;
       updateTheme(newTheme);
     }
-    const barStyle =
-      themeRedux === ThemeEnum.DARK ? 'light-content' : 'dark-content';
+    const barStyle = themeRedux === ThemeEnum.DARK ? 'light-content' : 'dark-content';
     StatusBar.setBarStyle(barStyle, true);
 
     return (

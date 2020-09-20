@@ -1,9 +1,11 @@
-import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
-import { Container, Header, Text, Body } from '@components';
-import { SearchBar } from 'react-native-elements';
-import { throws } from 'assert';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+  Body, Container, Header, Text,
+} from '@components';
 import { Color } from '@themes/Theme';
+import React, { PureComponent } from 'react';
+import { SearchBar } from 'react-native-elements';
+import { connect } from 'react-redux';
 
 interface State {
   search: string;
@@ -22,7 +24,6 @@ class SearchScreen extends PureComponent<Props, State> {
   };
 
   renderCenterComponent = () => {
-    console.log('renderCenterComponent');
     const { search } = this.state;
     return (
       <SearchBar

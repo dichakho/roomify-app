@@ -166,13 +166,15 @@ class Dropdown extends PureComponent<Props, State> {
       <View>
         <View style={{ zIndex: 10 }}>
           <TouchableWithoutFeedback
-            onPress={() => this.setState({ rotateIcon: !rotateIcon })}>
+            onPress={() => this.setState({ rotateIcon: !rotateIcon })}
+          >
             <View
               style={[
                 styles.containerInput,
                 { backgroundColor: theme.Dropdown.backgroundColor },
                 containerStyle,
-              ]}>
+              ]}
+            >
               <View style={styles.infoViewStyles}>
                 <Text numberOfLines={1} style={[{ fontSize: 16 }, textStyles]}>
                   {labelSelected}
@@ -182,7 +184,8 @@ class Dropdown extends PureComponent<Props, State> {
                 style={[
                   rotateIcon && styles.rotateIcon,
                   { justifyContent: 'center' },
-                ]}>
+                ]}
+              >
                 {iconComponent || (
                   <Icon
                     name="chevron-down"
@@ -199,25 +202,28 @@ class Dropdown extends PureComponent<Props, State> {
                 styles.containerDropdownStyles,
                 { backgroundColor: theme.colors.bgColor },
                 dropdownStyles,
-              ]}>
+              ]}
+            >
               <ScrollView>
                 {data.map((item: any) => (
                   <TouchableOpacity
                     key={item.value}
-                    onPress={this.setValue(item.value)}>
+                    onPress={this.setValue(item.value)}
+                  >
                     <View
                       style={
                         value === item.value
                           ? [
-                              styles.isSelected,
-                              activeColor
-                                ? { backgroundColor: activeColor }
-                                : {
-                                    backgroundColor: theme.Dropdown.activeColor,
-                                  },
-                            ]
+                            styles.isSelected,
+                            activeColor
+                              ? { backgroundColor: activeColor }
+                              : {
+                                backgroundColor: theme.Dropdown.activeColor,
+                              },
+                          ]
                           : isNotSelectedStyles
-                      }>
+                      }
+                    >
                       <Text
                         style={
                           value === item.value
@@ -225,10 +231,11 @@ class Dropdown extends PureComponent<Props, State> {
                               ? { color: activeTextColor }
                               : { color: theme.Dropdown.activeTextColor }
                             : {
-                                color:
+                              color:
                                   inActiveTextColor || theme.Dropdown.textColor,
-                              }
-                        }>
+                            }
+                        }
+                      >
                         {item.label}
                       </Text>
                     </View>
@@ -240,7 +247,8 @@ class Dropdown extends PureComponent<Props, State> {
         </View>
         {rotateIcon ? (
           <TouchableWithoutFeedback
-            onPress={() => this.setState({ rotateIcon: !rotateIcon })}>
+            onPress={() => this.setState({ rotateIcon: !rotateIcon })}
+          >
             <View
               style={{
                 flex: 1,
@@ -253,7 +261,8 @@ class Dropdown extends PureComponent<Props, State> {
                 width,
                 height,
                 justifyContent: 'center',
-              }}>
+              }}
+            >
               {/* <ActivityIndicator /> */}
             </View>
           </TouchableWithoutFeedback>

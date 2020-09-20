@@ -121,14 +121,14 @@ class Text extends PureComponent<TextProps> {
       bold && {
         fontWeight: Fonts.fontWeight.bold,
       },
-      fontSize &&
-        typeof fontSize === 'number' && {
-          fontSize,
-        },
-      fontSize &&
-        typeof fontSize === 'string' && {
-          fontSize: Fonts.fontSize[fontSize],
-        },
+      fontSize
+        && typeof fontSize === 'number' && {
+        fontSize,
+      },
+      fontSize
+        && typeof fontSize === 'string' && {
+        fontSize: Fonts.fontSize[fontSize],
+      },
       center && {
         textAlign: 'center',
       },
@@ -159,7 +159,8 @@ class Text extends PureComponent<TextProps> {
           testID="EIconText"
           row={!iconRight}
           rowReverse={iconRight}
-          justifyContent={iconRight ? 'flex-end' : 'flex-start'}>
+          justifyContent={iconRight ? 'flex-end' : 'flex-start'}
+        >
           <QuickView style={iconStyle}>
             <EIcon
               {...icon}

@@ -14,9 +14,9 @@ exports[`Body Component should render without issues 1`] = `
     primary={true}
     style={
       Object {
-        "backgroundColor": "#ffffff",
+        "backgroundColor": "#F2F2F2",
         "flex": 1,
-        "paddingHorizontal": 18,
+        "paddingHorizontal": 20,
       }
     }
     touchableComponent="TouchableOpacity"

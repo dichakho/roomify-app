@@ -12,12 +12,17 @@ class LoginBackIcon extends PureComponent<any> {
     if (!requireLogin) {
       return (
         <Icon
-          name="arrowleft"
-          type="antdesign"
+          name="chevron-left"
+          type="entypo"
           color={Color.white}
           size={30}
           onPress={() => NavigationService.goBack()}
-          containerStyle={{ position: 'absolute', top: 50, left: 20 }}
+          containerStyle={{
+            position: 'absolute',
+            top: 50,
+            left: 20,
+            zIndex: 10,
+          }}
         />
       );
     }

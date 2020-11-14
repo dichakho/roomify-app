@@ -32,7 +32,7 @@ export const bottomNavigationBarHeight = getBottomNavigationBarHeight();
 export const headerHeight = getHeaderHeight();
 export const headerPaddingHorizontal = 18;
 export const bodyPaddingHorizontal = 20;
-export const roundedBorderRadius = 20;
+export const roundedBorderRadius = 10;
 
 export const shadowViewDark = Platform.select({
   android: {
@@ -69,8 +69,8 @@ export const darkComponentColor = {
   bgColorSecondary: Color.grey7,
 };
 export const lightComponentColor = {
-  textColor: '#363636',
+  textColor: Color.grey7,
   textColorSecondary: lightSecondaryColor,
-  bgColor: Color.grey,
+  bgColor: Color.white,
   bgColorSecondary: Color.grey3,
 };

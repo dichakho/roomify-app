@@ -24,6 +24,7 @@ import Carousel from './Common/Carouse';
 import ParallaxScrollView from './Common/ScrollView/ParallaxScrollView';
 import HTML from './Common/Webview/HTML';
 import Video from './Common/Video';
+import ImagePicker from './Common/ImagePicker';
 
 /**
  * Custom
@@ -71,4 +72,5 @@ export {
   PrimaryInput,
   BackIcon,
   NavigatorButtonGroup,
+  ImagePicker,
 };

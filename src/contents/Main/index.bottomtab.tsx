@@ -18,10 +18,11 @@ import { StyleSheet } from 'react-native';
 import { Text } from '@components';
 import { lightPrimaryColor } from '@themes/ThemeComponent/Common/Color';
 import mainBottomTab from './routes';
-import HomeStack from './containers/Explore/index.stack';
 import MoreStack from './containers/Profile/index.stack';
 import MailStack from './containers/Alert/index.stack';
 import SavedStack from './containers/Saved/index.stack';
+import exploreStack from './containers/Explore/routes';
+import ExploreScreen from './containers/Explore/screens';
 
 const BottomTabs = createBottomTabNavigator();
 
@@ -75,8 +76,8 @@ function MainBottomTab(props: any) {
       }}
     >
       <BottomTabs.Screen
-        name={mainBottomTab.exploreStack}
-        component={HomeStack}
+        name={exploreStack.index}
+        component={ExploreScreen}
         options={{
           tabBarLabel: ({ focused, color }) => focused ? (
             <Text

@@ -1,4 +1,4 @@
-import { Color, darkPrimaryColor } from './Common/Color';
+import { Color, darkPrimaryColor, lightPrimaryColor } from './Common/Color';
 
 /**
  * Header
@@ -11,7 +11,7 @@ export const darkHeader = {
 };
 export const lightHeader = {
   backgroundColor: Color.grey,
-  leftColor: Color.white,
+  leftColor: lightPrimaryColor,
   centerColor: Color.white,
   rightColor: Color.white,
 };

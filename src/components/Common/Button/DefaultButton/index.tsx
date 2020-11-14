@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import { StyleSheet, Platform } from 'react-native';
 import {
@@ -196,9 +197,7 @@ class Button extends React.PureComponent<ButtonProps> {
     /**
      * buttonStyle
      */
-    const activeBackgroundColor = activeBackgroundColorProp
-    || color
-    || theme.Button.activeBackgroundColor;
+    const activeBackgroundColor = activeBackgroundColorProp || color || theme.Button.activeBackgroundColor;
     let backgroundColor = backgroundColorProp || color || theme.Button.backgroundColor;
 
     if (primary) backgroundColor = colors.primary;
@@ -236,17 +235,17 @@ class Button extends React.PureComponent<ButtonProps> {
      * titleStyle
      */
 
-    const activeTitleColor = activeTitleColorProp
-    || (color ? Color.white : theme.Button.activeTitle);
+    const activeTitleColor = activeTitleColorProp || (color ? Color.white : theme.Button.activeTitle);
     const titleColor = titleColorProp || (color ? Color.white : theme.Button.titleColor);
 
     let titleStyle: any = StyleSheet.flatten([
       {
-        fontWeight: (active || bold) ? Font.fontWeight.bold : Font.fontWeight.medium,
+        fontWeight:
+          active || bold ? Font.fontWeight.bold : Font.fontWeight.medium,
         fontSize: fontSize || theme.Button.titleFontSize,
         color: active ? activeTitleColor : titleColor,
-        marginRight: (iconProp && !iconRight && !circle) ? 10 : 0,
-        marginLeft: (iconProp && iconRight && !circle) ? 10 : -10,
+        marginRight: iconProp && !iconRight && !circle ? 10 : 0,
+        marginLeft: iconProp && iconRight && !circle ? 10 : -10,
         paddingHorizontal: 5,
       },
       titleStyleProp,
@@ -256,7 +255,7 @@ class Button extends React.PureComponent<ButtonProps> {
      * icon, iconContainerStyle
      */
     const iconContainerStyle: any = StyleSheet.flatten([
-      (iconProp && !iconRight && title) && { marginRight: 15 },
+      iconProp && !iconRight && title && { marginRight: 15 },
       iconContainerStyleProp,
     ]);
     const defaultIcon = {
@@ -278,9 +277,7 @@ class Button extends React.PureComponent<ButtonProps> {
         },
       ]);
 
-      const activeOutlineTitleColor = activeTitleColorProp
-      || color
-      || theme.Button.activeOutlineTitleColor;
+      const activeOutlineTitleColor = activeTitleColorProp || color || theme.Button.activeOutlineTitleColor;
       let outlineTitleColor = titleColorProp || color || theme.Button.outlineTitleColor;
       if (primary) outlineTitleColor = colors.primary;
       if (secondary) outlineTitleColor = colors.secondary;
@@ -295,9 +292,7 @@ class Button extends React.PureComponent<ButtonProps> {
         },
       ]);
     } else if (outline) {
-      const activeOutlineBorderColor = activeBorderColorProp
-      || color
-      || theme.Button.activeOutlineBorderColor;
+      const activeOutlineBorderColor = activeBorderColorProp || color || theme.Button.activeOutlineBorderColor;
       let outlineBorderColor = borderColorProp || color || theme.Button.outlineBorderColor;
       if (primary) outlineBorderColor = colors.primary;
       if (secondary) outlineBorderColor = colors.secondary;
@@ -305,9 +300,7 @@ class Button extends React.PureComponent<ButtonProps> {
       if (warning) outlineBorderColor = colors.warning;
       if (error) outlineBorderColor = colors.error;
 
-      const activeOutlineTitleColor = activeTitleColorProp
-      || color
-      || theme.Button.activeOutlineTitleColor;
+      const activeOutlineTitleColor = activeTitleColorProp || color || theme.Button.activeOutlineTitleColor;
       let outlineTitleColor = titleColorProp || color || theme.Button.outlineTitleColor;
       if (primary) outlineTitleColor = colors.primary;
       if (secondary) outlineTitleColor = colors.secondary;
@@ -345,8 +338,7 @@ class Button extends React.PureComponent<ButtonProps> {
     if (t) {
       return (
         <Translation>
-          {
-          (trans) => (
+          {(trans) => (
             <ElementButton
               {...otherProps}
               icon={icon}
@@ -357,14 +349,12 @@ class Button extends React.PureComponent<ButtonProps> {
               titleStyle={titleStyle}
               iconContainerStyle={iconContainerStyle}
             />
-          )
-          }
+          )}
         </Translation>
       );
     }
     return (
       <ElementButton
-        {...otherProps}
         icon={icon}
         iconRight={iconRight}
         containerStyle={containerStyle}
@@ -372,9 +362,12 @@ class Button extends React.PureComponent<ButtonProps> {
         title={title}
         titleStyle={titleStyle}
         iconContainerStyle={iconContainerStyle}
+        {...otherProps}
       />
     );
   }
 }
 
-export default withTheme(Button as React.ComponentType<ButtonProps & ThemeProps<any>>);
+export default withTheme(
+  Button as React.ComponentType<ButtonProps & ThemeProps<any>>,
+);

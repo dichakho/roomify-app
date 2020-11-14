@@ -4,8 +4,9 @@ import {
 } from '@components';
 import { Color } from '@themes/Theme';
 import React, { PureComponent } from 'react';
-import { SearchBar } from 'react-native-elements';
+import { SearchBar, Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
+import { lightComponentColor } from '@themes/ThemeComponent/Common/CommonProps';
 
 interface State {
   search: string;
@@ -29,19 +30,24 @@ class SearchScreen extends PureComponent<Props, State> {
       <SearchBar
         // onClear={this.onClear}
         // onSubmitEditing={this.onSubmitEditing}
-        inputStyle={{ fontSize: 14 }}
+        inputStyle={{ fontSize: 14, color: lightComponentColor.textColor }}
         onChangeText={this.updateSearch}
         value={search}
-        platform="android"
+        // platform="ios"
         lightTheme
         placeholder="Search by Location, Area or Pin Code"
-        searchIcon={{ color: '#363636' }}
-        cancelIcon={{ color: '#363636' }}
-        placeholderTextColor="#363636"
+        searchIcon={false}
+        // searchIcon={{
+        //   name: 'chevron-left',
+        //   type: 'entypo',
+        //   color: lightComponentColor.textColor,
+        // }}
+        clearIcon={{ color: lightComponentColor.textColor }}
+        placeholderTextColor={lightComponentColor.textColor}
         containerStyle={{
           width: '100%',
           elevation: 20,
-          backgroundColor: Color.greyS,
+          backgroundColor: Color.grey2,
           borderWidth: 1,
           borderColor: 'rgba(177, 173, 173, 0.2)',
           borderRadius: 10,
@@ -49,7 +55,7 @@ class SearchScreen extends PureComponent<Props, State> {
         inputContainerStyle={{
           height: 30,
           borderRadius: 22.5,
-          backgroundColor: Color.greyS,
+          backgroundColor: Color.grey2,
         }}
       />
     );
@@ -59,6 +65,7 @@ class SearchScreen extends PureComponent<Props, State> {
     return (
       <Container>
         <Header
+          backIcon
           placement="left"
           centerComponent={this.renderCenterComponent()}
         />

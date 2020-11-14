@@ -1,15 +1,18 @@
 import React, { PureComponent } from 'react';
-import {
-  QuickView, Container, Avatar,
-} from '@components';
+import { QuickView, Container, Avatar } from '@components';
 import LoginForm from './Shared/LoginForm';
 import LoginBackIcon from './Shared/LoginBackIcon';
 
 class LoginScreen extends PureComponent {
   render() {
     return (
-      <Container>
-        <QuickView paddingHorizontal={20} backgroundImage={{ source: require('@assets/images/loginBackground.png') }}>
+      <Container style={{ borderWidth: 1, borderColor: 'red' }} dismissKeyboard>
+        <QuickView
+          paddingHorizontal={20}
+          backgroundImage={{
+            source: require('@assets/images/loginBackground.png'),
+          }}
+        >
           <LoginBackIcon />
           <QuickView marginBottom={20} marginTop={60} center>
             <Avatar
@@ -17,7 +20,7 @@ class LoginScreen extends PureComponent {
               rounded
               source={{
                 uri:
-      'https://www.easy-profile.com/support.html?controller=attachment&task=download&tmpl=component&id=2883',
+                  'https://www.easy-profile.com/support.html?controller=attachment&task=download&tmpl=component&id=2883',
               }}
               title="M"
               marginBottom={10}

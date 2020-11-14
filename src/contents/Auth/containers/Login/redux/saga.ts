@@ -6,7 +6,6 @@ import { Global } from '@utils/appHelper';
 import AsyncStorage from '@react-native-community/async-storage';
 import { requireLoginSelector } from '@contents/Config/redux/selector';
 import NavigationService from '@utils/navigation';
-import exampleStack from '@contents/Example/routes';
 import {
   loginSuccess, loginFail, login, logout,
 } from './slice';
@@ -46,10 +45,10 @@ export function* realtorLogoutSaga() {
 
     yield call(removeAsyncStorageData);
     yield put({ type: 'RESET_REDUX' });
-    const requiredLogin = yield select((state) => requireLoginSelector(state));
-    if (!requiredLogin) {
-      yield call(NavigationService.navigate, exampleStack.exampleList);
-    }
+    // const requiredLogin = yield select((state) => requireLoginSelector(state));
+    // if (!requiredLogin) {
+    //   yield call(NavigationService.navigate, exampleStack.exampleList);
+    // }
     return true;
   } catch (error) {
     return false;

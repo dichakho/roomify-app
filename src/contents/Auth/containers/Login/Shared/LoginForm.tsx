@@ -18,7 +18,7 @@ interface Props {
   theme?: any;
 }
 class LoginForm extends PureComponent<Props> {
-  private email: any;
+  private username: any;
 
   private password: any;
 
@@ -29,19 +29,19 @@ class LoginForm extends PureComponent<Props> {
         <TextError error={loginData.error} color="#FA8072" />
         <AuthInput
           ref={(ref: any) => {
-            this.email = ref;
+            this.username = ref;
           }}
-          value="admin@gmail.com"
-          leftIconName="email-outline"
-          placeholder="Email"
-          validationField="email"
-          keyboardType="email-address"
+          value="admin"
+          leftIconName="account-outline"
+          placeholder="Username"
+          // validationField="email"
+          // keyboardType="email-address"
         />
         <AuthInput
           ref={(ref: any) => {
             this.password = ref;
           }}
-          value="admin"
+          value="123456"
           leftIconName="lock-outline"
           textContentType="oneTimeCode"
           placeholder="Password"
@@ -64,11 +64,14 @@ class LoginForm extends PureComponent<Props> {
         <QuickView marginTop={20}>
           <AuthButton
             t="auth:login"
-              // onPress={this.onSignIn}
+            // onPress={this.onSignIn}
             color={Color.white}
             outline
             onPress={() => {
-              reduxLogin({ email: this.email.getText(), password: this.password.getText() });
+              reduxLogin({
+                username: this.username.getText(),
+                password: this.password.getText(),
+              });
             }}
             loading={loginData.loading}
           />
@@ -93,4 +96,7 @@ const mapDispatchToProps = (dispatch: any) => ({
   reduxLogout: () => dispatch(logout()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(LoginForm as any));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withTheme(LoginForm as any));

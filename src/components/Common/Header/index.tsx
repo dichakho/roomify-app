@@ -10,6 +10,7 @@ import {
 import NavigationService from '@utils/navigation';
 import SwitchChangeTheme from '@contents/Config/Shared/SwitchChangeTheme';
 import { headerHeight } from '@themes/ThemeComponent/Common/CommonProps';
+import { lightPrimaryColor } from '@themes/ThemeComponent/Common/Color';
 import QuickView from '../View/QuickView';
 
 export interface HeaderProps extends EHeaderProps {
@@ -98,6 +99,7 @@ class Header extends PureComponent<HeaderProps> {
       ? 'transparent'
       : backgroundColorProp || theme.Header.backgroundColor;
     let leftColor = leftColorProp || theme.Header.leftColor;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let centerColor = centerColorProp || theme.Header.centerColor;
     let rightColor = rightColorProp || theme.Header.rightColor;
     if (colorProp) {
@@ -137,8 +139,8 @@ class Header extends PureComponent<HeaderProps> {
     let leftComponent: any = leftComponentProp;
     if (backIcon) {
       leftComponent = {
-        icon: 'arrowleft',
-        type: 'antdesign',
+        icon: 'chevron-left',
+        type: 'entypo',
         size: 25,
         color: leftColor,
         onPress: () => NavigationService.goBack(),
@@ -188,7 +190,7 @@ class Header extends PureComponent<HeaderProps> {
           styles.defaultTitleStyle,
           {
             marginLeft: backIcon || closeIcon ? -10 : 0,
-            color: centerColor,
+            color: lightPrimaryColor,
           },
           centerContainerStyleProp,
         ]),

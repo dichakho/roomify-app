@@ -1,12 +1,22 @@
 import React from 'react';
 import { View, StyleSheet, SectionList } from 'react-native';
-import { Container, Header, QuickView } from '@components';
-import { ListItem, Divider } from 'react-native-elements';
+import {
+  Container,
+  Header,
+  GoToExampleButton,
+  Button,
+  FlatList,
+  Text,
+  QuickView,
+} from '@components';
+import { ListItem, Divider, Icon } from 'react-native-elements';
 import { withTranslation } from 'react-i18next';
 import SwitchChangeTheme from '@contents/Config/Shared/SwitchChangeTheme';
 import PickerChangeLanguage from '@contents/Config/Shared/PickerChangeLanguage';
 import LogoutButton from '@contents/Auth/containers/Login/Shared/LogoutButton';
 import LoginButton from '@contents/Auth/containers/Login/Shared/LoginButton';
+import NavigationService from '@utils/navigation';
+import profileStack from '../routes';
 
 const BLUE = '#007AFF';
 const GREY = '#8E8E93';
@@ -18,9 +28,7 @@ const styles = StyleSheet.create({
   separatorComponent: {
     backgroundColor: 'white',
   },
-  separator: {
-    marginLeft: 58,
-  },
+
   headerSection: {
     height: 30,
   },
@@ -29,6 +37,27 @@ const styles = StyleSheet.create({
 interface Props {
   t: any;
 }
+const list = [
+  {
+    name: 'My Account',
+    type: 'screen',
+  },
+  {
+    name: 'Bookings', type: 'screen',
+  },
+  {
+    name: 'Đăng ký làm chủ nhà', type: 'screen', screen: profileStack.registerOwner,
+  },
+  {
+    name: 'Help & Support', type: 'screen',
+  },
+  {
+    name: 'Settings', type: 'screen',
+  },
+  {
+    name: 'Logout', type: 'screen',
+  },
+];
 
 class Settings extends React.PureComponent<Props> {
   renderItem = ({
@@ -69,8 +98,15 @@ class Settings extends React.PureComponent<Props> {
 
   ItemSeparatorComponent = () => (
     <View style={styles.separatorComponent}>
-      <Divider style={styles.separator} />
+      <Divider style={{ backgroundColor: '#B1ADAD' }} />
     </View>
+  );
+
+  renderItemFlatlist = ({ item }: { item: any}) => (
+    <QuickView onPress={() => NavigationService.navigate(item.screen)} height={50} center row>
+      <QuickView flex={1}><Text>{item?.name}</Text></QuickView>
+      <QuickView><Icon name="chevron-right" /></QuickView>
+    </QuickView>
   );
 
   keyExtractor = (item: any, index: any) => index;
@@ -117,7 +153,15 @@ class Settings extends React.PureComponent<Props> {
           {/* <GoToExampleButton /> */}
           <LoginButton />
           <LogoutButton />
+          <Button onPress={() => NavigationService.navigate(profileStack.registerOwner)} height={50} title="Đăng ký làm chủ nhà" />
+          <GoToExampleButton />
         </QuickView>
+        <FlatList
+          style={{ paddingHorizontal: 20 }}
+          data={list}
+          ItemSeparatorComponent={this.ItemSeparatorComponent}
+          renderItem={this.renderItemFlatlist}
+        />
       </Container>
     );
   }

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { PureComponent } from 'react';
+import React, { PureComponent, FC } from 'react';
 import { connect } from 'react-redux';
 import {
   QuickView, Text, Container, Header, Body,

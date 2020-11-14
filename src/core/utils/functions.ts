@@ -62,3 +62,27 @@ export const findDeepFields = (theObject: any, field: string, value: any): any =
   }
   return result;
 }
+
+export const cloudinaryUpload = async (img: any) => {
+  const photo = {
+    uri: img.uri,
+    type: img.mime,
+    name: img.fileName,
+  };
+  photo.uri.replace('file:///', '').replace('file://', '');
+  const data = new FormData();
+  data.append('file', photo);
+  data.append('upload_preset', 'roomify');
+  data.append('cloud_name', 'roomify');
+  fetch('https://api.cloudinary.com/v1_1/ogcodes/upload', {
+    method: 'post',
+    body: data,
+  }).then((res) => res.json())
+    .then((data) => {
+      console.log('data', data);
+
+      // setPhoto(data.secure_url);
+    }).catch((err) => {
+    console.log("err", err)
+    });
+};

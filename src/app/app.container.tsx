@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  ThemeProvider, withTheme,
-} from 'react-native-elements';
+import { ThemeProvider, withTheme } from 'react-native-elements';
 import NetInfo from '@react-native-community/netinfo';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
@@ -9,7 +7,10 @@ import FlashMessage, { showMessage } from 'react-native-flash-message';
 import { compose } from 'recompose';
 import { lightTheme, darkTheme } from '@themes/Theme';
 import i18n from '@config/i18n';
-import { languageSelector, themeSelector } from '@contents/Config/redux/selector';
+import {
+  languageSelector,
+  themeSelector,
+} from '@contents/Config/redux/selector';
 import { ThemeEnum } from '@contents/Config/redux/constant';
 import { Global } from '@utils/appHelper';
 import { applyObjectSelector } from '@utils/selector';
@@ -74,9 +75,7 @@ class AppContainer extends React.Component<Props, State> {
   };
 
   render() {
-    const {
-      language, themeRedux,
-    } = this.props;
+    const { language, themeRedux } = this.props;
 
     const { isConnected } = this.state;
 

@@ -11,6 +11,7 @@ import ExampleStack from './Example/index.stack';
 import { requireLoginSelector, themeSelector } from './Config/redux/selector';
 import { loginSelector } from './Auth/containers/Login/redux/selector';
 import { ThemeEnum } from './Config/redux/constant';
+import ExploreStack from './Main/containers/Explore/index.stack';
 
 const Stack = createStackNavigator();
 
@@ -30,35 +31,20 @@ export default function RootStack() {
         cardStyle: { backgroundColor },
       }}
     >
-      {
-        isNotLogin ? (
-          <Stack.Screen
-            name={rootStack.authStack}
-            component={AuthStack}
-          />
-        ) : (
-          <Stack.Screen
-            name={rootStack.mainBottomTab}
-            component={MainBottomTab}
-          />
-        )
-      }
-      {
-        !requireLogin ? (
-          <Stack.Screen
-            name={rootStack.authStack}
-            component={AuthStack}
-          />
-        ) : null
-      }
-      <Stack.Screen
-        name={rootStack.exampleStack}
-        component={ExampleStack}
-      />
-      <Stack.Screen
-        name={rootStack.modalStack}
-        component={ModalStack}
-      />
+      {isNotLogin ? (
+        <Stack.Screen name={rootStack.authStack} component={AuthStack} />
+      ) : (
+        <Stack.Screen
+          name={rootStack.mainBottomTab}
+          component={MainBottomTab}
+        />
+      )}
+      {!requireLogin ? (
+        <Stack.Screen name={rootStack.authStack} component={AuthStack} />
+      ) : null}
+      <Stack.Screen name={rootStack.exampleStack} component={ExampleStack} />
+      <Stack.Screen name={rootStack.modalStack} component={ModalStack} />
+      <Stack.Screen name={rootStack.exploreStack} component={ExploreStack} />
     </Stack.Navigator>
   );
 }

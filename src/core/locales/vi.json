@@ -64,5 +64,8 @@
     "message": "Vui lòng nhập tin nhắn!",
     "title": "Vui lòng nhập tiêu đề!",
     "content": "Vui lòng nhập nội dung!"
+  },
+  "create_property": {
+    "location": "Địa chỉ"
   }
 }

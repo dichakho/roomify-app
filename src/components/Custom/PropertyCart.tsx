@@ -4,6 +4,7 @@ import { lightPrimaryColor } from '@themes/ThemeComponent/Common/Color';
 import { vndPriceFormat } from '@utils/functions';
 import React, { FC } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { GestureResponderEvent } from 'react-native';
 
 interface Property {
   thumbnail: string;
@@ -15,7 +16,7 @@ interface Property {
 
 interface Props {
   data: Property;
-  onPress: (event: GestureResponderEvent) => void;
+  onPress?: (event: GestureResponderEvent) => void;
 }
 
 const PropertyCart: FC<Props> = ({ data, onPress }: Props) => (

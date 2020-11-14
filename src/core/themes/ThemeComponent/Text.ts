@@ -6,7 +6,7 @@ import { lightComponentColor, darkComponentColor } from './Common/CommonProps';
 const headerFontSize = 28;
 const headerFontWeight = 'bold';
 const xTitleFontSize = 24;
-const titleFontSize = 20;
+const titleFontSize = 22;
 const paragraphFontSize = 16;
 const subtitleFontSize = 14;
 

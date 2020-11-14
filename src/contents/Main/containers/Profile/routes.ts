@@ -1,8 +1,9 @@
 /**
- * moreStack
+ * profileStack
  */
-const moreStack = {
+const profileStack = {
   index: 'MoreStackIndex',
+  registerOwner: 'RegisterOwnerScreen',
 };
 
-export default moreStack;
+export default profileStack;

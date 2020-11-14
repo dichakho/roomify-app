@@ -14,8 +14,7 @@ interface Props extends AuthButtonProps {
   loginSelectorData: TObjectRedux;
 }
 class LoginButton extends PureComponent<Props> {
-  static defaultProps = {
-  };
+  static defaultProps = {};
 
   render() {
     const {
@@ -27,13 +26,10 @@ class LoginButton extends PureComponent<Props> {
     const token = data.get('token');
     if (token) {
       return (
-        <AuthButton
-          {...otherProps}
-          t="auth:logout"
-          onPress={reduxLogout}
-        />
+        <AuthButton {...otherProps} t="auth:logout" onPress={reduxLogout} />
       );
-    } return <QuickView />;
+    }
+    return <QuickView />;
   }
 }
 

@@ -8,13 +8,19 @@ export const darkCheckBox = {
   textStyle: {
     color: Color.white,
   },
-  checkedColor: Platform.OS === 'ios' ? darkPlatform.ios.primary : darkPlatform.android.primary,
+  checkedColor:
+    Platform.OS === 'ios'
+      ? darkPlatform.ios.primary
+      : darkPlatform.android.primary,
   containerStyle: { backgroundColor: Color.black },
 };
 export const lightCheckBox = {
   textStyle: {
-    color: Color.black,
+    color: Color.grey7,
   },
-  checkedColor: Platform.OS === 'ios' ? lightPlatform.ios.primary : lightPlatform.android.primary,
+  checkedColor:
+    Platform.OS === 'ios'
+      ? lightPlatform.ios.primary
+      : lightPlatform.android.primary,
   containerStyle: { backgroundColor: Color.white },
 };

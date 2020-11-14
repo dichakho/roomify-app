@@ -5,15 +5,49 @@ import { connect } from 'react-redux';
 import { QuickView, Text, Image } from '@components';
 import { vndPriceFormat } from '@utils/functions';
 import { lightPrimaryColor } from '@themes/ThemeComponent/Common/Color';
+import NavigationService from '@utils/navigation';
+import rootStack from '@contents/routes';
+import { Global } from '@utils/appHelper';
+import AuthPopup from '@components/AuthPopup';
+import exploreStack from '../routes';
 
 interface Props {
   categoryName?: string;
   data: Array<any>;
   mode?: number;
 }
-export class CategoryList extends PureComponent<Props> {
+interface State {
+  overlayIsVisible: boolean
+}
+export class CategoryList extends PureComponent<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      overlayIsVisible: false,
+    };
+  }
+
+  toggleOverlay = () => {
+    const { overlayIsVisible } = this.state;
+    this.setState({ overlayIsVisible: !overlayIsVisible });
+  };
+
+  handleOnPress = () => {
+    if (Global.token) {
+      NavigationService.navigate(rootStack.exploreStack, {
+        screen: exploreStack.detailProperty,
+      });
+    } else {
+      this.setState({ overlayIsVisible: true });
+    }
+  };
+
   renderThemeOne = (item: any) => (
-    <QuickView style={{ width: 180 }} marginRight={20}>
+    <QuickView
+      style={{ width: 180 }}
+      marginRight={20}
+      onPress={() => this.handleOnPress()}
+    >
       <Image source={{ uri: item?.coverUrl }} width={180} height={140} />
       <QuickView marginTop={15} marginLeft={10}>
         <Text type="paragraph" bold>
@@ -40,6 +74,40 @@ export class CategoryList extends PureComponent<Props> {
   );
 
   renderThemeTwo = (item: any) => (
+    <QuickView
+      width={300}
+      height={140}
+      borderRadius={20}
+      marginRight={20}
+      onPress={() => this.handleOnPress()}
+    >
+      <QuickView
+        backgroundImage={{
+          source: { uri: item.coverUrl },
+          imageStyle: { borderRadius: 20 },
+        }}
+        width={300}
+      >
+        <QuickView
+          marginTop={100}
+          marginRight={20}
+          alignSelf="flex-end"
+          borderRadius={10}
+          backgroundColor="#FFFFFF"
+          padding={5}
+          row
+        >
+          <Text>Chỉ </Text>
+          <Text bold color={lightPrimaryColor}>
+            {vndPriceFormat(item.price)}
+            / căn/ tháng
+          </Text>
+        </QuickView>
+      </QuickView>
+    </QuickView>
+  );
+
+  renderThemeThree = (item: any) => (
     <QuickView width={300} height={140} borderRadius={20} marginRight={20}>
       <QuickView
         backgroundImage={{
@@ -85,7 +153,8 @@ export class CategoryList extends PureComponent<Props> {
   };
 
   render() {
-    const { categoryName, data } = this.props;
+    const { categoryName, data, mode } = this.props;
+    const { overlayIsVisible } = this.state;
     // const data = [
     //   {
     //     coverUrl:
@@ -111,6 +180,7 @@ export class CategoryList extends PureComponent<Props> {
     // ];
     return (
       <QuickView>
+        <AuthPopup overlayIsVisible={overlayIsVisible} toggleOverlay={this.toggleOverlay} />
         <QuickView
           marginTop={40}
           row

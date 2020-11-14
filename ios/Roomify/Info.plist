@@ -66,6 +66,10 @@
 	<string></string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
+  <key>NSPhotoLibraryUsageDescription</key>
+  <string>Điều này cho phép bạn lưu ảnh thông tin về ứng dụng</string>
+  <key>NSCameraUsageDescription</key>
+  <string>Điều này cho phép bạn chụp một bức ảnh để cập nhật ảnh về ứng dụng</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

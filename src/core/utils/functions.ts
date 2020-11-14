@@ -74,7 +74,7 @@ export const cloudinaryUpload = async (img: any) => {
   data.append('file', photo);
   data.append('upload_preset', 'roomify');
   data.append('cloud_name', 'roomify');
-  fetch('https://api.cloudinary.com/v1_1/ogcodes/upload', {
+  fetch('https://api.cloudinary.com/v1_1/dichakho/upload', {
     method: 'post',
     body: data,
   }).then((res) => res.json())

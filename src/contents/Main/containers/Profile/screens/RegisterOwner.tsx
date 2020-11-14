@@ -6,7 +6,7 @@ import {
 } from '@components';
 // import { Alert } from 'react-native';
 // import RNFetchBlob from 'rn-fetch-blob';
-// import { cloudinaryUpload } from '@utils/functions';
+import { cloudinaryUpload } from '@utils/functions';
 
 const list = [
   {
@@ -68,7 +68,7 @@ class RegisterOwner extends PureComponent {
               }}
             />
           </QuickView>
-          <Button title="Gửi" onPress={() => {}} />
+          <Button title="Gửi" onPress={() => cloudinaryUpload(this.imgs.getDataImage())} />
         </Body>
       </Container>
     );

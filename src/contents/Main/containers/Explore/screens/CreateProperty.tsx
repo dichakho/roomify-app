@@ -7,10 +7,12 @@ import {
 import StepIndicator from 'react-native-step-indicator';
 import Swiper from 'react-native-swiper';
 import { lightPrimaryColor } from '@themes/ThemeComponent/Common/Color';
+import { KeyboardAvoidingView, Platform } from 'react-native';
 import Information from '../Container/CreateProperty/Information';
 import Utilities from '../Container/CreateProperty/Utilities';
 import Location from '../Container/CreateProperty/Location';
 import Confirmation from '../Container/CreateProperty/Confirmation';
+import { clearPayloadProperty } from '../redux/slice';
 
 const labels = ['Thông tin', 'Địa chỉ', 'Tiện ích', 'Xác nhận'];
 const customStyles = {
@@ -42,7 +44,10 @@ enum ContentEnum {
   UTILITIES,
   CONFIRMATION,
 }
-interface Props {}
+interface Props {
+  clear: () => any;
+
+}
 interface State {
   currentPosition: number;
 }
@@ -52,6 +57,11 @@ class CreatePropertyScreen extends PureComponent<Props, State> {
     this.state = {
       currentPosition: 0,
     };
+  }
+
+  componentDidMount() {
+    const { clear } = this.props;
+    clear();
   }
 
   onPageChange = (position: number) => {
@@ -96,22 +106,27 @@ class CreatePropertyScreen extends PureComponent<Props, State> {
 
   render() {
     const { currentPosition } = this.state;
-    return (
-      <Container>
-        <Header backIcon title="List your space" />
-        <Body>
-          <QuickView marginTop={20}>
-            <StepIndicator
-              stepCount={4}
-              customStyles={customStyles}
-              currentPosition={currentPosition}
-              labels={labels}
-              onPress={(position) => this.onPageChange(position)}
-            />
-          </QuickView>
 
-          {this.renderViewPagerPage(currentPosition)}
-          {/* <Swiper
+    return (
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <Container>
+          <Header backIcon title="List your space" />
+          <Body>
+            <QuickView marginTop={20}>
+              <StepIndicator
+                stepCount={4}
+                customStyles={customStyles}
+                currentPosition={currentPosition}
+                labels={labels}
+                onPress={(position) => this.onPageChange(position)}
+              />
+            </QuickView>
+
+            {this.renderViewPagerPage(currentPosition)}
+            {/* <Swiper
             // style={{ flexGrow: 1 }}
             loop={false}
             index={currentPosition}
@@ -120,15 +135,18 @@ class CreatePropertyScreen extends PureComponent<Props, State> {
             onIndexChanged={(position) => this.onPageChange(position)}>
             {labels.map((page) => this.renderViewPagerPage(page))}
           </Swiper> */}
-        </Body>
-      </Container>
+          </Body>
+        </Container>
+      </KeyboardAvoidingView>
     );
   }
 }
 
 const mapStateToProps = (state: any) => ({});
 
-const mapDispatchToProps = (dispatch: any) => ({});
+const mapDispatchToProps = (dispatch: any) => ({
+  clear: () => dispatch(clearPayloadProperty()),
+});
 
 export default connect(
   mapStateToProps,

@@ -8,9 +8,11 @@ import { Input } from 'react-native-elements';
 import { Color } from '@themes/Theme';
 import { lightComponentColor } from '@themes/ThemeComponent/Common/CommonProps';
 import SelectLocation from './SelectLocation';
+import { pushPayloadProperty } from '../../redux/slice';
 
 interface Props {
   goNextPage: () => any;
+  pushData: (data: any) => any;
 }
 interface State {
   goNextPage: () => any;
@@ -56,6 +58,8 @@ class Location extends PureComponent<Props, State> {
 
 const mapStateToProps = (state: any) => ({});
 
-const mapDispatchToProps = (dispatch: any) => ({});
+const mapDispatchToProps = (dispatch: any) => ({
+  pushData: (data: any) => dispatch(pushPayloadProperty({ data })),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Location);

@@ -1,613 +1,319 @@
-// /* eslint-disable @typescript-eslint/no-unused-vars */
-// import React, { PureComponent } from 'react';
-// import { connect } from 'react-redux';
-// import {
-//   QuickView,
-//   Text,
-//   Container,
-//   Header,
-//   Body,
-//   Image,
-//   Button,
-//   // Carousel,
-// } from '@components';
-// import { Dimensions } from 'react-native';
-// import Carousel from 'react-native-snap-carousel';
-// import _ from 'lodash';
-// import { Icon } from 'react-native-elements';
-// import LoginBackIcon from '@contents/Auth/containers/Login/Shared/LoginBackIcon';
-// import { lightPrimaryColor, Color } from '@themes/ThemeComponent/Common/Color';
-// import { lightComponentColor } from '@themes/ThemeComponent/Common/CommonProps';
-// import WishlistIcon from '../Container/WishListIcon';
-
-// const { width } = Dimensions.get('window');
-// const data = [
-//   {
-//     title: 'Beautiful and dramatic Antelope Canyon',
-//     subtitle: 'Lorem ipsum dolor sit amet et nuncat mergitur',
-//     illustration: 'https://picsum.photos/1500/1500',
-//   },
-//   {
-//     title: 'Earlier this morning, NYC',
-//     subtitle: 'Lorem ipsum dolor sit amet',
-//     illustration: 'https://picsum.photos/1500/1500',
-//   },
-//   {
-//     title: 'White Pocket Sunset',
-//     subtitle: 'Lorem ipsum dolor sit amet et nuncat ',
-//     illustration: 'https://picsum.photos/1500/1500',
-//   },
-//   {
-//     title: 'Acrocorinth, Greece',
-//     subtitle: 'Lorem ipsum dolor sit amet et nuncat mergitur',
-//     illustration: 'https://picsum.photos/1500/1500',
-//   },
-//   {
-//     title: 'The lone tree, majestic landscape of New Zealand',
-//     subtitle: 'Lorem ipsum dolor sit amet',
-//     illustration: 'https://picsum.photos/1500/1500',
-//   },
-//   {
-//     title: 'Middle Earth, Germany',
-//     subtitle: 'Lorem ipsum dolor sit amet',
-//     illustration: 'https://picsum.photos/1500/1500',
-//   },
-// ];
-// class DetailProperty extends PureComponent {
-//   renderItem = ({ item, index }: { item: any; index: number }) => {
-//     console.log(
-//       '!!!',
-//       data.map((d) => d.illustration),
-//     );
-//     const multipleSources: Array<any> = [];
-//     _.map(data, 'illustration').map((link) => {
-//       multipleSources.push({ uri: link });
-//     });
-
-//     return (
-//       <Image
-//         multipleSources={multipleSources}
-//         viewEnable
-//         sharp
-//         width={width}
-//         source={{ uri: item?.illustration }}
-//       />
-//     );
-//   };
-
-//   render() {
-//     return (
-//       <Container>
-//         <LoginBackIcon />
-//         <Body scroll fullView>
-//           {/* <QuickView alignItems="flex-start" style={{ borderWidth: 1 }}>
-//             <Icon name="search" type="ionicons" color="#000000" size={24} />
-//           </QuickView> */}
-//           <QuickView>
-//             <Carousel
-//               // ref={(c) => { this._carousel = c; }}
-//               data={data}
-//               renderItem={this.renderItem}
-//               sliderWidth={width}
-//               itemWidth={width}
-//             />
-//           </QuickView>
-//           <QuickView row padding={20}>
-//             {/* info */}
-//             <QuickView flex={9}>
-//               <Text color={lightPrimaryColor} bold>
-//                 $4,999
-//               </Text>
-//               <QuickView row marginTop={10}>
-//                 <Text
-//                   icon={{
-//                     name: 'circle',
-//                     size: 5,
-//                     color: Color.grey5,
-//                     style: { marginTop: 8, marginHorizontal: 3 },
-//                   }}
-//                   iconRight>
-//                   1,200 sq.ft
-//                 </Text>
-//                 <Text
-//                   icon={{
-//                     name: 'circle',
-//                     size: 5,
-//                     color: Color.grey5,
-//                     style: { marginTop: 8, marginHorizontal: 3 },
-//                   }}
-//                   iconRight>
-//                   4 Beds
-//                 </Text>
-//                 <Text>2 Bath</Text>
-//               </QuickView>
-//             </QuickView>
-//             {/* WishlistIcon */}
-//             <QuickView marginTop={15} alignItems="center" flex={1}>
-//               <WishlistIcon active={false} id={1} />
-//             </QuickView>
-//           </QuickView>
-//           <QuickView margin={20} height={1} backgroundColor="#B1ADAD" />
-//           <QuickView paddingHorizontal={20}>
-//             <Text>
-//               Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-//               Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-//               Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-//               Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-//               Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-//               Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-//               Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-//               Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-//               Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-//               Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-//               Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-//               Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-//               Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-//               Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-//               Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-//               Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-//               Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-//               Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-//               Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-//               Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-//               Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-//               Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-//               Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-//             </Text>
-//           </QuickView>
-//         </Body>
-//         <QuickView
-//           marginBottom={20}
-//           paddingHorizontal={40}
-//           row
-//           justifyContent="space-between">
-//           <Button
-//             containerStyle={{
-//               borderWidth: 1,
-//               borderRadius: 10,
-//               borderColor: 'rgba(177, 173, 173, 0.2)',
-//             }}
-//             backgroundColor={Color.grey2}
-//             title="Ask a Question"
-//             titleColor={lightComponentColor.textColor}
-//           />
-//           <Button title="Express Interest" />
-//         </QuickView>
-//       </Container>
-//     );
-//   }
-// }
-
-// const mapStateToProps = (state: any) => ({});
-
-// const mapDispatchToProps = (dispatch: any) => ({});
-
-// export default connect(mapStateToProps, mapDispatchToProps)(DetailProperty);
-
-// import React, { PureComponent } from 'react';
-// import { QuickView, Text, Container, Header, Body } from '@components';
-
-// export default class DetailProperty extends PureComponent {
-//   render() {
-//     return (
-//       <Container>
-//         <Header backIcon title="ExampleScreen" />
-//         <Body>
-//           <QuickView>
-//             <Text center>Example Screen</Text>
-//           </QuickView>
-//         </Body>
-//       </Container>
-//     );
-//   }
-// }
-
-// import React, { Component } from 'react';
-// import { Text, View, Dimensions, StyleSheet } from 'react-native';
-
-// import Carousel from 'react-native-snap-carousel'; // Version can be specified in package.json
-
-// // import { scrollInterpolator, animatedStyles } from './utils/animations';
-
-// const SLIDER_WIDTH = Dimensions.get('window').width;
-// const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
-// const ITEM_HEIGHT = Math.round((ITEM_WIDTH * 3) / 4);
-
-// const DATA = [];
-// for (let i = 0; i < 10; i++) {
-//   DATA.push(i);
-// }
-
-// export default class App extends Component {
-//   state = {
-//     index: 0,
-//   };
-
-//   constructor(props) {
-//     super(props);
-//     this._renderItem = this._renderItem.bind(this);
-//   }
-
-//   _renderItem({ item }) {
-//     return (
-//       <View style={styles.itemContainer}>
-//         <Text style={styles.itemLabel}>{`Item ${item}`}</Text>
-//       </View>
-//     );
-//   }
-
-//   render() {
-//     return (
-//       <View>
-//         <Carousel
-//           ref={(c) => (this.carousel = c)}
-//           data={DATA}
-//           renderItem={this._renderItem}
-//           sliderWidth={SLIDER_WIDTH}
-//           itemWidth={ITEM_WIDTH}
-//           containerCustomStyle={styles.carouselContainer}
-//           inactiveSlideShift={0}
-//           onSnapToItem={(index) => this.setState({ index })}
-//           // scrollInterpolator={scrollInterpolator}
-//           // slideInterpolatedStyle={animatedStyles}
-//           useScrollView
-//         />
-//         <Text style={styles.counter}>{this.state.index}</Text>
-//       </View>
-//     );
-//   }
-// }
-
-// const styles = StyleSheet.create({
-//   carouselContainer: {
-//     marginTop: 50,
-//     borderWidth: 1,
-//   },
-//   itemContainer: {
-//     width: ITEM_WIDTH / 2,
-//     height: ITEM_HEIGHT,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     backgroundColor: 'dodgerblue',
-//     borderWidth: 1,
-//     // alignSelf: 'flex-start',
-//   },
-//   itemLabel: {
-//     color: 'white',
-//     fontSize: 24,
-//   },
-//   counter: {
-//     marginTop: 25,
-//     fontSize: 30,
-//     fontWeight: 'bold',
-//     textAlign: 'center',
-//   },
-// });
-
-import React, { Component } from 'react';
-import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
+import React, { PureComponent } from 'react';
 import {
-  Dimensions,
-  StyleSheet,
-  View,
-  Platform,
-  // ScrollView,
-  Animated,
-} from 'react-native';
-import {
-  QuickView,
   Text,
-  Container,
+  QuickView,
   Header,
-  // Body,
-  // Image,
-  // Button,
-  // Carousel,
+  ParallaxScrollView,
+  Body,
+  HTML,
+  Container,
+  Image,
+  Avatar,
+  Button,
 } from '@components';
+import { connect } from 'react-redux';
 import { Color } from '@themes/Theme';
+import { lightPrimaryColor } from '@themes/ThemeComponent/Common/Color';
+import { Icon } from 'react-native-elements';
+import moment from 'moment';
+import NavigationService from '@utils/navigation';
+import { FlatList, TouchableOpacity } from 'react-native';
+import { parallaxHeaderHeight } from '@themes/ThemeComponent/ParallaxScrollView';
+import { applyArraySelector, applyObjectSelector, parseObjectSelector } from '@utils/selector';
+import OverlayLoading from '@components/OverlayLoading';
+import { TArrayRedux, TQuery } from '@utils/redux';
+import { vndPriceFormat } from '@utils/functions';
+import {
+  clearDetail, clearListRoom, propertyGetDetail, roomGetList,
+} from '../redux/slice';
+import { propertyDetailSelector, roomsOfPropertySelector } from '../redux/selector';
+import exploreStack from '../routes';
 
-const { width: screenWidth } = Dimensions.get('window');
-interface Props {}
-interface State {
-  scrollY: any;
+interface Props {
+  detail: any;
+  getDetailProperty: (id: number) => any;
+  route?: any;
+  clear: () => any;
+  getListRoom: (id: number, query?: TQuery) => any;
+  roomsOfProperty: TArrayRedux;
+  clearRoomList: () => any;
 }
-const styles = StyleSheet.create({
-  item: {
-    width: screenWidth - 60,
-    height: screenWidth - 60,
-  },
-  imageContainer: {
-    flex: 1,
-    marginBottom: Platform.select({ ios: 0, android: 1 }),
-    // Prevent a random Android rendering issue
-    backgroundColor: 'white',
-    borderRadius: 8,
-  },
-  image: {
-    ...StyleSheet.absoluteFillObject,
-    resizeMode: 'cover',
-  },
-});
-export default class MyCarousel extends Component<Props, State> {
-  data = [
-    {
-      title: 'Beautiful and dramatic Antelope Canyon',
-      subtitle: 'Lorem ipsum dolor sit amet et nuncat mergitur',
-      illustration: 'https://picsum.photos/1500/1500',
-    },
-    {
-      title: 'Earlier this morning, NYC',
-      subtitle: 'Lorem ipsum dolor sit amet',
-      illustration: 'https://picsum.photos/1500/1500',
-    },
-    {
-      title: 'White Pocket Sunset',
-      subtitle: 'Lorem ipsum dolor sit amet et nuncat ',
-      illustration: 'https://picsum.photos/1500/1500',
-    },
-    {
-      title: 'Acrocorinth, Greece',
-      subtitle: 'Lorem ipsum dolor sit amet et nuncat mergitur',
-      illustration: 'https://picsum.photos/1500/1500',
-    },
-    {
-      title: 'The lone tree, majestic landscape of New Zealand',
-      subtitle: 'Lorem ipsum dolor sit amet',
-      illustration: 'https://picsum.photos/1500/1500',
-    },
-    {
-      title: 'Middle Earth, Germany',
-      subtitle: 'Lorem ipsum dolor sit amet',
-      illustration: 'https://picsum.photos/1500/1500',
-    },
-  ];
-
-  CAROUSEL_HEIGHT = screenWidth - 60;
-
-  myRef: any;
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      scrollY: new Animated.Value(0),
-    };
+interface State {}
+class DetailProperty extends PureComponent<Props, State> {
+  componentDidMount() {
+    const {
+      getDetailProperty, route: { params: { id } }, clear, getListRoom, clearRoomList,
+    } = this.props;
+    clear();
+    clearRoomList();
+    getDetailProperty(id);
+    getListRoom(id);
   }
 
-  renderItem = ({ item }: { item: any }, parallaxProps: any) => (
-    <View style={styles.item}>
-      <ParallaxImage
-        source={{ uri: item.illustration }}
-        containerStyle={styles.imageContainer}
-        style={styles.image}
-        parallaxFactor={0.4}
-        {...parallaxProps}
+  renderLeftComponent = () => (
+    <TouchableOpacity
+      onPress={() => NavigationService.goBack()}
+      style={{
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        backgroundColor: 'rgba(255, 255, 255, 0.7)',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Icon name="chevron-left" size={24} type="entypo" />
+    </TouchableOpacity>
+  );
+
+  renderForeground = () => {
+    const height = 120;
+    const marginTop = parallaxHeaderHeight - height;
+    const { detail: { data } } = this.props;
+
+    return (
+      <QuickView>
+        <QuickView
+          borderTopLeftRadius={20}
+          borderTopRightRadius={20}
+          height={height}
+          backgroundColor="transparent"
+        // backgroundColor={theme.colors.bgColor}
+          marginTop={marginTop}
+          paddingHorizontal={25}
+          paddingTop={25}
+        >
+          <QuickView>
+            <Text color={Color.white} type="title" bold numberOfLines={2}>
+              {data?.title}
+            </Text>
+          </QuickView>
+          <QuickView marginTop={0} row justifyContent="space-between">
+            <QuickView row center>
+              {/* <Icon name="clock-outline" size={20} color={lightPrimaryColor} />
+              <Text type="subtitle">
+                {data?.updatedAt ? moment(data?.updatedAt).format('HH:MM') : 'Đang cập nhật'}
+              </Text> */}
+              <Text
+                marginTop={10}
+                icon={{
+                  name: 'map-pin',
+                  type: 'feather',
+                  size: 12,
+                }}
+                bold
+                color={Color.white}
+                fontSize="small"
+              >
+                {data?.address}
+              </Text>
+            </QuickView>
+            <QuickView
+              backgroundColor={lightPrimaryColor}
+              center
+              paddingHorizontal={24}
+              paddingVertical={5}
+              borderRadius={15}
+            >
+              <Text color={Color.white} bold fontSize={12}>
+                {data?.category?.name}
+              </Text>
+            </QuickView>
+          </QuickView>
+        </QuickView>
+
+      </QuickView>
+    );
+  };
+
+  renderCenterComponent = () => {
+    const { detail: { data } } = this.props;
+    return (
+      <QuickView center>
+        <Text type="title" bold numberOfLines={1} color={lightPrimaryColor}>
+          {data?.category?.name}
+        </Text>
+      </QuickView>
+    );
+  };
+
+  renderStickyHeader = () => {
+    const { route: { params: { id, name } } } = this.props;
+    return (
+      <Header
+        leftComponent={<QuickView width={30} />}
+          // title={data?.title}
+        placement="right"
+        centerComponent={this.renderCenterComponent()}
+        centerContainerStyle={{ borderWidth: 1 }}
       />
-      {/* <Text numberOfLines={2}>{item.title}</Text> */}
-    </View>
+    );
+  };
+
+  renderItem = ({ item }: {item: any}) => (
+    <QuickView
+      key={item?.id}
+      row
+      height={100}
+      marginTop={30}
+      backgroundColor={Color.white}
+      borderRadius={10}
+      style={{
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 1,
+        },
+        shadowOpacity: 0.20,
+        shadowRadius: 1.41,
+        elevation: 2,
+      }}
+    >
+      <QuickView width={100}>
+        <Image
+          width={100}
+          height={100}
+          sharp
+          style={{
+            borderTopLeftRadius: 10,
+            borderBottomLeftRadius: 10,
+          }}
+                        // onPress={() => NavigationService.navigate('PropertyStack', {
+                        //   screen: 'PropertyDetailStack',
+                        //   params: {
+                        //     id: 1,
+                        //   },
+                        // })}
+          source={{ uri: item?.images[0] }}
+        />
+      </QuickView>
+      <QuickView borderRadius={10} justifyContent="space-between" flex={1}>
+        <QuickView padding={10} flex={1} height={55}>
+          <Text numberOfLines={2} fontSize={16} bold>
+            {item?.name}
+          </Text>
+          {/* <Text fontSize={10} numberOfLines={1} marginTop={5}>
+              {item?.address}
+            </Text> */}
+        </QuickView>
+        <QuickView
+          row
+          backgroundColor="#E6E9F0"
+          borderBottomRightRadius={10}
+          height={45}
+        >
+          <QuickView flex={1} center>
+            <Text fontSize={12}>Diện tích</Text>
+            <Text color={lightPrimaryColor} fontSize={12} bold>
+              {Math.floor(item?.area)}
+              m2
+            </Text>
+          </QuickView>
+          <QuickView flex={1} center>
+            <Text fontSize={12}>Giá</Text>
+            <Text color={lightPrimaryColor} fontSize={12} bold>
+              {vndPriceFormat(item?.price * 100000)}
+            </Text>
+          </QuickView>
+          <QuickView flex={1} center>
+            <Button
+              onPress={() => NavigationService.navigate(
+                exploreStack.detailRoom,
+                { id: item?.id },
+              )}
+              clear
+              title="Xem thêm"
+              height={30}
+              titleStyle={{
+                fontSize: 12,
+                fontWeight: 'bold',
+              }}
+              titlePaddingVertical={0}
+            />
+          </QuickView>
+        </QuickView>
+      </QuickView>
+    </QuickView>
   );
 
   render() {
-    const { scrollY } = this.state;
+    const { route, detail: { data, loading }, roomsOfProperty } = this.props;
+
     return (
       <Container>
-        <Header title="List room" backIcon />
-        <Animated.ScrollView
-          // onScroll={(e) => {
-          //   console.log(e.nativeEvent.contentOffset.y);
-          // }}
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-            { useNativeDriver: true },
-          )}
-          scrollEventThrottle={16}
-        >
-          <Animated.View
-            style={{
-              transform: [
-                {
-                  translateY: scrollY.interpolate({
-                    inputRange: [
-                      -this.CAROUSEL_HEIGHT,
-                      0,
-                      this.CAROUSEL_HEIGHT,
-                      this.CAROUSEL_HEIGHT + 1,
-                    ],
-                    outputRange: [
-                      -this.CAROUSEL_HEIGHT / 2,
-                      0,
-                      this.CAROUSEL_HEIGHT * 0.75,
-                      this.CAROUSEL_HEIGHT * 0.75,
-                    ],
-                  }),
-                },
-                {
-                  scale: scrollY.interpolate({
-                    inputRange: [
-                      -this.CAROUSEL_HEIGHT,
-                      0,
-                      this.CAROUSEL_HEIGHT,
-                      this.CAROUSEL_HEIGHT + 1,
-                    ],
-                    outputRange: [2, 1, 0.5, 0.5],
-                  }),
-                },
-              ],
-            }}
-          >
-            <Carousel
-              sliderWidth={screenWidth}
-              sliderHeight={screenWidth}
-              itemWidth={screenWidth - 60}
-              data={this.data}
-              renderItem={(item: any, props: any) => this.renderItem(item, props)}
-              hasParallaxImages
+        <ParallaxScrollView
+          renderFixedHeader={() => (
+            <Header
+              leftComponent={this.renderLeftComponent()}
+              position="absolute"
+              transparent
             />
-          </Animated.View>
-          <QuickView backgroundColor={Color.grey}>
-            <Text>
-              // Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet
-              Lorem // Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit
-              amet Lorems / Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor
-              sit amet Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit
-              amet Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet
-              Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-              ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem ipsum
-              dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem ipsum dolor
-              sit amet Lorem Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor
-              sit amet Lorem Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor
-              sit amet Lorem Lorem ipsum dolor sit amet Lorem ipsum dolor sit
-              amet Lorem Lorem ipsum dolor sit amet Lorem // Lorem ipsum dolor
-              sit amet Lorem Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor
-              sit amet Lorem Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor
-              sit amet Lorem Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor
-              sit amet Lorem Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor
-              sit amet Lorem Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor
-              sit amet Lorem Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor
-              sit amet Lorem Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor
-              sit amet Lorem Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor
-              sit amet Lorem Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor
-              sit amet Lorem Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor
-              sit amet Lorem Lorem ipsum dolor sit amet Lorem ipsum dolor sit
-              amet Lorem Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit
-              amet Lorem Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit
-              amet Lorem Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit
-              amet Lorem Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit
-              amet Lorem Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit
-              amet Lorem Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit
-              amet Lorem Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit
-              amet Lorem Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit
-              amet Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet
-              Lorem Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet
-              Lorem Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet
-              Lorem Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet
-              Lorem Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet
-              Lorem Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet
-              Lorem Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet
-              Lorem Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet
-              Lorem Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem
-              Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-              Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-              Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-              Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-              Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-              Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-              Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-              Lorem ipsum dolor sit amet Lorem Lorem ipsum dolor sit amet Lorem
-            </Text>
-          </QuickView>
-        </Animated.ScrollView>
+          )}
+          imageBackgroundColor="rgba(0, 0, 0, 0.2)"
+          renderForeground={this.renderForeground}
+          renderStickyHeader={this.renderStickyHeader}
+          backgroundImageSource={{
+            uri: data?.thumbnail,
+          }}
+          headerBackgroundColor="#012066"
+        >
+          <Body fullHeight>
+            {/* {
+              loading ? (
+                <QuickView flex={1} marginTop={40} center>
+                  <ActivityIndicator size="large" />
+                </QuickView>
+              ) : ( */}
+            <QuickView marginTop={20}>
+              {/* <Text style={{ textAlign: 'justify' }}>{data?.content}</Text> */}
+              <QuickView>
+                <Text color={lightPrimaryColor} bold type="title">Mô tả</Text>
+                <Text>{data?.description}</Text>
+              </QuickView>
+              <QuickView row height={50} marginTop={10}>
+                <QuickView flex={1}>
+                  <Text color={lightPrimaryColor} bold type="title">{`Sở hữu bởi ${data?.owner?.fullName}`}</Text>
+                  <Text>Tham gia ngày 08/06/2020</Text>
+                </QuickView>
+                <QuickView>
+                  <Avatar
+                    size="medium"
+                    rounded
+                    source={{ uri: data.owner?.avatar }}
+                  />
+                </QuickView>
+              </QuickView>
+              <QuickView marginTop={10}>
+                <Text color={lightPrimaryColor} bold type="title">Danh sách phòng</Text>
+                <FlatList style={{ padding: 5 }} data={roomsOfProperty?.data} renderItem={this.renderItem} />
+              </QuickView>
+              {/* <HTML
+                classesStyles={{ content: { color: lightPrimaryColor } }}
+                html={`<div class="content">${'data?.content'}</div>`}
+              /> */}
+            </QuickView>
+            {/* )
+            } */}
+          </Body>
+        </ParallaxScrollView>
+        {loading ? <OverlayLoading /> : null}
       </Container>
     );
   }
 }
 
-// import React, { useRef, useState, useEffect } from 'react';
-// import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
-// import {
-//   View,
-//   Text,
-//   Dimensions,
-//   StyleSheet,
-//   TouchableOpacity,
-//   Platform,
-// } from 'react-native';
+const mapStateToProps = (state: any) => ({
+  detail: parseObjectSelector(
+    applyObjectSelector(propertyDetailSelector, state),
+  ),
+  roomsOfProperty: parseObjectSelector(applyArraySelector(roomsOfPropertySelector, state)),
+});
 
-// const ENTRIES1 = [
-//   {
-//     title: 'Beautiful and dramatic Antelope Canyon',
-//     subtitle: 'Lorem ipsum dolor sit amet et nuncat mergitur',
-//     illustration: 'https://i.imgur.com/UYiroysl.jpg',
-//   },
-//   {
-//     title: 'Earlier this morning, NYC',
-//     subtitle: 'Lorem ipsum dolor sit amet',
-//     illustration: 'https://i.imgur.com/UPrs1EWl.jpg',
-//   },
-//   {
-//     title: 'White Pocket Sunset',
-//     subtitle: 'Lorem ipsum dolor sit amet et nuncat ',
-//     illustration: 'https://i.imgur.com/MABUbpDl.jpg',
-//   },
-//   {
-//     title: 'Acrocorinth, Greece',
-//     subtitle: 'Lorem ipsum dolor sit amet et nuncat mergitur',
-//     illustration: 'https://i.imgur.com/KZsmUi2l.jpg',
-//   },
-//   {
-//     title: 'The lone tree, majestic landscape of New Zealand',
-//     subtitle: 'Lorem ipsum dolor sit amet',
-//     illustration: 'https://i.imgur.com/2nCt3Sbl.jpg',
-//   },
-// ];
-// const { width: screenWidth } = Dimensions.get('window');
+const mapDispatchToProps = (dispatch: any) => ({
+  getDetailProperty: (id: number) => dispatch(propertyGetDetail({ id })),
+  clear: () => dispatch(clearDetail()),
+  getListRoom: (id: number, query?: TQuery) => dispatch(roomGetList({ id, query })),
+  clearRoomList: () => dispatch(clearListRoom()),
+});
 
-// const MyCarousel = (props) => {
-//   const [entries, setEntries] = useState([]);
-//   const carouselRef = useRef(null);
-
-//   const goForward = () => {
-//     carouselRef.current.snapToNext();
-//   };
-
-//   useEffect(() => {
-//     setEntries(ENTRIES1);
-//   }, []);
-
-//   const renderItem = ({ item }: { item: any }, parallaxProps: any) => {
-//     console.log('heello', parallaxProps);
-
-//     return (
-//       <View style={styles.item}>
-//         <ParallaxImage
-//           source={{ uri: item.illustration }}
-//           containerStyle={styles.imageContainer}
-//           style={styles.image}
-//           parallaxFactor={0.4}
-//           {...parallaxProps}
-//         />
-//         <Text numberOfLines={2}>{item.title}</Text>
-//       </View>
-//     );
-//   };
-
-//   return (
-//     <View style={styles.container}>
-//       <TouchableOpacity onPress={goForward}>
-//         <Text>go to next slide</Text>
-//       </TouchableOpacity>
-//       <Carousel
-//         ref={carouselRef}
-//         sliderWidth={screenWidth}
-//         sliderHeight={screenWidth}
-//         itemWidth={screenWidth - 60}
-//         data={entries}
-//         renderItem={renderItem}
-//         hasParallaxImages
-//       />
-//     </View>
-//   );
-// };
-
-// export default MyCarousel;
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     marginTop: 50,
-//   },
-//   item: {
-//     width: screenWidth - 60,
-//     height: screenWidth - 60,
-//   },
-//   imageContainer: {
-//     flex: 1,
-//     marginBottom: Platform.select({ ios: 0, android: 1 }),
-// Prevent a random Android rendering issue
-//     backgroundColor: 'white',
-//     borderRadius: 8,
-//   },
-//   image: {
-//     ...StyleSheet.absoluteFillObject,
-//     resizeMode: 'cover',
-//   },
-// });
+export default connect(mapStateToProps, mapDispatchToProps)(DetailProperty);

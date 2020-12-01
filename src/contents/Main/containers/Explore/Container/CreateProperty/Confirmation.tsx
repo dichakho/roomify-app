@@ -7,8 +7,13 @@ import {
 import { Input } from 'react-native-elements';
 import { Color } from '@themes/Theme';
 import { lightComponentColor } from '@themes/ThemeComponent/Common/CommonProps';
+import { pushPayloadProperty } from '../../redux/slice';
 
-class Confirmation extends PureComponent {
+interface Props {
+  goNextPage: () => any;
+  pushData: (data: any) => any;
+}
+class Confirmation extends PureComponent<Props> {
   render() {
     return (
       <Body>
@@ -59,6 +64,8 @@ class Confirmation extends PureComponent {
 
 const mapStateToProps = (state: any) => ({});
 
-const mapDispatchToProps = (dispatch: any) => ({});
+const mapDispatchToProps = (dispatch: any) => ({
+  pushData: (data: any) => dispatch(pushPayloadProperty({ data })),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Confirmation);

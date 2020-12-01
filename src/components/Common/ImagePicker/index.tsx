@@ -8,6 +8,7 @@ import {
   Image,
   Dimensions,
   ActivityIndicator,
+  FlatList,
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import { post } from '@utils/api';
@@ -230,7 +231,11 @@ export default class ImgPicker extends Component<Props, State> {
   };
 
   getDataImage = () => {
-    const { image } = this.state;
+    const { image, images } = this.state;
+    const { multi } = this.props;
+    if (multi) {
+      return images;
+    }
     return image;
     // if (image === null) {
     //   return {
@@ -333,8 +338,9 @@ export default class ImgPicker extends Component<Props, State> {
             fileName: i.path.split('/').pop(),
           })),
         });
-        this.uploadMulti();
-        parent.deleteNotification();
+        this.setState({ loading: false });
+        // this.uploadMulti();
+        // parent.deleteNotification();
       })
       .catch((e) => {
         this.setState({ loading: false });
@@ -371,6 +377,41 @@ export default class ImgPicker extends Component<Props, State> {
   //   );
   // }
 
+  renderItemImage = ({ item, index }: { item: any, index: number}) => {
+    const { imgUploaded } = this.props;
+    const imgUploadeds = StyleSheet.flatten([styles.imgUploaded, imgUploaded]);
+    return (
+      <View style={{ marginRight: 10 }}>
+        <TouchableOpacity
+          onPress={() => this.closeOne(index)}
+          style={styles.wrapImgUpload}
+        >
+          <View style={styles.closeIcon}>
+            <Icon name="close" size={12} color="#315DF7" />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => this.updateOne(index)}
+          style={styles.uploadImageBtn}
+        >
+          <Image
+            style={imgUploadeds}
+            source={item}
+          />
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  renderMultiImage = () => {
+    const { images } = this.state;
+    console.log('ImgPicker -> images', images);
+
+    return (
+      <FlatList horizontal data={images} renderItem={this.renderItemImage} keyExtractor={(item, index) => index.toString()} />
+    );
+  };
+
   render() {
     const {
       image, images, closeImage, loading,
@@ -393,7 +434,6 @@ export default class ImgPicker extends Component<Props, State> {
       uploadImgContainer,
     ]);
     const imgUploadeds = StyleSheet.flatten([styles.imgUploaded, imgUploaded]);
-
     return (
       <View style={[styles.container, containerStyle]}>
         {multi ? (
@@ -412,37 +452,8 @@ export default class ImgPicker extends Component<Props, State> {
               {loading ? (
                 <ActivityIndicator />
               ) : (
-                images.map((i: any, index: number) => (
-                  <View key={i.uri}>
-                    <TouchableOpacity
-                      onPress={() => this.closeOne(index)}
-                      style={styles.wrapImgUpload}
-                    >
-                      <View style={styles.closeIcon}>
-                        <Icon name="close" size={12} color="#315DF7" />
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => this.updateOne(index)}
-                      style={styles.uploadImageBtn}
-                    >
-                      <Image
-                        style={{
-                          width:
-                            images.length > 1 ? width / 2 - 60 : width - 150,
-                          height: 100,
-                          marginBottom: 10,
-                          marginRight: 10,
-                        }}
-                        source={i}
-                      />
-                      {/* <Image
-                style={{ width: 100, height: 50, resizeMode: 'contain' }}
-                source={image}
-              /> */}
-                    </TouchableOpacity>
-                  </View>
-                ))
+                this.renderMultiImage()
+
               )}
             </View>
           ) : (
@@ -453,7 +464,7 @@ export default class ImgPicker extends Component<Props, State> {
             >
               <View style={styles.desUpload}>
                 {iconComponent || (
-                  <Icon name="camera" type="ionicon" color="#000" size={30} />
+                  <Icon name="plus" type="entypo" color="#000" size={30} />
                   // <Image source={require('@src/assets/images/upload.png')} />
                 )}
                 {/* <Image

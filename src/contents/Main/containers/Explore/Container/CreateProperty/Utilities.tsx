@@ -7,6 +7,7 @@ import {
 import { Icon } from 'react-native-elements';
 import { Color } from '@themes/Theme';
 import { lightPrimaryColor } from '@themes/ThemeComponent/Common/Color';
+import { pushPayloadProperty } from '../../redux/slice';
 
 const amenities = [
   {
@@ -139,6 +140,7 @@ const amenities = [
 ];
 interface Props {
   goNextPage: () => any;
+  pushData: (data: any) => any;
 }
 interface State {
   data: Array<any>;
@@ -227,6 +229,8 @@ class Utilities extends PureComponent<Props, State> {
 
 const mapStateToProps = (state: any) => ({});
 
-const mapDispatchToProps = (dispatch: any) => ({});
+const mapDispatchToProps = (dispatch: any) => ({
+  pushData: (data: any) => dispatch(pushPayloadProperty({ data })),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Utilities);

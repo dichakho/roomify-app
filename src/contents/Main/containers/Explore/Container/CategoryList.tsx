@@ -1,30 +1,71 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { PureComponent } from 'react';
-import { FlatList as RNFlatList, TouchableOpacity } from 'react-native';
+import React, { PureComponent, Component } from 'react';
+import {
+  ActivityIndicator, FlatList as RNFlatList, TouchableOpacity,
+} from 'react-native';
 import { connect } from 'react-redux';
-import { QuickView, Text, Image } from '@components';
+import {
+  QuickView, Text, Image,
+} from '@components';
 import { vndPriceFormat } from '@utils/functions';
 import { lightPrimaryColor } from '@themes/ThemeComponent/Common/Color';
 import NavigationService from '@utils/navigation';
 import rootStack from '@contents/routes';
 import { Global } from '@utils/appHelper';
 import AuthPopup from '@components/AuthPopup';
+import { stringifyQuery, TArrayRedux, TQuery } from '@utils/redux';
+import { get } from '@utils/api';
+import _ from 'lodash';
 import exploreStack from '../routes';
 
 interface Props {
-  categoryName?: string;
-  data: Array<any>;
+  categoryValue: any;
+  data?: Array<any>;
   mode?: number;
+  getList?: (query?: TQuery) => any;
+  list?: TArrayRedux;
+  query?: any;
 }
 interface State {
   overlayIsVisible: boolean
+  queryString: any;
+  dataProperty: any;
+  loading: boolean;
 }
-export class CategoryList extends PureComponent<Props, State> {
+export class CategoryList extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
       overlayIsVisible: false,
+      queryString: null,
+      dataProperty: null,
+      loading: true,
     };
+  }
+
+  static getDerivedStateFromProps(nextProps: any, prevState: any) {
+    // const { query } = nextProps;
+    // console.log('query', nextProps.query);
+
+    if (nextProps.query) {
+      return { queryString: nextProps.query };
+    }
+    return { ...prevState };
+  }
+
+  async componentDidMount() {
+    // const { getList, list } = this.props;
+    // if (list && getList) {
+    //   getList();
+    // }
+    const { queryString } = this.state;
+
+    if (queryString) {
+      // this.setState({ loading: true });
+      const encodeQuery = stringifyQuery(queryString);
+      const result = await get(`/properties?${encodeQuery}`);
+      this.setState({ dataProperty: result, loading: false });
+    }
   }
 
   toggleOverlay = () => {
@@ -32,10 +73,24 @@ export class CategoryList extends PureComponent<Props, State> {
     this.setState({ overlayIsVisible: !overlayIsVisible });
   };
 
-  handleOnPress = () => {
+  handleOnPress = (id: any) => {
+    const { categoryValue } = this.props;
     if (Global.token) {
       NavigationService.navigate(rootStack.exploreStack, {
         screen: exploreStack.detailProperty,
+        params: { id },
+      });
+    } else {
+      this.setState({ overlayIsVisible: true });
+    }
+  };
+
+  handleOnPressSeeMore = () => {
+    const { categoryValue } = this.props;
+    if (Global.token) {
+      NavigationService.navigate(rootStack.exploreStack, {
+        screen: exploreStack.propsByCategory,
+        params: categoryValue,
       });
     } else {
       this.setState({ overlayIsVisible: true });
@@ -46,15 +101,17 @@ export class CategoryList extends PureComponent<Props, State> {
     <QuickView
       style={{ width: 180 }}
       marginRight={20}
-      onPress={() => this.handleOnPress()}
+      onPress={() => this.handleOnPress(item?.id)}
     >
-      <Image source={{ uri: item?.coverUrl }} width={180} height={140} />
+      <Image source={{ uri: item?.thumbnail }} width={180} height={140} />
       <QuickView marginTop={15} marginLeft={10}>
         <Text type="paragraph" bold>
-          {vndPriceFormat(item.price)}
+          {vndPriceFormat(item?.averagePrice * 100000)}
         </Text>
         <Text marginTop={5} fontSize="small">
-          {item.area}
+          {item?.averageArea}
+          m2
+          {/* 60m2 */}
         </Text>
         <Text
           marginTop={10}
@@ -67,7 +124,8 @@ export class CategoryList extends PureComponent<Props, State> {
           fontSize="tiny"
           color="#77858C"
         >
-          {item.address}
+          {item?.destination?.parent?.name}
+          {/* Thanh Khê */}
         </Text>
       </QuickView>
     </QuickView>
@@ -79,11 +137,11 @@ export class CategoryList extends PureComponent<Props, State> {
       height={140}
       borderRadius={20}
       marginRight={20}
-      onPress={() => this.handleOnPress()}
+      onPress={() => this.handleOnPress(item?.id)}
     >
       <QuickView
         backgroundImage={{
-          source: { uri: item.coverUrl },
+          source: { uri: item?.thumbnail },
           imageStyle: { borderRadius: 20 },
         }}
         width={300}
@@ -98,9 +156,10 @@ export class CategoryList extends PureComponent<Props, State> {
           row
         >
           <Text>Chỉ </Text>
-          <Text bold color={lightPrimaryColor}>
-            {vndPriceFormat(item.price)}
-            / căn/ tháng
+          <Text color={lightPrimaryColor}>
+            ₫
+            {vndPriceFormat(item?.averagePrice * 100000)}
+            /tháng
           </Text>
         </QuickView>
       </QuickView>
@@ -148,36 +207,29 @@ export class CategoryList extends PureComponent<Props, State> {
       default:
         break;
     }
-
     return theme;
   };
 
+  renderEmpty = () => {
+    const { loading } = this.state;
+    if (loading) {
+      return (
+        <QuickView flex={1} center>
+          <ActivityIndicator />
+        </QuickView>
+      );
+    }
+    return <Text>Chưa có dữ liệu</Text>;
+  };
+
   render() {
-    const { categoryName, data, mode } = this.props;
-    const { overlayIsVisible } = this.state;
-    // const data = [
-    //   {
-    //     coverUrl:
-    //       'https://s3-alpha-sig.figma.com/img/0f14/5640/1a7cb0f8a6af33580734b2403203ba82?Expires=1599436800&Signature=ZqKbSbcQCsR6Qc~GwwGlEnDzSwG8ALOqXyFDP8i3eWNrDpw0Bm6FxOOE-adJ4OBYsjjcCtFhNunhqYlj4lwQE1xTzD3v6uaQJeYqT~jpy8msPp4ye3xbwSllFmo5HDVfIPhs5VSHt~RY4419L-7gx9r55aQFrkv55YgF1YD8VI5l6pbfIZImRgyqvgTmCbe~8Rp41iY7BTpPPr7-F0vZOn84z9LcG7BQcgEXuZ-TdbPufkCxloZ4VEAEI75MvtIA8m7-SaQuSMeC9sSTXmXdnAZ9OhFtHl3IG7Y5yn3SEpNhU7MESqJg3XcCge1rESICCIpT6raiEsFS-iL5S1kJvw__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA',
-    //     price: 1000000,
-    //     address: 'Thanh Khê',
-    //     area: '60m2',
-    //   },
-    //   {
-    //     coverUrl:
-    //       'https://s3-alpha-sig.figma.com/img/eb48/87a0/c4fa0f3907b14d0a3dbb91e7ca06cf1e?Expires=1599436800&Signature=IwrBjg8KcqjRbRY3MQvpK6f~H2ROfQrDfITJCWY5i3lmUN9hgZXpdvP0eSaPoCB3lRat~GVYYWpCS0eEpaH5SjXvEjwm380rjWh9hJV-4LU~KmlUQMIooDYu3X4Fdsn0Jz5JjsrCleS7iofIM8Nb0-9ojxSrs0d0x6-R70BlEdlWhAYlc7UAonpbqH-tK4Tqi1KgrHami1Lb-zOAn56W937UOjdunYPx5bXTm4cVegtNr9ipsXFO6VXHOzwCpVbe4BdNEKNVys0hYBQ~JskmW10BBK~oOWhJJAH8pPMsS-8o5yP3wschvZkpK78iOVL~47ayi3ycq1Il4IiQUchOrA__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA',
-    //     price: 800000,
-    //     address: 'Liên Chiểu',
-    //     area: '60m2',
-    //   },
-    //   {
-    //     coverUrl:
-    //       'https://s3-alpha-sig.figma.com/img/0f14/5640/1a7cb0f8a6af33580734b2403203ba82?Expires=1599436800&Signature=ZqKbSbcQCsR6Qc~GwwGlEnDzSwG8ALOqXyFDP8i3eWNrDpw0Bm6FxOOE-adJ4OBYsjjcCtFhNunhqYlj4lwQE1xTzD3v6uaQJeYqT~jpy8msPp4ye3xbwSllFmo5HDVfIPhs5VSHt~RY4419L-7gx9r55aQFrkv55YgF1YD8VI5l6pbfIZImRgyqvgTmCbe~8Rp41iY7BTpPPr7-F0vZOn84z9LcG7BQcgEXuZ-TdbPufkCxloZ4VEAEI75MvtIA8m7-SaQuSMeC9sSTXmXdnAZ9OhFtHl3IG7Y5yn3SEpNhU7MESqJg3XcCge1rESICCIpT6raiEsFS-iL5S1kJvw__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA',
-    //     price: 1000000,
-    //     address: 'Hải Châu',
-    //     area: '60m2',
-    //   },
-    // ];
+    const {
+      categoryValue, data, mode, list, query,
+    } = this.props;
+    const { overlayIsVisible, dataProperty } = this.state;
+    // console.log('🚀 ~ file: CategoryList.tsx ~ line 194 ~ CategoryList ~ render ~ dataProperty', dataProperty);
+    // console.log('dataProperty', dataProperty);
+
     return (
       <QuickView>
         <AuthPopup overlayIsVisible={overlayIsVisible} toggleOverlay={this.toggleOverlay} />
@@ -188,22 +240,36 @@ export class CategoryList extends PureComponent<Props, State> {
           justifyContent="space-between"
         >
           <Text type="title" bold>
-            {categoryName}
+            {categoryValue?.name}
           </Text>
-          <TouchableOpacity onPress={() => {}} style={{ padding: 5 }}>
+          <TouchableOpacity onPress={this.handleOnPressSeeMore} style={{ padding: 5 }}>
             <Text fontSize="small" color="#B1ADAD">
               View All
             </Text>
           </TouchableOpacity>
         </QuickView>
-        <RNFlatList
-          showsHorizontalScrollIndicator={false}
-          style={{ marginTop: 20 }}
-          horizontal
-          data={data}
-          renderItem={this.renderRowItem}
-          keyExtractor={(item, index) => index.toString()}
-        />
+        {query && !_.isNull(dataProperty) ? (
+          <RNFlatList
+            showsHorizontalScrollIndicator={false}
+            style={{ marginTop: 20 }}
+            contentContainerStyle={{ flexGrow: 1 }}
+            horizontal
+            data={dataProperty.result}
+            // data={[]}
+            renderItem={this.renderRowItem}
+            keyExtractor={(item, index) => index.toString()}
+            ListEmptyComponent={this.renderEmpty}
+          />
+        ) : (
+          <RNFlatList
+            showsHorizontalScrollIndicator={false}
+            style={{ marginTop: 20 }}
+            horizontal
+            data={data}
+            renderItem={this.renderRowItem}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        )}
       </QuickView>
     );
   }

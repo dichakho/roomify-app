@@ -11,6 +11,7 @@ import {
   PhoneNumberValidator,
   IDValidator,
   VerifiedEmailCodeValidator,
+  EmptyValidator,
 } from '@core/validators';
 
 import {
@@ -23,6 +24,7 @@ import { connect } from 'react-redux';
 import { languageSelector, themeSelector } from '@contents/Config/redux/selector';
 import { LanguageEnum, ThemeEnum } from '@contents/Config/redux/constant';
 import { getThemeByName, getLanguageByName } from '@utils/appHelper';
+import { Color } from '@themes/Theme';
 import Button from '../Button/DefaultButton';
 import Text, { TextProps } from '../Text';
 import QuickView from '../View/QuickView';
@@ -39,6 +41,7 @@ enum EnumValidationField {
   verifiedEmailCode,
   id,
   none,
+  empty,
 }
 
 export interface InputProps extends Omit<EInputProps, 'labelProps' | 'labelStyle'> {
@@ -116,6 +119,8 @@ const validateField = (
       return IDValidator(input);
     case 'verifiedEmailCode':
       return VerifiedEmailCodeValidator(input);
+    case 'empty':
+      return EmptyValidator(input);
     default:
       return true;
   }
@@ -192,6 +197,10 @@ class Input extends React.Component<InputProps, State> {
   focus = () => this.input.focus();
 
   blur = () => this.input.blur();
+
+  toggleErrorInput = () => {
+    this.setState({ isValidated: true, borderColor: '#E6E9F0' });
+  };
 
   private validateInput = () => {
     const { validationField, comparedValue } = this.props;

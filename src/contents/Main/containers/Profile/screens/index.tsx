@@ -41,22 +41,25 @@ const list = [
   {
     name: 'My Account',
     type: 'screen',
+    screen: profileStack.account,
   },
+  // {
+  //   name: 'Bookings', type: 'screen',
+  // },
   {
-    name: 'Bookings', type: 'screen',
+    name: 'Đăng ký làm chủ nhà',
+    type: 'screen',
+    screen: profileStack.registerOwner,
   },
+  // {
+  //   name: 'Help & Support', type: 'screen',
+  // },
   {
-    name: 'Đăng ký làm chủ nhà', type: 'screen', screen: profileStack.registerOwner,
+    name: 'Settings', type: 'screen', screen: profileStack.setting,
   },
-  {
-    name: 'Help & Support', type: 'screen',
-  },
-  {
-    name: 'Settings', type: 'screen',
-  },
-  {
-    name: 'Logout', type: 'screen',
-  },
+  // {
+  //   name: 'Logout', type: 'screen',
+  // },
 ];
 
 class Settings extends React.PureComponent<Props> {
@@ -137,7 +140,7 @@ class Settings extends React.PureComponent<Props> {
     return (
       <Container>
         <Header title={t('header:profile')} />
-        <QuickView height={120}>
+        {/* <QuickView height={120}>
           <SectionList
             contentContainerStyle={{ marginTop: -30 }}
             keyExtractor={this.keyExtractor}
@@ -148,12 +151,12 @@ class Settings extends React.PureComponent<Props> {
             SectionSeparatorComponent={Divider}
             stickySectionHeadersEnabled={false}
           />
-        </QuickView>
+        </QuickView> */}
         <QuickView paddingHorizontal={10}>
           {/* <GoToExampleButton /> */}
           <LoginButton />
           <LogoutButton />
-          <Button onPress={() => NavigationService.navigate(profileStack.registerOwner)} height={50} title="Đăng ký làm chủ nhà" />
+          {/* <Button onPress={() => NavigationService.navigate(profileStack.registerOwner)} height={50} title="Đăng ký làm chủ nhà" /> */}
           <GoToExampleButton />
         </QuickView>
         <FlatList

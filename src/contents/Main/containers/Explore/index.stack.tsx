@@ -5,6 +5,10 @@ import ExploreScreen from './screens';
 import SearchScreen from './screens/SearchScreen';
 import DetailProperty from './screens/DetailProperty';
 import CreatePropertyScreen from './screens/CreateProperty';
+import MapScreen from './screens/Map';
+import PropertyByCategory from './screens/PropertyByCategory';
+import DetailRoom from './screens/DetailRoom';
+import MapDetailRoom from './screens/MapDetailRoom';
 
 const Stack = createStackNavigator();
 
@@ -18,9 +22,22 @@ export default function ExploreStack() {
         component={DetailProperty}
       />
       <Stack.Screen
+        name={exploreStack.detailRoom}
+        component={DetailRoom}
+      />
+      <Stack.Screen
         name={exploreStack.createProperty}
         component={CreatePropertyScreen}
       />
+      <Stack.Screen
+        name={exploreStack.map}
+        component={MapScreen}
+      />
+      <Stack.Screen
+        name={exploreStack.propsByCategory}
+        component={PropertyByCategory}
+      />
+      <Stack.Screen name={exploreStack.mapDetailRoom} component={MapDetailRoom} />
     </Stack.Navigator>
   );
 }

@@ -18,19 +18,19 @@ function extractMetadata(url: string, response: any) {
   const query: any = qs.parse(url.slice(url.lastIndexOf('?') + 1));
   if (!_.has(response, 'total')) return null;
   const metadata: TMetadata = {
-    count: response.results.length,
+    count: response.count,
     total: response.total,
-    page: 1,
-    pageCount: 0,
+    page: response.page,
+    pageCount: response.pageCount,
   };
-  let defaultLimit = parseInt(query.limit, 10);
-  if (Number.isNaN(defaultLimit)) { defaultLimit = 10; }
-  metadata.pageCount = _.ceil(_.divide(metadata.total, defaultLimit));
-  if (query.offset && parseInt(query.offset, 10) !== 0) {
-    let page = _.ceil(_.divide(parseInt(query.offset, 10) + 1, defaultLimit));
-    if (page >= metadata.pageCount) page = metadata.pageCount;
-    metadata.page = page;
-  }
+  // let defaultLimit = parseInt(query.limit, 10);
+  // if (Number.isNaN(defaultLimit)) { defaultLimit = 10; }
+  // metadata.pageCount = _.ceil(_.divide(metadata.total, defaultLimit));
+  // if (query.offset && parseInt(query.offset, 10) !== 0) {
+  //   let page = _.ceil(_.divide(parseInt(query.offset, 10) + 1, defaultLimit));
+  //   if (page >= metadata.pageCount) page = metadata.pageCount;
+  //   metadata.page = page;
+  // }
 
   return metadata;
 }
@@ -141,7 +141,7 @@ function requestWrapper(method: string) {
     };
 
     if (Global.token && !isFullUrl) {
-      defaults.headers.Authorization = `${Global.token}`;
+      defaults.headers.Authorization = `Bearer ${Global.token}`;
     }
     if (data) {
       defaults.body = data;

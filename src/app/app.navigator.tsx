@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StatusBar } from 'react-native';
+import { Platform, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import { withTheme } from 'react-native-elements';
 import { lightTheme, darkTheme } from '@themes';
@@ -13,6 +13,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import RootStack from '@contents/index.navigator';
 import NavigationService from '@utils/navigation';
 import { resetRequireLogin } from '@contents/Config/redux/slice';
+import { Color } from '@themes/Theme';
 
 interface Props {
   theme: any;
@@ -46,6 +47,9 @@ class AppNavigator extends Component<Props, State> {
     }
     const barStyle = themeRedux === ThemeEnum.DARK ? 'light-content' : 'dark-content';
     StatusBar.setBarStyle(barStyle, true);
+    if (Platform.OS === 'android') {
+      StatusBar.setBackgroundColor('transparent', true);
+    }
 
     return (
       <NavigationContainer ref={NavigationService.navigationRef}>

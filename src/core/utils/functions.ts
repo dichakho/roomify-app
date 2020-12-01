@@ -63,18 +63,18 @@ export const findDeepFields = (theObject: any, field: string, value: any): any =
   return result;
 }
 
-export const cloudinaryUpload = async (img: any) => {
+export const cloudinaryUploadSingle = async (img: any) => {
   const photo = {
     uri: img.uri,
     type: img.mime,
     name: img.fileName,
   };
-  photo.uri.replace('file:///', '').replace('file://', '');
+  // photo.uri.replace('file:///', '').replace('file://', '');
   const data = new FormData();
   data.append('file', photo);
   data.append('upload_preset', 'roomify');
-  data.append('cloud_name', 'roomify');
-  fetch('https://api.cloudinary.com/v1_1/dichakho/upload', {
+  data.append('cloud_name', 'dichakho');
+  await fetch('https://api.cloudinary.com/v1_1/dichakho/upload', {
     method: 'post',
     body: data,
   }).then((res) => res.json())
@@ -86,3 +86,7 @@ export const cloudinaryUpload = async (img: any) => {
     console.log("err", err)
     });
 };
+
+export function convertPrice(number: number, seperator: string) {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, seperator);
+}

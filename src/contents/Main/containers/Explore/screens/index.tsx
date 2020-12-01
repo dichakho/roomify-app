@@ -15,15 +15,24 @@ import {
 } from '@components';
 import { Color, lightPrimaryColor } from '@themes/ThemeComponent/Common/Color';
 import { Icon } from 'react-native-elements';
-import { TouchableOpacity, FlatList as RNFlatList } from 'react-native';
+import { TouchableOpacity, FlatList as RNFlatList, StatusBar } from 'react-native';
 import { vndPriceFormat } from '@utils/functions';
 import NavigationService from '@utils/navigation';
 import rootStack from '@contents/routes';
+import { TArrayRedux, TQuery } from '@utils/redux';
+import { applyArraySelector, parseArraySelector } from '@utils/selector';
+import OverlayLoading from '@components/OverlayLoading';
 import { CategoryList } from '../Container/CategoryList';
 import exploreStack from '../routes';
+import { categoryGetList, propertyGetList } from '../redux/slice';
+import { categorySelector, propertyListSelector } from '../redux/selector';
 
 interface Props {
   t: any;
+  properties: TArrayRedux;
+  getList: (query?: TQuery) => any;
+  getCategory: (query?: TQuery) => any;
+  categories: TArrayRedux;
 }
 class ExploreScreen extends PureComponent<Props> {
   data = [
@@ -50,6 +59,8 @@ class ExploreScreen extends PureComponent<Props> {
     },
   ];
 
+  fields = 'id,thumbnail,destination,averagePrice,averageArea';
+
   dataDropdown = [
     {
       label: 'Đà Nẵng',
@@ -64,6 +75,11 @@ class ExploreScreen extends PureComponent<Props> {
       value: '3',
     },
   ];
+
+  componentDidMount() {
+    const { getCategory } = this.props;
+    getCategory({ fields: 'id,name' });
+  }
 
   renderLeftComponent = () => (
     <QuickView row center style={{ borderWidth: 0 }}>
@@ -116,10 +132,15 @@ class ExploreScreen extends PureComponent<Props> {
   );
 
   render() {
-    const { t } = this.props;
-
+    const {
+      t, properties, getList, categories: { data, loading },
+    } = this.props;
+    if (loading) {
+      return <OverlayLoading backgroundColor={Color.white} />;
+    }
     return (
       <Container>
+        {/* <StatusBar backgroundColor={Color.white} /> */}
         <Header
           backgroundColor={Color.white}
           containerStyle={{ zIndex: 1000 }}
@@ -149,7 +170,13 @@ class ExploreScreen extends PureComponent<Props> {
               <Icon name="magnify" type="material-community" color="#B1ADAD" />
             </QuickView>
           </QuickView>
-
+          <Button
+            height={50}
+            title="Map"
+            onPress={() => NavigationService.navigate(rootStack.exploreStack, {
+              screen: exploreStack.map,
+            })}
+          />
           <Button
             height={50}
             title="List your space, property"
@@ -158,26 +185,45 @@ class ExploreScreen extends PureComponent<Props> {
             })}
           />
           <CategoryList
-            categoryName="Phòng cho thuê"
-            data={this.data}
+            query={{ fields: this.fields, limit: 3, s: { 'category.id': data[0]?.id } }}
+            categoryValue={data[0]}
+            // data={this.data}
             mode={1}
           />
           <CategoryList
-            categoryName="Nhà nguyên căn"
-            data={this.data}
+            query={{ fields: this.fields, limit: 3, s: { 'category.id': data[1]?.id } }}
+            categoryValue={data[1]}
+            // data={this.data}
             mode={2}
           />
-          <CategoryList categoryName="Phòng ở ghép" data={this.data} mode={2} />
-          <CategoryList categoryName="Căn hộ" data={this.data} mode={2} />
+          <CategoryList
+            query={{ fields: this.fields, limit: 3, s: { 'category.id': data[2]?.id } }}
+            categoryValue={data[2]}
+            // data={this.data}
+            mode={2}
+          />
+          <CategoryList
+            query={{ fields: this.fields, limit: 3, s: { 'category.id': data[3]?.id } }}
+            categoryValue={data[3]}
+            // data={this.data}
+            mode={2}
+          />
         </Body>
       </Container>
     );
   }
 }
 
-const mapStateToProps = (state: any) => ({});
+const mapStateToProps = (state: any) => ({
+  properties: parseArraySelector(applyArraySelector(propertyListSelector, state)),
+  categories: parseArraySelector(applyArraySelector(categorySelector, state)),
+  // properties: state,
+});
 
-const mapDispatchToProps = (dispatch: any) => ({});
+const mapDispatchToProps = (dispatch: any) => ({
+  getList: (query ?: TQuery) => dispatch(propertyGetList({ query })),
+  getCategory: (query ?: TQuery) => dispatch(categoryGetList({ query })),
+});
 const withReduce = connect(mapStateToProps, mapDispatchToProps);
 
 export default compose(withReduce, withTranslation())(ExploreScreen as any);

@@ -69,10 +69,11 @@ export function createArrayInitialState(parentKey?: string) {
 }
 
 export type TQuery = {
-  fields?: Array<string>;
+  fields?: string;
   page?: number;
   limit?: number;
-  filter?: Filter;
+  // filter?: Filter;
+  s?: any;
 };
 
 export function createObjectReducer<T>(
@@ -154,10 +155,11 @@ export function createArrayReducer<T>(name: string, parentKey?: string): T {
     result[name] = (state: any, action: any) => state
       .setIn([parentKey, 'loading'], true)
       .setIn([parentKey, 'error'], null);
+
     result[`${name}Success`] = (state: any, action: any) => {
       const metadata = fromJS(action.payload.metadata);
       const currentPage = action.payload.metadata.page;
-      const dataGet = action.payload.results;
+      const dataGet = action.payload.result;
       const data = (currentPage === 1 || !currentPage)
         ? fromJS(dataGet)
         : state
@@ -184,7 +186,7 @@ export function createArrayReducer<T>(name: string, parentKey?: string): T {
     result[`${name}Success`] = (state: any, action: any) => {
       const metadata = fromJS(action.payload.metadata);
       const currentPage = action.payload.metadata.page;
-      const dataGet = action.payload.results;
+      const dataGet = action.payload.result;
       const data = currentPage === 1
         ? fromJS(dataGet)
         : state
@@ -224,8 +226,11 @@ export function stringifyQuery(query: TQuery) {
   const handledQuery: any = _.omit(query, ['page']);
   handledQuery.offset = offset;
   handledQuery.limit = limit;
-  if (_.has(handledQuery, 'filter')) {
-    handledQuery.filter = JSON.stringify(handledQuery.filter);
+  // if (_.has(handledQuery, 'filter')) {
+  //   handledQuery.filter = JSON.stringify(handledQuery.filter);
+  // }
+  if (_.has(handledQuery, 's')) {
+    handledQuery.s = JSON.stringify(handledQuery.s);
   }
   const stringifiedQuery = qs.stringify(handledQuery, { indices: false, strictNullHandling: true });
   return stringifiedQuery;

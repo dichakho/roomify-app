@@ -98,7 +98,7 @@ class AppContainer extends React.Component<Props, State> {
     return (
       <ThemeProvider theme={themeColor}>
         <AppNavigator />
-        <FlashMessage position="top" />
+        {/* <FlashMessage position="top" /> */}
       </ThemeProvider>
     );
   }

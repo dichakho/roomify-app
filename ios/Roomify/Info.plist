@@ -62,14 +62,18 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
   <key>NSPhotoLibraryUsageDescription</key>
   <string>Điều này cho phép bạn lưu ảnh thông tin về ứng dụng</string>
   <key>NSCameraUsageDescription</key>
   <string>Điều này cho phép bạn chụp một bức ảnh để cập nhật ảnh về ứng dụng</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This permission is required for the app to know your location</string>
+  <key>NSLocationWhenInUseUsageDescription</key>
+	<string>This permission is required for the app to know your location</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Điều này cho phép Roomify luôn gợi ý những phòng gần bạn</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

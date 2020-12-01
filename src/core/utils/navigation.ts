@@ -7,7 +7,7 @@ interface IScreen {
   params?: any;
 }
 
-const navigationRef: any = React.createRef();
+const navigationRef: React.RefObject<any> = React.createRef();
 
 const navigate = (stack: string, screen?: any) => navigationRef.current?.navigate(stack, screen);
 

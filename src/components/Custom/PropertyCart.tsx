@@ -20,7 +20,7 @@ interface Props {
 }
 
 const PropertyCart: FC<Props> = ({ data, onPress }: Props) => (
-  <TouchableOpacity onPress={onPress}>
+  <TouchableOpacity style={{ marginBottom: 30 }} onPress={onPress}>
     <Image source={{ uri: data.thumbnail }} height={160} />
     <QuickView
       marginTop={20}

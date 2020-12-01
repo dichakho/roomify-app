@@ -4,7 +4,7 @@ import { lightComponentColor, darkComponentColor } from './Common/CommonProps';
  * ParallaxScrollView
  */
 
-export const parallaxHeaderHeight = 300;
+export const parallaxHeaderHeight = 400;
 export const stickyHeaderHeight = 85;
 
 export const darkParallaxScrollView = {

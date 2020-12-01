@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 /* eslint-disable max-len */
 export const PATTERN_NAME: RegExp = /[a-z ,.'-]+/;
 export const PATTERN_DOB: RegExp = /\d{1,2}\/\d{1,2}\/\d{4}/;
@@ -41,3 +43,5 @@ export const StringValidator = (value: string): boolean => !!value && value.leng
 export const IDValidator = (value: string): boolean => RegExpValidator(PATTERN_ID, value);
 
 export const VerifiedEmailCodeValidator = (value: string): boolean => RegExpValidator(PATTERN_VERIFIED_EMAIL_CODE, value);
+
+export const EmptyValidator = (value: string): boolean => !_.isEmpty(value);

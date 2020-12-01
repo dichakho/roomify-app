@@ -62,12 +62,15 @@ class ParallaxScrollView extends PureComponent<ParallaxScrollViewProps> {
     return (
       <QuickView backgroundColor={contentBackgroundColor}>
         <Image
+          sharp
           source={imageSource}
           width={windowWidth}
           height={parallaxHeaderHeight}
           placeholderBorderWidth={0}
           loadingType="default"
           disablePlaceholder
+          style={{ borderBottomRightRadius: 30 }}
+          // borderRadius={40}
         />
         <QuickView
           position="absolute"
@@ -75,7 +78,8 @@ class ParallaxScrollView extends PureComponent<ParallaxScrollViewProps> {
           width={windowWidth}
           height={parallaxHeaderHeight}
           backgroundColor={imageBackgroundColor}
-          borderRadius={roundedBorderRadius}
+          style={{ borderBottomRightRadius: 30 }}
+          // borderRadius={40}
         />
       </QuickView>
     );

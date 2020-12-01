@@ -18,6 +18,7 @@ class AuthPopup extends PureComponent<Props, State> {
     const { overlayIsVisible, toggleOverlay } = this.props;
     return (
       <Overlay
+        onBackdropPress={toggleOverlay}
         isVisible={overlayIsVisible}
         // height={200}
         overlayStyle={{ borderRadius: 8, height: 200, width: '80%' }}
@@ -33,7 +34,7 @@ class AuthPopup extends PureComponent<Props, State> {
           <QuickView
             row
             justifyContent="space-between"
-            paddingHorizontal={30}
+            paddingHorizontal={20}
             // width={250}
             // marginHorizontal={50}
             // center

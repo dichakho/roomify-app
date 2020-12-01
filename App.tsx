@@ -8,6 +8,7 @@
  * @format
  */
 
+import { Color } from '@themes/Theme';
 import React from 'react';
 import {
   SafeAreaView,
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
 
 const App = () => (
   <>
-    <StatusBar barStyle="dark-content" />
+    <StatusBar backgroundColor={Color.white} barStyle="dark-content" />
     <SafeAreaView>
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"

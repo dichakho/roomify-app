@@ -1,4 +1,5 @@
-import { Container, Header } from '@components';
+import { Container, Header, QuickView } from '@components';
+import { Color } from '@themes/Theme';
 import React, { PureComponent } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Icon } from 'react-native-elements';
@@ -38,7 +39,11 @@ class MapDetailRoom extends PureComponent {
                 longitude: 108.17969,
               }}
             >
-              <Icon name="home" type="antdesign" />
+              <QuickView center backgroundColor="'rgba(220,47,48,0.2)'" width={100} height={100} borderRadius={50}>
+                <QuickView center backgroundColor="'rgba(220,47,48,0.8)'" width={50} height={50} borderRadius={25}>
+                  <Icon color={Color.white} name="home" type="antdesign" />
+                </QuickView>
+              </QuickView>
             </Marker>
           </MapView>
         </View>

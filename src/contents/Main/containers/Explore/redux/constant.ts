@@ -14,6 +14,11 @@ export const CATEGORY = 'category';
 export const DETAIL = 'detail';
 export const LIST_ROOM = 'listRoom';
 export const DETAIL_ROOM = 'detailRoom';
+export const BOOKING = 'booking';
+export const CITY = 'city';
+export const DISTRICT = 'district';
+export const SUB_DISTRICT = 'subDistrict';
+export const CREATE_PROPERTY = 'createProperty';
 
 /**
  * TYPE
@@ -53,6 +58,24 @@ export type TDetailRoom = {
   roomGetDetailFail: (state: any, action: any) => any;
 };
 
+export type TBookingRoom = {
+  bookingRoom: (state: any, action: any) => any;
+  bookingRoomSuccess: (state: any, action: any) => any;
+  bookingRoomFail: (state: any, action: any) => any;
+};
+
+export type TCity = {
+  cityGetList: (state: any, action: any) => any;
+  cityGetListSuccess: (state: any, action: any) => any;
+  cityGetListFail: (state: any, action: any) => any;
+};
+
+export type TCreateProperty = {
+  createProperty: (state: any, action: any) => any;
+  createPropertySuccess: (state: any, action: any) => any;
+  createPropertyFail: (state: any, action: any) => any;
+};
+
 /**
  * INITIAL_STATE
  */
@@ -63,4 +86,10 @@ export const INITIAL_STATE = fromJS({
   ...createObjectInitialState(DETAIL),
   ...createArrayInitialState(LIST_ROOM),
   ...createObjectInitialState(DETAIL_ROOM),
+  ...createObjectInitialState(BOOKING),
+  ...createArrayInitialState(CITY),
+  ...createArrayInitialState(DISTRICT),
+  ...createArrayInitialState(SUB_DISTRICT),
+  ...createObjectInitialState(CREATE_PROPERTY),
+
 });

@@ -87,6 +87,8 @@ interface Props {
   iconColor?: string;
   placeholder?: string;
   theme?: any;
+  labelKey?: string;
+  valueKey?: string;
   // inActiveComponent?: any;
   // activeComponent?: any;
 }
@@ -96,10 +98,15 @@ interface State {
 }
 
 class Dropdown extends PureComponent<Props, State> {
+  static defaultProps = {
+    labelKey: 'label',
+    valueKey: 'value',
+  };
+
   constructor(props: any) {
     super(props);
-    const { defaultValue, data } = this.props;
-    let valueSeclected = data[0].value;
+    const { defaultValue, data, valueKey } = this.props;
+    let valueSeclected = data[0][valueKey || 'value'];
     if (defaultValue) {
       valueSeclected = defaultValue;
     }
@@ -136,6 +143,8 @@ class Dropdown extends PureComponent<Props, State> {
       iconColor,
       placeholder,
       theme,
+      labelKey,
+      valueKey,
     } = this.props;
     const { rotateIcon, value } = this.state;
     let labelSelected = placeholder || 'Select item';
@@ -143,8 +152,8 @@ class Dropdown extends PureComponent<Props, State> {
 
     if (value) {
       data.forEach((item: any) => {
-        if (value === item.value) {
-          labelSelected = item.label;
+        if (value === item[valueKey || 'value']) {
+          labelSelected = item[labelKey || 'label'];
         }
       });
     } else {
@@ -207,12 +216,12 @@ class Dropdown extends PureComponent<Props, State> {
               <ScrollView>
                 {data.map((item: any) => (
                   <TouchableOpacity
-                    key={item.value}
-                    onPress={this.setValue(item.value)}
+                    key={item[valueKey || 'value']}
+                    onPress={this.setValue(item[valueKey || 'value'])}
                   >
                     <View
                       style={
-                        value === item.value
+                        value === item[valueKey || 'value']
                           ? [
                             styles.isSelected,
                             activeColor
@@ -226,7 +235,7 @@ class Dropdown extends PureComponent<Props, State> {
                     >
                       <Text
                         style={
-                          value === item.value
+                          value === item[valueKey || 'value']
                             ? activeTextColor
                               ? { color: activeTextColor }
                               : { color: theme.Dropdown.activeTextColor }
@@ -236,7 +245,7 @@ class Dropdown extends PureComponent<Props, State> {
                             }
                         }
                       >
-                        {item.label}
+                        {item[labelKey || 'label']}
                       </Text>
                     </View>
                   </TouchableOpacity>

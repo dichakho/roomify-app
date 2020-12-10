@@ -118,7 +118,6 @@ class PropertyByCategory extends PureComponent<Props, State> {
 
   render() {
     const { route: { params: { id, name } }, properties, getList } = this.props;
-    console.log('🚀 ~ file: PropertyByCategory.tsx ~ line 119 ~ PropertyByCategory ~ render ~ properties', properties);
     return (
       <Container>
         <Header backIcon title={name} />

@@ -69,6 +69,7 @@ export const cloudinaryUploadSingle = async (img: any) => {
     type: img.mime,
     name: img.fileName,
   };
+  let result: any;
   // photo.uri.replace('file:///', '').replace('file://', '');
   const data = new FormData();
   data.append('file', photo);
@@ -80,11 +81,13 @@ export const cloudinaryUploadSingle = async (img: any) => {
   }).then((res) => res.json())
     .then((data) => {
       console.log('data', data);
-
+      result =  data;
       // setPhoto(data.secure_url);
     }).catch((err) => {
     console.log("err", err)
     });
+
+  return result;
 };
 
 export function convertPrice(number: number, seperator: string) {

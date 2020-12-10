@@ -14,7 +14,7 @@ import Location from '../Container/CreateProperty/Location';
 import Confirmation from '../Container/CreateProperty/Confirmation';
 import { clearPayloadProperty } from '../redux/slice';
 
-const labels = ['Thông tin', 'Địa chỉ', 'Tiện ích', 'Xác nhận'];
+const labels = ['Thông tin', 'Địa chỉ', 'Hình ảnh', 'Xác nhận'];
 const customStyles = {
   stepIndicatorSize: 25,
   currentStepIndicatorSize: 30,

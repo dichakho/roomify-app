@@ -15,8 +15,8 @@ class Setting extends PureComponent {
           <QuickView>
             <Text center>Setting Screen</Text>
           </QuickView>
-          {/* <SwitchChangeTheme />
-          <PickerChangeLanguage /> */}
+          <SwitchChangeTheme />
+          <PickerChangeLanguage />
         </Body>
       </Container>
     );

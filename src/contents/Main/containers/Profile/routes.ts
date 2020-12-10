@@ -6,6 +6,8 @@ const profileStack = {
   registerOwner: 'RegisterOwnerScreen',
   setting: 'SettingScreen',
   account: 'AccountScreen',
+  myProperty: 'MyPropertyScreen',
+  createRoom: 'CreateRoomScreen',
 };
 
 export default profileStack;

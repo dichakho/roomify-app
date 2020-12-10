@@ -20,31 +20,23 @@ import {
   // Button,
   // Carousel,
 } from '@components';
-import { Color } from '@themes/Theme';
 import { connect } from 'react-redux';
 import { applyObjectSelector, parseObjectSelector } from '@utils/selector';
 import { TObjectRedux } from '@utils/redux';
-import { vndPriceFormat } from '@utils/functions';
-import { lightPrimaryColor } from '@themes/ThemeComponent/Common/Color';
-import { Icon } from 'react-native-elements';
+import { convertPrice, vndPriceFormat } from '@utils/functions';
+import { Color, lightPrimaryColor } from '@themes/ThemeComponent/Common/Color';
+import { Icon, Overlay } from 'react-native-elements';
 import MapView, { Marker } from 'react-native-maps';
 import OverlayLoading from '@components/OverlayLoading';
 import NavigationService from '@utils/navigation';
-import _ from 'lodash';
-import { roomGetDetail } from '../redux/slice';
-import { detailRoomSelector } from '../redux/selector';
+import _, { result } from 'lodash';
+import { post } from '@utils/api';
+import { bookingRoom, roomGetDetail } from '../redux/slice';
+import { bookingRoomSelector, detailRoomSelector } from '../redux/selector';
 import exploreStack from '../routes';
 
 const { width: screenWidth } = Dimensions.get('window');
-interface Props {
-  route?: any;
-  getDetail: (id: number) => any;
-  detail: TObjectRedux;
-}
-interface State {
-  scrollY: any;
-  activeSlide: number;
-}
+
 const styles = StyleSheet.create({
   item: {
     width: screenWidth - 60,
@@ -62,39 +54,51 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
 });
+interface Props {
+  route?: any;
+  getDetail: (id: number) => any;
+  detail: TObjectRedux;
+  booking: (id: number) => any;
+  bookingSelector: TObjectRedux;
+}
+interface State {
+  scrollY: any;
+  activeSlide: number;
+  overlayIsVisible: boolean;
+}
 class DetailRoom extends Component<Props, State> {
-  data = [
-    {
-      title: 'Beautiful and dramatic Antelope Canyon',
-      subtitle: 'Lorem ipsum dolor sit amet et nuncat mergitur',
-      illustration: 'https://picsum.photos/1500/1500',
-    },
-    {
-      title: 'Earlier this morning, NYC',
-      subtitle: 'Lorem ipsum dolor sit amet',
-      illustration: 'https://picsum.photos/1500/1500',
-    },
-    {
-      title: 'White Pocket Sunset',
-      subtitle: 'Lorem ipsum dolor sit amet et nuncat ',
-      illustration: 'https://picsum.photos/1500/1500',
-    },
-    {
-      title: 'Acrocorinth, Greece',
-      subtitle: 'Lorem ipsum dolor sit amet et nuncat mergitur',
-      illustration: 'https://picsum.photos/1500/1500',
-    },
-    {
-      title: 'The lone tree, majestic landscape of New Zealand',
-      subtitle: 'Lorem ipsum dolor sit amet',
-      illustration: 'https://picsum.photos/1500/1500',
-    },
-    {
-      title: 'Middle Earth, Germany',
-      subtitle: 'Lorem ipsum dolor sit amet',
-      illustration: 'https://picsum.photos/1500/1500',
-    },
-  ];
+  // data = [
+  //   {
+  //     title: 'Beautiful and dramatic Antelope Canyon',
+  //     subtitle: 'Lorem ipsum dolor sit amet et nuncat mergitur',
+  //     illustration: 'https://picsum.photos/1500/1500',
+  //   },
+  //   {
+  //     title: 'Earlier this morning, NYC',
+  //     subtitle: 'Lorem ipsum dolor sit amet',
+  //     illustration: 'https://picsum.photos/1500/1500',
+  //   },
+  //   {
+  //     title: 'White Pocket Sunset',
+  //     subtitle: 'Lorem ipsum dolor sit amet et nuncat ',
+  //     illustration: 'https://picsum.photos/1500/1500',
+  //   },
+  //   {
+  //     title: 'Acrocorinth, Greece',
+  //     subtitle: 'Lorem ipsum dolor sit amet et nuncat mergitur',
+  //     illustration: 'https://picsum.photos/1500/1500',
+  //   },
+  //   {
+  //     title: 'The lone tree, majestic landscape of New Zealand',
+  //     subtitle: 'Lorem ipsum dolor sit amet',
+  //     illustration: 'https://picsum.photos/1500/1500',
+  //   },
+  //   {
+  //     title: 'Middle Earth, Germany',
+  //     subtitle: 'Lorem ipsum dolor sit amet',
+  //     illustration: 'https://picsum.photos/1500/1500',
+  //   },
+  // ];
 
   CAROUSEL_HEIGHT = screenWidth - 60;
 
@@ -105,6 +109,7 @@ class DetailRoom extends Component<Props, State> {
     this.state = {
       scrollY: new Animated.Value(0),
       activeSlide: 0,
+      overlayIsVisible: false,
     };
   }
 
@@ -112,6 +117,18 @@ class DetailRoom extends Component<Props, State> {
     const { getDetail, route: { params: { id } } } = this.props;
     getDetail(id);
   }
+
+  handleBooking = async () => {
+    console.log('123');
+    const { route: { params: { id } }, booking } = this.props;
+    const results = await post('/booking', {
+      roomId: id,
+    });
+    if (results) {
+      this.setState({ overlayIsVisible: true });
+    }
+    // booking(id);
+  };
 
   renderItem = ({ item }: { item: any }, parallaxProps: any) => (
     <QuickView>
@@ -161,14 +178,33 @@ class DetailRoom extends Component<Props, State> {
   ;
 
   render() {
-    const { scrollY } = this.state;
-    const { route: { params: { id } }, detail: { data, loading } } = this.props;
+    const { scrollY, overlayIsVisible } = this.state;
+    const { route: { params: { id } }, detail: { data, loading }, bookingSelector } = this.props;
+    console.log('bookingSelector', bookingSelector);
+
     if (loading || _.isEmpty(data)) {
       return <OverlayLoading backgroundColor={Color.white} />;
     }
     return (
       <Container>
         <Header title="Chi tiết phòng" backIcon />
+        <Overlay isVisible={overlayIsVisible} overlayStyle={{ borderRadius: 8, width: '80%' }}>
+          <QuickView>
+            <Text center color={lightPrimaryColor} type="title" bold>Thông báo</Text>
+            <Text marginVertical={10} center>
+              Chủ nhà sẽ liên hệ với bạn trong thời gian sớm nhất
+            </Text>
+            <QuickView paddingHorizontal={80}>
+              <Button
+                title="Đóng"
+                onPress={() => {
+                  this.setState({ overlayIsVisible: false });
+                  // NavigationService.goBack();
+                }}
+              />
+            </QuickView>
+          </QuickView>
+        </Overlay>
         <Animated.ScrollView
           // onScroll={(e) => {
           //   console.log(e.nativeEvent.contentOffset.y);
@@ -292,13 +328,60 @@ class DetailRoom extends Component<Props, State> {
                     longitude: 108.17969,
                   }}
                 >
-                  <Icon name="home" type="antdesign" />
+                  <QuickView center backgroundColor="'rgba(220,47,48,0.2)'" width={100} height={100} borderRadius={50}>
+                    <QuickView center backgroundColor="'rgba(220,47,48,0.8)'" width={50} height={50} borderRadius={25}>
+                      <Icon color={Color.white} name="home" type="antdesign" />
+                    </QuickView>
+                  </QuickView>
                 </Marker>
               </MapView>
+              <QuickView
+                activeOpacity={1}
+                onPress={() => NavigationService.navigate(exploreStack.mapDetailRoom)}
+                style={{
+                  flex: 1,
+                  ...StyleSheet.absoluteFillObject,
+                  borderRadius: 10,
+                  backgroundColor: 'rgba(0,0,0,0.3)',
+                }}
+              />
+
+              {/* <Button marginVertical={10} title="Xem bản đồ" onPress={() => NavigationService.navigate(exploreStack.mapDetailRoom)} /> */}
             </QuickView>
-            <Button marginVertical={10} title="Xem bản đồ" onPress={() => NavigationService.navigate(exploreStack.mapDetailRoom)} />
+            {/* <Button marginVertical={10} title="Xem bản đồ" onPress={() => NavigationService.navigate(exploreStack.mapDetailRoom)} /> */}
+
           </Body>
+
         </Animated.ScrollView>
+        <QuickView
+          style={{
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 5,
+            },
+            shadowOpacity: 0.34,
+            shadowRadius: 6.27,
+
+            elevation: 10,
+            paddingBottom: 20,
+            paddingTop: 10,
+          }}
+          backgroundColor="#FFFFFF"
+          justifyContent="space-around"
+          alignItems="center"
+          row
+        >
+          {/* <Button width={100} marginTop={20} titleStyle={{ fontWeight: 'bold' }} title="Save" onPress={this.handleBooking} /> */}
+          <QuickView center row>
+            <Text type="title" bold>
+              {convertPrice(data?.price * 100000, '.')}
+              ₫
+            </Text>
+            <Text type="title">/ 1 tháng</Text>
+          </QuickView>
+          <Button width={100} titleStyle={{ fontWeight: 'bold' }} title="Booking" onPress={this.handleBooking} />
+        </QuickView>
       </Container>
     );
   }
@@ -306,10 +389,12 @@ class DetailRoom extends Component<Props, State> {
 
 const mapStateToProps = (state: any) => ({
   detail: parseObjectSelector(applyObjectSelector(detailRoomSelector, state)),
+  bookingSelector: parseObjectSelector(applyObjectSelector(bookingRoomSelector, state)),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
   getDetail: (id: number) => dispatch(roomGetDetail({ id })),
+  booking: (id: number) => dispatch(bookingRoom({ id })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailRoom);

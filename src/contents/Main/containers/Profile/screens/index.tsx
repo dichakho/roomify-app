@@ -17,6 +17,7 @@ import LogoutButton from '@contents/Auth/containers/Login/Shared/LogoutButton';
 import LoginButton from '@contents/Auth/containers/Login/Shared/LoginButton';
 import NavigationService from '@utils/navigation';
 import profileStack from '../routes';
+import { RoleApi } from '../redux/constant';
 
 const BLUE = '#007AFF';
 const GREY = '#8E8E93';
@@ -42,6 +43,7 @@ const list = [
     name: 'My Account',
     type: 'screen',
     screen: profileStack.account,
+    role: [RoleApi.USER, RoleApi.OWNER],
   },
   // {
   //   name: 'Bookings', type: 'screen',
@@ -50,12 +52,22 @@ const list = [
     name: 'Đăng ký làm chủ nhà',
     type: 'screen',
     screen: profileStack.registerOwner,
+    role: [RoleApi.USER],
+  },
+  {
+    name: 'Phòng trọ của tôi',
+    type: 'screen',
+    screen: profileStack.myProperty,
+    role: [RoleApi.OWNER],
   },
   // {
   //   name: 'Help & Support', type: 'screen',
   // },
   {
-    name: 'Settings', type: 'screen', screen: profileStack.setting,
+    name: 'Settings',
+    type: 'screen',
+    screen: profileStack.setting,
+    role: [RoleApi.OWNER, RoleApi.USER],
   },
   // {
   //   name: 'Logout', type: 'screen',
@@ -63,39 +75,39 @@ const list = [
 ];
 
 class Settings extends React.PureComponent<Props> {
-  renderItem = ({
-    item: {
-      title,
-      backgroundColor,
-      icon,
-      rightTitle,
-      hideChevron,
-      rightElement,
-    },
-  }: any) => (
-    <ListItem
-      containerStyle={{ paddingVertical: 8 }}
-      key={title}
-      chevron={!hideChevron}
-      rightTitle={rightTitle}
-      leftIcon={{
-        type: 'ionicon',
-        name: icon,
-        size: 20,
-        color: 'white',
-        containerStyle: {
-          backgroundColor,
-          width: 28,
-          height: 28,
-          borderRadius: 6,
-          alignItems: 'center',
-          justifyContent: 'center',
-        },
-      }}
-      title={title}
-      rightElement={rightElement}
-    />
-  );
+  // renderItem = ({
+  //   item: {
+  //     title,
+  //     backgroundColor,
+  //     icon,
+  //     rightTitle,
+  //     hideChevron,
+  //     rightElement,
+  //   },
+  // }: any) => (
+  //   <ListItem
+  //     containerStyle={{ paddingVertical: 8 }}
+  //     key={title}
+  //     chevron={!hideChevron}
+  //     rightTitle={rightTitle}
+  //     leftIcon={{
+  //       type: 'ionicon',
+  //       name: icon,
+  //       size: 20,
+  //       color: 'white',
+  //       containerStyle: {
+  //         backgroundColor,
+  //         width: 28,
+  //         height: 28,
+  //         borderRadius: 6,
+  //         alignItems: 'center',
+  //         justifyContent: 'center',
+  //       },
+  //     }}
+  //     title={title}
+  //     rightElement={rightElement}
+  //   />
+  // );
 
   renderSectionHeader = () => <View style={styles.headerSection} />;
 

@@ -98,11 +98,11 @@ class Information extends PureComponent<Props, State> {
     }
     if (parking) {
       parkingFee = this.parking.getText();
-      if (!this.parking.getText()) {
-        checkNull.push('parking');
-      }
+
       if (freeParking) {
         parkingFee = '0';
+      } else if (!this.parking.getText()) {
+        checkNull.push('parking');
       }
     }
     console.log('🚀 ~ file: Information.tsx ~ line 97 ~ Information ~ checkNull', checkNull);
@@ -112,7 +112,7 @@ class Information extends PureComponent<Props, State> {
       pushData({
         categoryId: category,
         policy: {
-          electricity, water, internet, parkingFee,
+          electricity: +electricity, water: +water, internet: +internet, parking: +parkingFee,
         },
       });
       goNextPage();

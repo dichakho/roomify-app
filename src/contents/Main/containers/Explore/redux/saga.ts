@@ -7,6 +7,11 @@ import {
   fetchPropertiesById,
   fetchRoomsOfProperty,
   fetchDetailRoom,
+  bookingRoomApi,
+  fetchCityApi,
+  fetchDistrictApi,
+  fetchSubDistrictApi,
+  createPropertyApi,
 } from './api';
 import {
   propertyGetList,
@@ -24,6 +29,21 @@ import {
   roomGetDetail,
   roomGetDetailSuccess,
   roomGetDetailFail,
+  bookingRoom,
+  bookingRoomSuccess,
+  bookingRoomFail,
+  cityGetList,
+  cityGetListSuccess,
+  cityGetListFail,
+  districtGetList,
+  districtGetListSuccess,
+  districtGetListFail,
+  subDistrictGetList,
+  subDistrictGetListSuccess,
+  subDistrictGetListFail,
+  createProperty,
+  createPropertySuccess,
+  createPropertyFail,
 } from './slice';
 
 export function* getListPropertySaga({ payload }: { payload: any }) {
@@ -83,10 +103,74 @@ export function* getDetailRoomSaga({ payload }: { payload: any }) {
   }
 }
 
+export function* bookingRoomSaga({ payload }: { payload: any }) {
+  try {
+    const response = yield call(bookingRoomApi, payload.id);
+    yield put(bookingRoomSuccess(response));
+    return true;
+  } catch (error) {
+    yield put(bookingRoomFail(yield* handleException(error)));
+    return false;
+  }
+}
+
+export function* getCitySaga({ payload }: { payload: any}) {
+  try {
+    const response = yield call(fetchCityApi, stringifyQuery(payload.query));
+    yield put(cityGetListSuccess(response));
+    return true;
+  } catch (error) {
+    yield put(cityGetListFail(yield* handleException(error)));
+    return false;
+  }
+}
+
+export function* getDistrictSaga({ payload }: { payload: any}) {
+  try {
+    const response = yield call(fetchDistrictApi, payload.id);
+    yield put(districtGetListSuccess(response));
+    return true;
+  } catch (error) {
+    yield put(districtGetListFail(yield* handleException(error)));
+    return false;
+  }
+}
+
+export function* getSubDistrictSaga({ payload }: { payload: any}) {
+  try {
+    const response = yield call(fetchSubDistrictApi, payload.id);
+    yield put(subDistrictGetListSuccess(response));
+    return true;
+  } catch (error) {
+    yield put(subDistrictGetListFail(yield* handleException(error)));
+    return false;
+  }
+}
+
+export function* createPropertySaga({ payload }: { payload: any}) {
+  try {
+    console.log('payload.data', payload.data);
+
+    const response = yield call(createPropertyApi, payload.data);
+    yield put(createPropertySuccess(response));
+    return true;
+  } catch (error) {
+    console.log('error', error);
+
+    yield put(createPropertyFail(yield* handleException(error)));
+    return false;
+  }
+}
+
 export default [
   takeLatest(propertyGetList, getListPropertySaga),
   takeLatest(categoryGetList, getListCategorySaga),
   takeLatest(propertyGetDetail, getDetailSaga),
   takeLatest(roomGetList, getRoomsOfPropertySaga),
   takeLatest(roomGetDetail, getDetailRoomSaga),
+  takeLatest(bookingRoom, bookingRoomSaga),
+  takeLatest(cityGetList, getCitySaga),
+  takeLatest(districtGetList, getDistrictSaga),
+  takeLatest(subDistrictGetList, getSubDistrictSaga),
+  takeLatest(createProperty, createPropertySaga),
 ];

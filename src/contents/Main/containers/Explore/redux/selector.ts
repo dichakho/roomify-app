@@ -12,6 +12,11 @@ import {
   DETAIL,
   LIST_ROOM,
   DETAIL_ROOM,
+  BOOKING,
+  CITY,
+  DISTRICT,
+  SUB_DISTRICT,
+  CREATE_PROPERTY,
 
 } from './constant';
 
@@ -31,3 +36,13 @@ export const propertyDetailSelector = createObjectSelector(root, DETAIL);
 export const roomsOfPropertySelector = createArraySelector(root, LIST_ROOM);
 
 export const detailRoomSelector = createObjectSelector(root, DETAIL_ROOM);
+
+export const bookingRoomSelector = createObjectSelector(root, BOOKING);
+
+export const cityListSelector = createArraySelector(root, CITY);
+
+export const districtListSelector = createArraySelector(root, DISTRICT);
+
+export const subDistrictListSelector = createArraySelector(root, SUB_DISTRICT);
+
+export const createPropertySelector = createArraySelector(root, CREATE_PROPERTY);

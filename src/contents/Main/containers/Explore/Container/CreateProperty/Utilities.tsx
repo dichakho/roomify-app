@@ -2,13 +2,17 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import {
-  Body, Text, FlatList, QuickView, Button,
+  Body, Text, FlatList, QuickView, Button, ImagePicker,
 } from '@components';
 import { Icon } from 'react-native-elements';
 import { Color } from '@themes/Theme';
 import { lightPrimaryColor } from '@themes/ThemeComponent/Common/Color';
+import { Dimensions } from 'react-native';
+import { cloudinaryUploadSingle } from '@utils/functions';
+import _ from 'lodash';
 import { pushPayloadProperty } from '../../redux/slice';
 
+const { width } = Dimensions.get('window');
 const amenities = [
   {
     id: 1,
@@ -141,15 +145,22 @@ const amenities = [
 interface Props {
   goNextPage: () => any;
   pushData: (data: any) => any;
+  dataPost: any;
 }
 interface State {
   data: Array<any>;
+  loadingState: boolean;
+  checkNull: boolean;
 }
 class Utilities extends PureComponent<Props, State> {
+  image: any;
+
   constructor(props: Props) {
     super(props);
     this.state = {
       data: amenities,
+      loadingState: false,
+      checkNull: false,
     };
   }
 
@@ -162,6 +173,23 @@ class Utilities extends PureComponent<Props, State> {
       }
     });
     this.setState({ data: newArray });
+  };
+
+  handleData = async () => {
+    const { pushData, goNextPage } = this.props;
+    const img = this.image.getDataImage();
+    if (_.isNull(img)) {
+      this.setState({ checkNull: true });
+    } else {
+      this.setState({ loadingState: true, checkNull: false });
+      const result: any = await cloudinaryUploadSingle(img);
+      pushData({
+        thumbnail: result.url,
+      });
+
+      this.setState({ loadingState: false });
+      goNextPage();
+    }
   };
 
   renderItem = ({ item }: { item: any }) => (
@@ -212,22 +240,57 @@ class Utilities extends PureComponent<Props, State> {
   };
 
   render() {
-    const { data } = this.state;
+    const { data, loadingState, checkNull } = this.state;
+    const { goNextPage, dataPost } = this.props;
+    console.log('dataPost', dataPost);
+
     return (
       <Body fullWidth showsVerticalScrollIndicator={false}>
-        <FlatList
+        {/* <FlatList
           ListHeaderComponent={this.renderHeader}
           ListFooterComponent={this.renderFooter}
           data={data}
           renderItem={this.renderItem}
           numColumns={2}
+        /> */}
+        <Text marginBottom={20} type="title">Hình ảnh</Text>
+        <ImagePicker
+          // containerStyle={{ backgroundColor: 'red' }}
+              // multi
+          textDescription="Bấm vào đây để tải ảnh từ thư viện lên nhé!"
+          textDesStyle={{ color: lightPrimaryColor }}
+          uploadImgContainer={{
+            width: width - 40,
+            height: 150,
+            // backgroundColor: '#E6E9F0',
+            borderRadius: 10,
+            borderStyle: 'dashed',
+            borderWidth: 1,
+            borderColor: lightPrimaryColor,
+          }}
+          icon={{
+            name: 'image', type: 'evilicon', color: lightPrimaryColor, size: 40,
+          }}
+          imgUploaded={{
+            width: width - 40,
+            height: 150,
+          }}
+          ref={(ref) => {
+            this.image = ref;
+          }}
         />
+        {checkNull ? <Text center>Vui lòng chọn hình ảnh!</Text> : null}
+        <QuickView justifyContent="flex-end" flex={1}>
+          <Button loadingProps={{ color: lightPrimaryColor }} loading={loadingState} title="Tiếp theo" onPress={this.handleData} outline />
+        </QuickView>
       </Body>
     );
   }
 }
 
-const mapStateToProps = (state: any) => ({});
+const mapStateToProps = (state: any) => ({
+  dataPost: state.main.explore.toJS().payloadProperty,
+});
 
 const mapDispatchToProps = (dispatch: any) => ({
   pushData: (data: any) => dispatch(pushPayloadProperty({ data })),

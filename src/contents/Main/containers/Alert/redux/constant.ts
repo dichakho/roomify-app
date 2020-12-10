@@ -2,11 +2,12 @@ import {
   createArrayInitialState,
   createObjectInitialState,
 } from '@utils/redux';
+import { fromJS } from 'immutable';
 /**
  * NAME
  */
 export const PARENT_NAME = 'main';
-export const NAME = 'explore';
+export const NAME = 'alert';
 export const PROPERTY = 'property';
 export const PAYLOAD_PROPERTY = 'payloadProperty';
 
@@ -27,8 +28,8 @@ export type TListProperty = {
 /**
  * INITIAL_STATE
  */
-export const INITIAL_STATE = {
+export const INITIAL_STATE = fromJS({
   payloadProperty: {},
   ...createArrayInitialState(PROPERTY),
 
-};
+});

@@ -13,9 +13,10 @@ import {
 } from '@contents/Config/redux/selector';
 import { ThemeEnum } from '@contents/Config/redux/constant';
 import { Global } from '@utils/appHelper';
-import { applyObjectSelector } from '@utils/selector';
+import { applyArraySelector, applyObjectSelector, parseArraySelector } from '@utils/selector';
 import { loginSelector } from '@contents/Auth/containers/Login/redux/selector';
 import { TObjectRedux } from '@utils/redux';
+import { cityListSelector } from '@contents/Main/containers/Explore/redux/selector';
 import AppNavigator from './app.navigator';
 
 interface Props {
@@ -76,7 +77,6 @@ class AppContainer extends React.Component<Props, State> {
 
   render() {
     const { language, themeRedux } = this.props;
-
     const { isConnected } = this.state;
 
     /**
@@ -108,6 +108,7 @@ const mapStateToProps = (state: any) => ({
   language: languageSelector(state),
   themeRedux: themeSelector(state),
   loginSelectorData: applyObjectSelector(loginSelector, state),
+  // city: parseArraySelector(applyArraySelector(cityListSelector, state)),
 });
 
 export default compose(

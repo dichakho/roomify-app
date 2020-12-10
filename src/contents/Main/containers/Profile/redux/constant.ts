@@ -9,6 +9,8 @@ import { fromJS } from 'immutable';
 export const PARENT_NAME = 'main';
 export const NAME = 'profile';
 export const REGISTER_OWNER = 'registerOwner';
+export const MY_PROPERTY = 'myProperty';
+export const AMENITIES = 'amenities';
 
 /**
  * TYPE
@@ -30,11 +32,36 @@ export type TRegisterOwner = {
   registerOwnerFail: (state: any, action: any) => any;
 };
 
+export type TMyProperty = {
+  myPropertyGetList: (state: any, action: any) => any;
+  myPropertyGetListSuccess: (state: any, action: any) => any;
+  myPropertyGetListFail: (state: any, action: any) => any;
+};
+
+export type TAmenities = {
+  amenitiesGetList: (state: any, action: any) => any;
+  amenitiesGetListSuccess: (state: any, action: any) => any;
+  amenitiesGetListFail: (state: any, action: any) => any;
+};
+
+/**
+ * ENUM
+ */
+
+export enum RoleApi {
+  ADMIN = 'ADMIN  ',
+  MODERATOR = 'MODERATOR',
+  OWNER = 'OWNER',
+  USER = 'USER'
+}
+
 /**
  * INITIAL_STATE
  */
 export const INITIAL_STATE = fromJS({
   payloadProperty: {},
   ...createObjectInitialState(REGISTER_OWNER),
+  ...createArrayInitialState(MY_PROPERTY),
+  ...createArrayInitialState(AMENITIES),
 
 });

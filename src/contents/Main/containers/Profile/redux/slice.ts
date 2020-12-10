@@ -9,6 +9,10 @@ import {
   TListProperty,
   REGISTER_OWNER,
   TRegisterOwner,
+  TMyProperty,
+  MY_PROPERTY,
+  TAmenities,
+  AMENITIES,
 } from './constant';
 
 const slice = createSlice({
@@ -20,6 +24,9 @@ const slice = createSlice({
     },
 
     ...createObjectReducer<TRegisterOwner>('registerOwner', REGISTER_OWNER),
+    ...createArrayReducer<TMyProperty>('myPropertyGetList', MY_PROPERTY),
+    ...createArrayReducer<TAmenities>('amenitiesGetList', AMENITIES),
+
   },
   // extraReducers: {
   //   [REHYDRATE]: (state, action) => {
@@ -47,5 +54,11 @@ export const {
   registerOwner,
   registerOwnerSuccess,
   registerOwnerFail,
+  myPropertyGetList,
+  myPropertyGetListSuccess,
+  myPropertyGetListFail,
+  amenitiesGetList,
+  amenitiesGetListSuccess,
+  amenitiesGetListFail,
 } = slice.actions;
 export default slice.reducer;

@@ -15,7 +15,9 @@ import {
 } from '@components';
 import { Color, lightPrimaryColor } from '@themes/ThemeComponent/Common/Color';
 import { Icon } from 'react-native-elements';
-import { TouchableOpacity, FlatList as RNFlatList, StatusBar } from 'react-native';
+import {
+  TouchableOpacity, FlatList as RNFlatList, StatusBar, ActivityIndicator,
+} from 'react-native';
 import { vndPriceFormat } from '@utils/functions';
 import NavigationService from '@utils/navigation';
 import rootStack from '@contents/routes';
@@ -24,8 +26,8 @@ import { applyArraySelector, parseArraySelector } from '@utils/selector';
 import OverlayLoading from '@components/OverlayLoading';
 import { CategoryList } from '../Container/CategoryList';
 import exploreStack from '../routes';
-import { categoryGetList, propertyGetList } from '../redux/slice';
-import { categorySelector, propertyListSelector } from '../redux/selector';
+import { categoryGetList, cityGetList, propertyGetList } from '../redux/slice';
+import { categorySelector, cityListSelector, propertyListSelector } from '../redux/selector';
 
 interface Props {
   t: any;
@@ -33,6 +35,8 @@ interface Props {
   getList: (query?: TQuery) => any;
   getCategory: (query?: TQuery) => any;
   categories: TArrayRedux;
+  getCity: (query ?: TQuery) => any;
+  city: TArrayRedux;
 }
 class ExploreScreen extends PureComponent<Props> {
   data = [
@@ -63,60 +67,69 @@ class ExploreScreen extends PureComponent<Props> {
 
   dataDropdown = [
     {
-      label: 'Đà Nẵng',
-      value: '1',
+      name: 'Đà Nẵng',
+      id: '1',
     },
     {
-      label: 'Hà Nội',
-      value: '2',
+      name: 'Hà Nội',
+      id: '2',
     },
     {
-      label: 'Thành phố Hồ Chí Minh',
-      value: '3',
+      name: 'Thành phố Hồ Chí Minh',
+      id: '3',
     },
   ];
 
   componentDidMount() {
-    const { getCategory } = this.props;
+    const { getCategory, getCity } = this.props;
     getCategory({ fields: 'id,name' });
+    getCity({ fields: 'id,name' });
   }
 
-  renderLeftComponent = () => (
-    <QuickView row center style={{ borderWidth: 0 }}>
-      <QuickView>
-        <Icon
-          name="map-pin"
-          type="feather"
-          color={lightPrimaryColor}
-          size={22}
-        />
+  renderLeftComponent = () => {
+    const { city: { data, loading } } = this.props;
+    if (data.length === 0) {
+      return <ActivityIndicator />;
+    }
+    return (
+      <QuickView row center style={{ borderWidth: 0 }}>
+        <QuickView>
+          <Icon
+            name="map-pin"
+            type="feather"
+            color={lightPrimaryColor}
+            size={22}
+          />
+        </QuickView>
+        <QuickView marginLeft={10}>
+          <Text fontSize="tiny" color="#B1ADAD">
+            Location
+          </Text>
+          <Dropdown
+            activeColor={lightPrimaryColor}
+            data={data}
+            labelKey="name"
+            valueKey="id"
+            textStyle={{ fontSize: 14, color: '#363636' }}
+            activeTextColor={Color.white}
+            dropdownStyles={{
+              width: 100,
+              borderWidth: 1,
+              backgroundColor: Color.grey,
+              borderColor: Color.grey4,
+            }}
+            containerStyle={{
+              width: 100,
+              padding: 0,
+              borderRadius: 22.5,
+              borderColor: '#012066',
+              backgroundColor: Color.white,
+            }}
+          />
+        </QuickView>
       </QuickView>
-      <QuickView marginLeft={10}>
-        <Text fontSize="tiny" color="#B1ADAD">
-          Location
-        </Text>
-        <Dropdown
-          activeColor={lightPrimaryColor}
-          data={this.dataDropdown}
-          textStyle={{ fontSize: 14, color: '#363636' }}
-          activeTextColor={Color.white}
-          dropdownStyles={{
-            width: 100,
-            borderWidth: 1,
-            backgroundColor: Color.grey,
-            borderColor: Color.grey4,
-          }}
-          containerStyle={{
-            width: 100,
-            padding: 0,
-            borderRadius: 22.5,
-            borderColor: '#012066',
-            backgroundColor: Color.white,
-          }}
-        />
-      </QuickView>
-    </QuickView>
-  );
+    );
+  };
 
   renderRightComponent = () => (
     <QuickView
@@ -133,7 +146,7 @@ class ExploreScreen extends PureComponent<Props> {
 
   render() {
     const {
-      t, properties, getList, categories: { data, loading },
+      t, properties, getList, categories: { data, loading }, city,
     } = this.props;
     if (loading) {
       return <OverlayLoading backgroundColor={Color.white} />;
@@ -217,12 +230,14 @@ class ExploreScreen extends PureComponent<Props> {
 const mapStateToProps = (state: any) => ({
   properties: parseArraySelector(applyArraySelector(propertyListSelector, state)),
   categories: parseArraySelector(applyArraySelector(categorySelector, state)),
+  city: parseArraySelector(applyArraySelector(cityListSelector, state)),
   // properties: state,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
   getList: (query ?: TQuery) => dispatch(propertyGetList({ query })),
   getCategory: (query ?: TQuery) => dispatch(categoryGetList({ query })),
+  getCity: (query ?: TQuery) => dispatch(cityGetList({ query })),
 });
 const withReduce = connect(mapStateToProps, mapDispatchToProps);
 

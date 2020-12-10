@@ -16,38 +16,38 @@ const LATITUDE = 16.06375;
 const LONGITUDE = 108.17969;
 const coordinates = [
   {
-    name: 'Burger',
+    name: 'Nearby the beach & Nguyen Tat Thanh street studio',
     latitude: LATITUDE,
     longitude: LONGITUDE,
-    image: 'https://picsum.photos/500/500',
+    image: 'https://a0.muscache.com/im/pictures/810804f6-7f63-40b9-a9c0-d7468d7de64d.jpg?im_w=720',
     price: 550000,
   },
   {
-    name: 'Pizza',
+    name: '★1BR COSY HOUSE★500m to airport★',
     latitude: LATITUDE + 0.004,
     longitude: LONGITUDE - 0.003,
-    image: 'https://picsum.photos/500/500',
+    image: 'https://a0.muscache.com/im/pictures/0b282e91-3784-4577-8bd8-23c4e50a6304.jpg?im_w=720',
     price: 750000,
   },
   {
-    name: 'Soup',
+    name: 'BIG PROMO ❤️ Lil house - Apartment 1',
     latitude: LATITUDE + 0.002,
     longitude: LONGITUDE - 0.006,
-    image: 'https://picsum.photos/500/500',
+    image: 'https://a0.muscache.com/im/pictures/9a6a5e47-9129-4d7a-9b67-b6645c4ef67c.jpg?im_w=720',
     price: 850000,
   },
   {
-    name: 'Sushi',
+    name: 'Love, Cozy, Quiet#Central City# 5min Dragon Bridge',
     latitude: LATITUDE - 0.004,
     longitude: LONGITUDE - 0.004,
-    image: 'https://picsum.photos/500/500',
+    image: 'https://a0.muscache.com/im/pictures/12e38142-adf0-49c6-90f9-822aca4f20cb.jpg?im_w=720',
     price: 1550000,
   },
   {
-    name: 'Curry',
+    name: '5Min to Cathedral STUDIO w/ city view',
     latitude: LATITUDE - 0.008,
     longitude: LONGITUDE - 0.004,
-    image: 'https://picsum.photos/500/500',
+    image: 'https://a0.muscache.com/im/pictures/b8176838-3107-4ffc-9e3d-9eec09448959.jpg?im_w=720',
     price: 950000,
   },
 ];

@@ -101,7 +101,7 @@ interface State {
 export default class ImgPicker extends Component<Props, State> {
   static defaultProps = {
     icon: {
-      name: 'plus', color: '#012066', size: 20, type: 'entypo',
+      name: 'plus', color: '#DC2F2F', size: 20, type: 'entypo',
     },
   };
 

@@ -11,6 +11,8 @@ export const NAME = 'profile';
 export const REGISTER_OWNER = 'registerOwner';
 export const MY_PROPERTY = 'myProperty';
 export const AMENITIES = 'amenities';
+export const UPDATE_PROFILE = 'updateProfile';
+export const ME = 'me';
 
 /**
  * TYPE
@@ -44,6 +46,18 @@ export type TAmenities = {
   amenitiesGetListFail: (state: any, action: any) => any;
 };
 
+export type TUpdateProfile = {
+  updateProfile: (state: any, action: any) => any;
+  updateProfileSuccess: (state: any, action: any) => any;
+  updateProfileFail: (state: any, action: any) => any;
+};
+
+export type TMe = {
+  getProfile: (state: any, action: any) => any;
+  getProfileSuccess: (state: any, action: any) => any;
+  getProfileFail: (state: any, action: any) => any;
+};
+
 /**
  * ENUM
  */
@@ -63,5 +77,7 @@ export const INITIAL_STATE = fromJS({
   ...createObjectInitialState(REGISTER_OWNER),
   ...createArrayInitialState(MY_PROPERTY),
   ...createArrayInitialState(AMENITIES),
+  ...createObjectInitialState(UPDATE_PROFILE),
+  ...createObjectInitialState(ME),
 
 });

@@ -17,6 +17,9 @@ import { applyArraySelector, applyObjectSelector, parseArraySelector } from '@ut
 import { loginSelector } from '@contents/Auth/containers/Login/redux/selector';
 import { TObjectRedux } from '@utils/redux';
 import { cityListSelector } from '@contents/Main/containers/Explore/redux/selector';
+import messaging from '@react-native-firebase/messaging';
+import { Color, lightPrimaryColor } from '@themes/ThemeComponent/Common/Color';
+import FirebaseService from '@core/services/firebase';
 import AppNavigator from './app.navigator';
 
 interface Props {
@@ -41,6 +44,10 @@ class AppContainer extends React.Component<Props, State> {
     };
     const { loginSelectorData } = this.props;
     Global.token = loginSelectorData.data.get('token');
+    if (loginSelectorData?.data) {
+      Global.roleApi = loginSelectorData.data.toJS()?.role?.map((r: any) => r.name);
+    }
+    // Global.roleApi = loginSelectorData.data.toJS().role.map((r: any) => r.name);
   }
 
   componentDidMount() {
@@ -59,7 +66,51 @@ class AppContainer extends React.Component<Props, State> {
         });
       }
     });
+
+    this.requestUserPermission();
+    this.messageListener();
   }
+
+  requestUserPermission = async () => {
+    const authStatus = await messaging().requestPermission();
+    const enabled = authStatus === messaging.AuthorizationStatus.AUTHORIZED
+      || authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (enabled) {
+      await FirebaseService.setToken();
+      // const fcmToken = await messaging().getToken();
+      // console.log('FCMtoken', fcmToken);
+
+      // console.log('Authorization status:', authStatus);
+    }
+  };
+
+  messageListener = async () => {
+    // Foreground
+    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+      if (remoteMessage.notification) {
+        showMessage({
+          message: remoteMessage.notification.title || '',
+          description: remoteMessage.notification.body,
+          backgroundColor: Color.grey,
+          // icon: 'info',
+          duration: 5000,
+          hideStatusBar: true,
+          textStyle: { color: lightPrimaryColor },
+          titleStyle: { fontWeight: 'bold', fontSize: 16, color: lightPrimaryColor },
+          // style: { borderBottomRightRadius: 10, borderBottomLeftRadius: 10 },
+          onPress: () => {
+            // eslint-disable-next-line no-console
+            console.log('Message Click');
+          },
+        });
+      }
+    });
+    // Background & Quit
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    messaging().setBackgroundMessageHandler(async (remoteMessage) => {});
+    return unsubscribe;
+  };
 
   checkInternet = () => {
     this.setState({
@@ -98,7 +149,7 @@ class AppContainer extends React.Component<Props, State> {
     return (
       <ThemeProvider theme={themeColor}>
         <AppNavigator />
-        {/* <FlashMessage position="top" /> */}
+        <FlashMessage position="top" />
       </ThemeProvider>
     );
   }

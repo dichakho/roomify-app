@@ -92,7 +92,7 @@ class PropertyByCategory extends PureComponent<Props, State> {
           <QuickView style={{ borderWidth: 0 }} alignItems="flex-end" flex={1}>
             <Text color={lightPrimaryColor} fontWeight="medium">
 
-              {vndPriceFormat(item?.averagePrice * 100000)}
+              {vndPriceFormat(item?.averagePrice * 10)}
               {' '}
               VND
             </Text>

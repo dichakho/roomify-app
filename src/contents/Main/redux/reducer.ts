@@ -4,11 +4,14 @@ import AsyncStorage from '@react-native-community/async-storage';
 import explore from '@contents/Main/containers/Explore/redux/slice';
 import saved from '@contents/Main/containers/Saved/redux/slice';
 import profile from '@contents/Main/containers/Profile/redux/slice';
+import { immutableTransform } from '@utils/redux';
 
 const persistConfig = {
   key: 'main',
   storage: AsyncStorage,
-  whitelist: [],
+  transforms: [immutableTransform()],
+  whitelist: ['explore'],
+  // whitelist: [],
 };
 const main = persistReducer(
   persistConfig,

@@ -15,6 +15,7 @@ export function* realtorLoginSaga({ payload }: { payload: any }) {
   try {
     const response = yield call(realtorLoginApi, payload.data);
     Global.token = response.token;
+    Global.roleApi = response.role.map((r: any) => r.name);
     yield put(loginSuccess(response));
     const requiredLogin = yield select((state) => requireLoginSelector(state));
     if (!requiredLogin) {

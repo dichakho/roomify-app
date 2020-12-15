@@ -13,6 +13,10 @@ import {
   MY_PROPERTY,
   TAmenities,
   AMENITIES,
+  UPDATE_PROFILE,
+  TUpdateProfile,
+  TMe,
+  ME,
 } from './constant';
 
 const slice = createSlice({
@@ -26,6 +30,10 @@ const slice = createSlice({
     ...createObjectReducer<TRegisterOwner>('registerOwner', REGISTER_OWNER),
     ...createArrayReducer<TMyProperty>('myPropertyGetList', MY_PROPERTY),
     ...createArrayReducer<TAmenities>('amenitiesGetList', AMENITIES),
+    ...createObjectReducer<TUpdateProfile>('updateProfile', UPDATE_PROFILE),
+    ...createObjectReducer<TMe>('getProfile', ME),
+    clearDataUpdate: (state) => state.set('updateProfile', INITIAL_STATE.get('updateProfile'))
+    ,
 
   },
   // extraReducers: {
@@ -60,5 +68,12 @@ export const {
   amenitiesGetList,
   amenitiesGetListSuccess,
   amenitiesGetListFail,
+  updateProfile,
+  updateProfileSuccess,
+  updateProfileFail,
+  getProfile,
+  getProfileSuccess,
+  getProfileFail,
+  clearDataUpdate,
 } = slice.actions;
 export default slice.reducer;

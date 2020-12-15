@@ -106,7 +106,7 @@ export class CategoryList extends Component<Props, State> {
       <Image source={{ uri: item?.thumbnail }} width={180} height={140} />
       <QuickView marginTop={15} marginLeft={10}>
         <Text type="paragraph" bold>
-          {vndPriceFormat(item?.averagePrice * 100000)}
+          {vndPriceFormat(item?.averagePrice * 10)}
         </Text>
         <Text marginTop={5} fontSize="small">
           {item?.averageArea}
@@ -158,7 +158,7 @@ export class CategoryList extends Component<Props, State> {
           <Text>Chỉ </Text>
           <Text color={lightPrimaryColor}>
             ₫
-            {vndPriceFormat(item?.averagePrice * 100000)}
+            {vndPriceFormat(item?.averagePrice * 10)}
             /tháng
           </Text>
         </QuickView>

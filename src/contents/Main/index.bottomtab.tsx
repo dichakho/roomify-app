@@ -23,6 +23,8 @@ import MailStack from './containers/Alert/index.stack';
 import SavedStack from './containers/Saved/index.stack';
 import exploreStack from './containers/Explore/routes';
 import ExploreScreen from './containers/Explore/screens';
+import ProfileScreen from './containers/Profile/screens';
+import profileStack from './containers/Profile/routes';
 
 const BottomTabs = createBottomTabNavigator();
 
@@ -161,8 +163,8 @@ function MainBottomTab(props: any) {
         }}
       />
       <BottomTabs.Screen
-        name={mainBottomTab.profileStack}
-        component={MoreStack}
+        name={profileStack.index}
+        component={ProfileScreen}
         options={{
           tabBarLabel: ({ focused, color }) => focused ? (
             <Text

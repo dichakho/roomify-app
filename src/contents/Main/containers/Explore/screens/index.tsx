@@ -177,7 +177,7 @@ class ExploreScreen extends PureComponent<Props> {
             paddingVertical={12}
           >
             <QuickView justifyContent="center" flex={1}>
-              <Text fontSize="tiny">Search by Location, Area or Pin Code</Text>
+              <Text fontSize="tiny">Tìm theo quận, tên đường, địa điểm</Text>
             </QuickView>
             <QuickView>
               <Icon name="magnify" type="material-community" color="#B1ADAD" />

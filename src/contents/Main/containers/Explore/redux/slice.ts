@@ -114,19 +114,35 @@ const slice = createSlice({
     },
     // ...createArrayReducer<TCity>('cityGetList', CITY),
     ...createObjectReducer<TCreateProperty>('createProperty', CREATE_PROPERTY),
+    setSearchHistory: (state: any, action: any) => {
+      const dataGet = [action.payload.data];
+      // console.log('🚀 ~ file: slice.ts ~ line 119 ~ dataGet', dataGet);
+      // return state.set('searchHistory', dataGet);
+      const data = state
+        .get('searchHistory')
+        .concat(
+          fromJS(dataGet).filter(
+            (item: any) => state.get('searchHistory').indexOf(item) < 0,
+          ),
+        );
+      console.log('data', data);
+
+      return state.set('searchHistory', data);
+    },
   },
-  // extraReducers: {
-  //   [REHYDRATE]: (state, action) => {
-  //     if (action.payload && action.payload.city) {
-  //       console.log('alo', action.payload.city);
-  //       const { city } = action.payload;
-  //       // return INITIAL_STATE.merge({
-  //       //   city: INITIAL_STATE.getIn('city').merge({ data: city.data }),
-  //       // });
-  //     }
-  //     return state;
-  //   },
-  // },
+  extraReducers: {
+    [REHYDRATE]: (state, action) => {
+      if (action.payload && action.payload.explore) {
+        const city = action.payload.explore.get('city');
+        const searchHistory = action.payload.explore.get('searchHistory');
+        return INITIAL_STATE.merge({
+          city: INITIAL_STATE.get('city').merge({ data: city.get('data') }),
+          searchHistory: INITIAL_STATE.get('searchHistory').concat(searchHistory),
+        });
+      }
+      return state;
+    },
+  },
 });
 export const {
   pushPayloadProperty,
@@ -163,5 +179,6 @@ export const {
   createProperty,
   createPropertySuccess,
   createPropertyFail,
+  setSearchHistory,
 } = slice.actions;
 export default slice.reducer;

@@ -13,6 +13,8 @@ import {
 export function* getListSavedSaga({ payload }: { payload: any }) {
   try {
     const response = yield call(fetchSavedProperties, stringifyQuery(payload.query));
+    console.log('response', response);
+
     yield put(savedGetListSuccess(response));
     return true;
   } catch (error) {

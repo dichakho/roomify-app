@@ -1,13 +1,15 @@
 import React, { PureComponent } from 'react';
 import {
-  QuickView, Text, Container, Header, Body, Button, Input as AppInput, ImagePicker, FlatList,
+  QuickView, Text, Container, Header, Body, Button, Input as AppInput, ImagePicker, FlatList, Image,
 } from '@components';
 import { Color } from '@themes/Theme';
 import { lightPrimaryColor } from '@themes/ThemeComponent/Common/Color';
 import { Icon, Input, Overlay } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { TArrayRedux, TQuery } from '@utils/redux';
-import { applyArraySelector, parseArraySelector } from '@utils/selector';
+import { TArrayRedux, TObjectRedux, TQuery } from '@utils/redux';
+import {
+  applyArraySelector, applyObjectSelector, parseArraySelector, parseObjectSelector,
+} from '@utils/selector';
 import { lightComponentColor } from '@themes/ThemeComponent/Common/CommonProps';
 import RNFetchBlob from 'rn-fetch-blob';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -16,13 +18,16 @@ import { post } from '@utils/api';
 import NavigationService from '@utils/navigation';
 import { amenitiesGetList } from '../redux/slice';
 import { amenitiesSelector } from '../redux/selector';
-import { roomGetList } from '../../Explore/redux/slice';
+import { roomGetDetail, roomGetList } from '../../Explore/redux/slice';
+import { detailRoomSelector } from '../../Explore/redux/selector';
 
 interface Props {
   getAmenities: (query?: TQuery) => any;
   amenities: TArrayRedux;
   route?: any;
   getListRoom: (id: number, query?: TQuery) => any;
+  getDetail: (id: number) => any;
+  detail: TObjectRedux;
 }
 interface State {
   data: Array<any>;
@@ -30,9 +35,11 @@ interface State {
   checkNull: boolean;
   loading: boolean;
   overlayIsVisible: boolean;
+  arrayImage: Array<any>;
+  haveChange: boolean;
 
 }
-class CreateRoom extends PureComponent<Props, State> {
+class EditRoom extends PureComponent<Props, State> {
   title: any;
 
   description: any;
@@ -51,18 +58,27 @@ class CreateRoom extends PureComponent<Props, State> {
       checkNull: false,
       loading: false,
       overlayIsVisible: false,
+      arrayImage: [],
+      haveChange: false,
 
     };
   }
 
   componentDidMount() {
-    const { getAmenities } = this.props;
+    const { getAmenities, getDetail, route: { params } } = this.props;
     getAmenities({ fields: 'id,name,iconName,iconType', limit: 100 });
+    getDetail(params);
   }
 
   static getDerivedStateFromProps(nextProps: any, prevState: any) {
-    if (prevState.data.length === 0) {
-      return { data: nextProps?.amenities?.data };
+    if (prevState.data.length === 0 && nextProps?.amenities?.data !== 0 && nextProps?.detail?.data?.amenities !== 0) {
+      const data = [...nextProps?.amenities?.data];
+      const amenities = [...nextProps?.detail?.data?.amenities].map((a) => a.id);
+      return { data: data.map((d) => ({ ...d, checked: _.includes(amenities, d.id) })) };
+    }
+    if (prevState.arrayImage.length === 0) {
+      const data = [...nextProps?.detail?.data?.images];
+      return { arrayImage: data.map((i: any) => ({ uri: i })) };
     }
     return { ...prevState };
   }
@@ -155,20 +171,18 @@ class CreateRoom extends PureComponent<Props, State> {
     const title = this.title.getText();
     const price = this.price.getText();
     const area = this.area.getText();
-    const registrationToken = await AsyncStorage.getItem('fcmToken');
     const amenityIds = data.filter((d) => d.checked).map((m) => m.id);
     const img = this.images.getDataImage();
     if (_.isEmpty(img) || _.isNull(title) || _.isNull(price) || _.isNull(area) || _.isEmpty(amenityIds)) {
       this.setState({ checkNull: true });
     } else {
-      const imgUrl = await this.cloudinaryUpload();
+      // const imgUrl = await this.cloudinaryUpload();
       const payload = {
         name: title,
         price: +price,
         description,
         area: +area,
-        registrationToken,
-        images: imgUrl,
+        // images: imgUrl,
         propertyId: route.params,
         amenityIds,
       };
@@ -185,15 +199,33 @@ class CreateRoom extends PureComponent<Props, State> {
     // console.log('titleeeeee', title, price, amenityIds, description, registrationToken);
   };
 
+  renderItemImage = ({ item }: { item: any}) => {
+    // const { detail: { data } } = this.props;
+    const { arrayImage } = this.state;
+    return (
+      <QuickView marginRight={10}>
+        <Image
+          multipleSources={arrayImage}
+          viewEnable
+          height={120}
+          width={120}
+          source={{ uri: item }}
+        />
+      </QuickView>
+    );
+  };
+
   render() {
     const {
-      data, checkNull, overlayIsVisible, loading,
+      data, checkNull, overlayIsVisible, loading, haveChange,
     } = this.state;
-    const { route: { params }, getListRoom } = this.props;
+    const { route: { params }, getListRoom, detail: { data: detailData } } = this.props;
+    console.log('🚀 ~ file: EditRoom.tsx ~ line 197 ~ EditRoom ~ render ~ detail', detailData);
+    // console.log('🚀 ~ file: EditRoom.tsx ~ line 193 ~ EditRoom ~ render ~ params', params);
 
     return (
       <Container>
-        <Header backIcon title="Tạo phòng" />
+        <Header backIcon title="Cập nhật phòng" />
         <Overlay
           isVisible={overlayIsVisible}
           overlayStyle={{ borderRadius: 8, width: '80%' }}
@@ -219,6 +251,7 @@ class CreateRoom extends PureComponent<Props, State> {
           <QuickView scroll paddingHorizontal={20} flex={1}>
             {/* Tiêu đề phòng */}
             <AppInput
+              value={detailData?.name}
               labelProps={{ marginTop: 20 }}
               inputStyle={{ fontSize: 16 }}
               ref={(ref: any) => { this.title = ref; }}
@@ -247,6 +280,7 @@ class CreateRoom extends PureComponent<Props, State> {
             />
             {/* Nội dung mô tả */}
             <Input
+              value={detailData?.description}
               onChangeText={(value: string) => this.setState({ description: value })}
             // ref={(ref: any) => { this.title = ref; }}
               multiline
@@ -271,6 +305,7 @@ class CreateRoom extends PureComponent<Props, State> {
 
             {/* Giá tiền */}
             <AppInput
+              value={detailData?.price}
               keyboardType="number-pad"
               // labelProps={{ marginTop: 20 }}
               inputStyle={{ fontSize: 16 }}
@@ -297,6 +332,7 @@ class CreateRoom extends PureComponent<Props, State> {
 
             {/* Diện tích */}
             <AppInput
+              value={detailData?.area}
               keyboardType="number-pad"
               // labelProps={{ marginTop: 20 }}
               inputStyle={{ fontSize: 16 }}
@@ -322,9 +358,11 @@ class CreateRoom extends PureComponent<Props, State> {
               errorMessage="Nhập diện tích"
             />
             {/* Hình ảnh */}
-            <QuickView height={180} marginTop={10}>
+            <QuickView marginTop={10}>
               <Text marginVertical={10}>Hình ảnh</Text>
-              <ImagePicker
+              <FlatList showsHorizontalScrollIndicator={false} horizontal data={detailData?.images} renderItem={this.renderItemImage} />
+              {/* {detailData?.images.map((i:string) => <Image source={{ uri: i }} />)} */}
+              {/* <ImagePicker
                 multi
                 uploadImgContainer={{
                   width: 120,
@@ -337,7 +375,7 @@ class CreateRoom extends PureComponent<Props, State> {
                   this.images = ref;
                 }}
                 imgUploaded={{ width: 120, height: 120 }}
-              />
+              /> */}
             </QuickView>
 
             {/* Tiện ích */}
@@ -382,7 +420,7 @@ class CreateRoom extends PureComponent<Props, State> {
               </QuickView>
             </QuickView>
             {checkNull ? <Text center error>Vui lòng nhập các trường còn trống </Text> : null}
-            <Button loading={loading} marginTop={20} title="Đăng phòng" onPress={this.handleCreateRoom} />
+            <Button disabled={!haveChange} loading={loading} marginTop={20} title="Cập nhật" onPress={this.handleCreateRoom} />
           </QuickView>
         </Body>
       </Container>
@@ -392,11 +430,14 @@ class CreateRoom extends PureComponent<Props, State> {
 
 const mapStateToProps = (state: any) => ({
   amenities: parseArraySelector(applyArraySelector(amenitiesSelector, state)),
+  detail: parseObjectSelector(applyObjectSelector(detailRoomSelector, state)),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
   getAmenities: (query?: TQuery) => dispatch(amenitiesGetList({ query })),
   getListRoom: (id: number, query?: TQuery) => dispatch(roomGetList({ id, query })),
+  getDetail: (id: number) => dispatch(roomGetDetail({ id })),
+
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateRoom);
+export default connect(mapStateToProps, mapDispatchToProps)(EditRoom);

@@ -374,7 +374,6 @@ class ManageDetailProperty extends PureComponent<Props, State> {
 
   render() {
     const { detail: { data, loading }, roomsOfProperty } = this.props;
-    // console.log('🚀 ~ file: ManageDetailProperty.tsx ~ line 363 ~ ManageDetailProperty ~ render ~ roomsOfProperty', roomsOfProperty);
     const { deleteOverlay } = this.state;
     return (
       <Container>

@@ -268,7 +268,7 @@ class DetailRoom extends Component<Props, State> {
             <QuickView marginTop={10} row center>
               <Text type="title">GIÁ PHÒNG: </Text>
               <Text color={lightPrimaryColor} type="title">
-                {vndPriceFormat(data?.price * 100000)}
+                {vndPriceFormat(data?.price * 10)}
                 {' '}
                 VND
               </Text>

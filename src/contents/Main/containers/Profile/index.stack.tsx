@@ -7,10 +7,12 @@ import Setting from './screens/Setting';
 import MyAccount from './screens/MyAccount';
 import MyProperty from './screens/MyProperty';
 import CreateRoom from './screens/CreateRoom';
+import ManageDetailProperty from './screens/ManageDetailProperty';
+import EditRoom from './screens/EditRoom';
 
 const Stack = createStackNavigator();
 
-export default function MoreStack() {
+export default function ProfileStack() {
   return (
     <Stack.Navigator headerMode="none">
       <Stack.Screen name={profileStack.index} component={MoreScreen} />
@@ -19,6 +21,9 @@ export default function MoreStack() {
       <Stack.Screen name={profileStack.account} component={MyAccount} />
       <Stack.Screen name={profileStack.myProperty} component={MyProperty} />
       <Stack.Screen name={profileStack.createRoom} component={CreateRoom} />
+      <Stack.Screen name={profileStack.editRoom} component={EditRoom} />
+      <Stack.Screen name={profileStack.manageDetailProperty} component={ManageDetailProperty} />
+
     </Stack.Navigator>
   );
 }

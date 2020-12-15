@@ -5,7 +5,6 @@ import {
   Header,
   ParallaxScrollView,
   Body,
-  HTML,
   Container,
   Image,
   Avatar,
@@ -15,7 +14,6 @@ import { connect } from 'react-redux';
 import { Color } from '@themes/Theme';
 import { lightPrimaryColor } from '@themes/ThemeComponent/Common/Color';
 import { Icon } from 'react-native-elements';
-import moment from 'moment';
 import NavigationService from '@utils/navigation';
 import { FlatList, TouchableOpacity } from 'react-native';
 import { parallaxHeaderHeight } from '@themes/ThemeComponent/ParallaxScrollView';
@@ -23,6 +21,7 @@ import { applyArraySelector, applyObjectSelector, parseObjectSelector } from '@u
 import OverlayLoading from '@components/OverlayLoading';
 import { TArrayRedux, TQuery } from '@utils/redux';
 import { vndPriceFormat } from '@utils/functions';
+import moment from 'moment';
 import {
   clearDetail, clearListRoom, propertyGetDetail, roomGetList,
 } from '../redux/slice';
@@ -90,22 +89,33 @@ class DetailProperty extends PureComponent<Props, State> {
           </QuickView>
           <QuickView marginTop={0} row justifyContent="space-between">
             <QuickView row center>
-              {/* <Icon name="clock-outline" size={20} color={lightPrimaryColor} />
-              <Text type="subtitle">
-                {data?.updatedAt ? moment(data?.updatedAt).format('HH:MM') : 'Đang cập nhật'}
-              </Text> */}
               <Text
                 marginTop={10}
                 icon={{
-                  name: 'map-pin',
-                  type: 'feather',
-                  size: 12,
+                  name: 'wallet-outline',
+                  type: 'ionicon',
+                  size: 14,
                 }}
                 bold
                 color={Color.white}
-                fontSize="small"
+                fontSize={14}
               >
-                {data?.address}
+                {data?.averagePrice ? vndPriceFormat(data?.averagePrice * 10) : 'Đang cập nhật'}
+              </Text>
+            </QuickView>
+            <QuickView row center>
+              <Text
+                marginTop={10}
+                icon={{
+                  name: 'calendar-outline',
+                  type: 'ionicon',
+                  size: 14,
+                }}
+                bold
+                color={Color.white}
+                fontSize={14}
+              >
+                {data?.updatedAt ? moment(data?.updatedAt).format('DD/MM/YYYY') : 'Đang cập nhật'}
               </Text>
             </QuickView>
             <QuickView
@@ -212,7 +222,7 @@ class DetailProperty extends PureComponent<Props, State> {
           <QuickView flex={1} center>
             <Text fontSize={12}>Giá</Text>
             <Text color={lightPrimaryColor} fontSize={12} bold>
-              {vndPriceFormat(item?.price * 100000)}
+              {vndPriceFormat(item?.price * 10)}
             </Text>
           </QuickView>
           <QuickView flex={1} center>
@@ -253,7 +263,8 @@ class DetailProperty extends PureComponent<Props, State> {
           renderForeground={this.renderForeground}
           renderStickyHeader={this.renderStickyHeader}
           backgroundImageSource={{
-            uri: data?.thumbnail,
+            // uri: data?.thumbnail,
+            uri: 'https://picsum.photos/1500/1500',
           }}
           headerBackgroundColor="#012066"
         >
@@ -267,12 +278,16 @@ class DetailProperty extends PureComponent<Props, State> {
             <QuickView marginTop={20}>
               {/* <Text style={{ textAlign: 'justify' }}>{data?.content}</Text> */}
               <QuickView>
+                <Text color={lightPrimaryColor} bold type="title">Địa chỉ</Text>
+                <Text>{!loading ? `${data?.address}, ${data?.destination?.name}, ${data?.destination?.parent?.name}, ${data?.destination?.parent?.parent?.name}` : 'Đang cập nhật'}</Text>
+              </QuickView>
+              <QuickView marginTop={10}>
                 <Text color={lightPrimaryColor} bold type="title">Mô tả</Text>
                 <Text>{data?.description}</Text>
               </QuickView>
               <QuickView row height={50} marginTop={10}>
                 <QuickView flex={1}>
-                  <Text color={lightPrimaryColor} bold type="title">{`Sở hữu bởi ${data?.owner?.fullName}`}</Text>
+                  <Text color={lightPrimaryColor} bold type="title">{`Sở hữu bởi ${data?.owner?.fullName || 'Đang cập nhật'}`}</Text>
                   <Text>Tham gia ngày 08/06/2020</Text>
                 </QuickView>
                 <QuickView>

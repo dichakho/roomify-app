@@ -91,5 +91,6 @@ export const INITIAL_STATE = fromJS({
   ...createArrayInitialState(DISTRICT),
   ...createArrayInitialState(SUB_DISTRICT),
   ...createObjectInitialState(CREATE_PROPERTY),
+  searchHistory: [],
 
 });

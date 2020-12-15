@@ -1,6 +1,11 @@
 import React, { PureComponent } from 'react';
 import {
-  StyleSheet, View, Button, Text, ScrollView,
+  StyleSheet,
+  View,
+  Button,
+  Text,
+  ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 // @ts-ignore
 import Modal from 'react-native-modal';
@@ -10,15 +15,16 @@ interface State {
   scrollOffset: any;
 }
 interface Props {
-  viewComponent?: any,
-  isVisibleProps?: boolean,
-  content?: String,
-  title?: String,
-  backgroundColor?: string,
-  textColor?: string,
-  height?: number,
+  viewComponent?: any;
+  isVisibleProps?: boolean;
+  content?: String;
+  title?: String;
+  backgroundColor?: string;
+  textColor?: string;
+  height?: number;
   onClickClose: any;
   scroll?: boolean;
+  heightLevel?: number; // Level of height of modal
 }
 const styles = StyleSheet.create({
   view: {
@@ -30,7 +36,8 @@ const styles = StyleSheet.create({
     margin: 0,
   },
   scrollableModal: {
-    height: 600,
+    flex: 2,
+    // height: 600,
     borderRadius: 10,
     backgroundColor: '#FFFFFF',
   },
@@ -63,7 +70,7 @@ class BottomHalfModal extends PureComponent<Props, State> {
     });
   };
 
-  handleScrollTo = (p:any) => {
+  handleScrollTo = (p: any) => {
     if (this.scrollViewRef.current) {
       this.scrollViewRef.current.scrollTo(p);
     }
@@ -71,8 +78,16 @@ class BottomHalfModal extends PureComponent<Props, State> {
 
   render() {
     const {
-      viewComponent, isVisibleProps, title, content,
-      backgroundColor, textColor, onClickClose, height, scroll,
+      viewComponent,
+      isVisibleProps,
+      title,
+      content,
+      backgroundColor,
+      textColor,
+      onClickClose,
+      height,
+      scroll,
+      heightLevel,
     } = this.props;
     const { scrollOffset } = this.state;
     const bgColor: any = StyleSheet.flatten([
@@ -113,30 +128,43 @@ class BottomHalfModal extends PureComponent<Props, State> {
                   title="Close"
                 />
               </View>
-            ) : viewComponent}
+            ) : (
+              viewComponent
+            )}
           </Modal>
-        )
-          : (
-            <Modal
-              testID="modal"
-              isVisible={isVisibleProps}
-              onSwipeComplete={onClickClose}
-              swipeDirection={['down']}
-              scrollTo={this.handleScrollTo}
-              scrollOffset={scrollOffset}
-              scrollOffsetMax={50} // content height - ScrollView height
-              propagateSwipe
-              style={styles.modal}
+        ) : (
+          <Modal
+            testID="modal"
+            isVisible={isVisibleProps}
+            onSwipeComplete={onClickClose}
+            swipeDirection={['down']}
+            scrollTo={this.handleScrollTo}
+            scrollOffset={scrollOffset}
+            scrollOffsetMax={50} // content height - ScrollView height
+            propagateSwipe
+            style={styles.modal}
+          >
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: 'transparent',
+                justifyContent: 'flex-end',
+              }}
             >
-              <View style={styles.scrollableModal}>
-                <View style={{
-                  width: 50,
-                  height: 3,
-                  alignSelf: 'center',
-                  backgroundColor: '#012066',
-                  marginTop: 5,
-
-                }}
+              <TouchableOpacity
+                onPress={onClickClose}
+                activeOpacity={1}
+                style={{ flex: 1, backgroundColor: 'transparent' }}
+              />
+              <View style={[styles.scrollableModal, { flex: heightLevel }]}>
+                <View
+                  style={{
+                    width: 50,
+                    height: 3,
+                    alignSelf: 'center',
+                    backgroundColor: '#012066',
+                    marginTop: 5,
+                  }}
                 />
                 <ScrollView
                   ref={this.scrollViewRef}
@@ -146,8 +174,9 @@ class BottomHalfModal extends PureComponent<Props, State> {
                   {viewComponent}
                 </ScrollView>
               </View>
-            </Modal>
-          )}
+            </View>
+          </Modal>
+        )}
       </View>
     );
   }

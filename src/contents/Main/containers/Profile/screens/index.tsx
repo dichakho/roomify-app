@@ -16,6 +16,9 @@ import PickerChangeLanguage from '@contents/Config/Shared/PickerChangeLanguage';
 import LogoutButton from '@contents/Auth/containers/Login/Shared/LogoutButton';
 import LoginButton from '@contents/Auth/containers/Login/Shared/LoginButton';
 import NavigationService from '@utils/navigation';
+import { Global } from '@utils/appHelper';
+import _ from 'lodash';
+import rootStack from '@contents/routes';
 import profileStack from '../routes';
 import { RoleApi } from '../redux/constant';
 
@@ -37,6 +40,11 @@ const styles = StyleSheet.create({
 
 interface Props {
   t: any;
+  navigation: any;
+}
+
+interface State{
+  data: Array<any>;
 }
 const list = [
   {
@@ -74,40 +82,26 @@ const list = [
   // },
 ];
 
-class Settings extends React.PureComponent<Props> {
-  // renderItem = ({
-  //   item: {
-  //     title,
-  //     backgroundColor,
-  //     icon,
-  //     rightTitle,
-  //     hideChevron,
-  //     rightElement,
-  //   },
-  // }: any) => (
-  //   <ListItem
-  //     containerStyle={{ paddingVertical: 8 }}
-  //     key={title}
-  //     chevron={!hideChevron}
-  //     rightTitle={rightTitle}
-  //     leftIcon={{
-  //       type: 'ionicon',
-  //       name: icon,
-  //       size: 20,
-  //       color: 'white',
-  //       containerStyle: {
-  //         backgroundColor,
-  //         width: 28,
-  //         height: 28,
-  //         borderRadius: 6,
-  //         alignItems: 'center',
-  //         justifyContent: 'center',
-  //       },
-  //     }}
-  //     title={title}
-  //     rightElement={rightElement}
-  //   />
-  // );
+class Settings extends React.PureComponent<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      data: list,
+    };
+  }
+
+  componentDidMount() {
+    const { navigation } = this.props;
+    navigation.addListener('focus', () => {
+      this.setState({
+        data: list.filter((l) => {
+          if (!_.isEmpty(_.intersection(Global.roleApi, l.role))) {
+            return l;
+          }
+        }),
+      });
+    });
+  }
 
   renderSectionHeader = () => <View style={styles.headerSection} />;
 
@@ -117,53 +111,26 @@ class Settings extends React.PureComponent<Props> {
     </View>
   );
 
-  renderItemFlatlist = ({ item }: { item: any}) => (
-    <QuickView onPress={() => NavigationService.navigate(item.screen)} height={50} center row>
-      <QuickView flex={1}><Text>{item?.name}</Text></QuickView>
-      <QuickView><Icon name="chevron-right" /></QuickView>
-    </QuickView>
-  );
+  renderItemFlatlist = ({ item }: { item: any}) => {
+    if (!_.isEmpty(_.intersection(Global.roleApi, item.role))) {
+      return (
+        <QuickView onPress={() => NavigationService.navigate(rootStack.profileStack, { screen: item.screen })} height={50} center row>
+          <QuickView flex={1}><Text>{item?.name}</Text></QuickView>
+          <QuickView><Icon name="chevron-right" /></QuickView>
+        </QuickView>
+      );
+    }
+    return null;
+  };
 
   keyExtractor = (item: any, index: any) => index;
 
   render() {
     const { t } = this.props;
-    const sections = [
-      {
-        data: [
-          {
-            title: t('theme'),
-            backgroundColor: BLUE,
-            icon: 'ios-bulb',
-            hideChevron: true,
-            rightElement: <SwitchChangeTheme />,
-          },
-          {
-            title: t('language'),
-            icon: 'ios-settings',
-            backgroundColor: GREY,
-            hideChevron: true,
-            rightElement: <PickerChangeLanguage />,
-          },
-        ],
-      },
-    ];
-
+    const { data } = this.state;
     return (
       <Container>
         <Header title={t('header:profile')} />
-        {/* <QuickView height={120}>
-          <SectionList
-            contentContainerStyle={{ marginTop: -30 }}
-            keyExtractor={this.keyExtractor}
-            sections={sections}
-            renderItem={this.renderItem}
-            renderSectionHeader={this.renderSectionHeader}
-            ItemSeparatorComponent={this.ItemSeparatorComponent}
-            SectionSeparatorComponent={Divider}
-            stickySectionHeadersEnabled={false}
-          />
-        </QuickView> */}
         <QuickView paddingHorizontal={10}>
           {/* <GoToExampleButton /> */}
           <LoginButton />
@@ -173,7 +140,7 @@ class Settings extends React.PureComponent<Props> {
         </QuickView>
         <FlatList
           style={{ paddingHorizontal: 20 }}
-          data={list}
+          data={data}
           ItemSeparatorComponent={this.ItemSeparatorComponent}
           renderItem={this.renderItemFlatlist}
         />

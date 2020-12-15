@@ -10,6 +10,7 @@ const exploreStack = {
   propsByCategory: 'PropertyByCategoryScreen',
   detailRoom: 'DetailRoom',
   mapDetailRoom: 'MapDetailRoomScreen',
+  propertyByCity: 'PropertyByCity',
 };
 
 export default exploreStack;

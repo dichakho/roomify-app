@@ -7,6 +7,7 @@ const rootStack = {
   authStack: 'AuthStack',
   mainBottomTab: 'MainBottomTab',
   exploreStack: 'ExploreStack',
+  profileStack: 'ProfileStack',
 };
 
 export default rootStack;

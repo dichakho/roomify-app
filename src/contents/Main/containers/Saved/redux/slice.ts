@@ -7,13 +7,14 @@ import {
   INITIAL_STATE,
   NAME,
   TListSaved,
+  LIST,
 } from './constant';
 
 const slice = createSlice({
   name: NAME,
   initialState: INITIAL_STATE,
   reducers: {
-    ...createArrayReducer<TListSaved>(`${NAME}GetList`, NAME),
+    ...createArrayReducer<TListSaved>(`${NAME}GetList`, LIST),
   },
   // extraReducers: {
   //   [REHYDRATE]: (state, action) => {

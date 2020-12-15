@@ -32,7 +32,7 @@ class MyProperty extends PureComponent<Props, State> {
   renderItem = ({ item, index }: { item: any; index: number}) => (
     <TouchableOpacity
       style={{ marginBottom: 30 }}
-      onPress={() => NavigationService.navigate(profileStack.createRoom, item.id)}
+      onPress={() => NavigationService.navigate(profileStack.manageDetailProperty, { id: item.id })}
     >
       <Image source={{ uri: item.thumbnail }} height={160} />
       <QuickView paddingHorizontal={20}>
@@ -49,7 +49,7 @@ class MyProperty extends PureComponent<Props, State> {
           <QuickView style={{ borderWidth: 0 }} alignItems="flex-end" flex={1}>
             <Text color={lightPrimaryColor} fontWeight="medium">
 
-              {vndPriceFormat(item?.averagePrice * 100000)}
+              {vndPriceFormat(item?.averagePrice * 10)}
               {' '}
               VND
             </Text>
@@ -75,8 +75,6 @@ class MyProperty extends PureComponent<Props, State> {
 
   render() {
     const { loginSelectorData: { data }, properties, getMyProperty } = this.props;
-    console.log('🚀 ~ file: MyProperty.tsx ~ line 77 ~ MyProperty ~ render ~ properties', properties);
-
     return (
       <Container>
         <Header backIcon title="Phòng trọ của tôi" />

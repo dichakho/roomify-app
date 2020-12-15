@@ -60,6 +60,15 @@ class Filter {
   public clearFilter(): void {
     this.filterObject = {};
   }
+
+  /**
+   *
+   * @param key
+   */
+  public deleteFilterByKey(key: string): void {
+    this.filterObject = _.omit(this.filterObject, key);
+    // delete this.filterObject[key];
+  }
 }
 
 export default Filter;

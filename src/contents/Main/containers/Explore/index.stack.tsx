@@ -9,6 +9,7 @@ import MapScreen from './screens/Map';
 import PropertyByCategory from './screens/PropertyByCategory';
 import DetailRoom from './screens/DetailRoom';
 import MapDetailRoom from './screens/MapDetailRoom';
+import PropertyByCity from './screens/PropertyByCity';
 
 const Stack = createStackNavigator();
 
@@ -38,6 +39,7 @@ export default function ExploreStack() {
         component={PropertyByCategory}
       />
       <Stack.Screen name={exploreStack.mapDetailRoom} component={MapDetailRoom} />
+      <Stack.Screen name={exploreStack.propertyByCity} component={PropertyByCity} />
     </Stack.Navigator>
   );
 }

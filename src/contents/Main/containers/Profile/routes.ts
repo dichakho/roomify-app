@@ -8,6 +8,8 @@ const profileStack = {
   account: 'AccountScreen',
   myProperty: 'MyPropertyScreen',
   createRoom: 'CreateRoomScreen',
+  editRoom: 'EditRoomScreen',
+  manageDetailProperty: 'ManageDetailProperty',
 };
 
 export default profileStack;

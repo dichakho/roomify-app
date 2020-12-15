@@ -9,7 +9,8 @@ import {
   REGISTER_OWNER,
   MY_PROPERTY,
   AMENITIES,
-
+  UPDATE_PROFILE,
+  ME,
 } from './constant';
 
 export const root = (state: any) => {
@@ -22,3 +23,7 @@ export const registerOwnerSelector = createObjectSelector(root, REGISTER_OWNER);
 export const myPropertySelector = createArraySelector(root, MY_PROPERTY);
 
 export const amenitiesSelector = createArraySelector(root, AMENITIES);
+
+export const updateProfileSelector = createArraySelector(root, UPDATE_PROFILE);
+
+export const getProfileSelector = createObjectSelector(root, ME);

@@ -9,11 +9,20 @@ import { setSearchHistory } from '../../redux/slice';
 interface Props {
   setHistory: (data: any) => any;
   history: Array<string>;
+  onChange: (item: any) => any;
 }
 interface State {}
 class SearchHistory extends PureComponent<Props, State> {
+  handleOnPress = (item: any) => {
+    console.log('item', item);
+    const { onChange } = this.props;
+    if (onChange) {
+      onChange(item);
+    }
+  };
+
   renderItem = ({ item }: { item: any}) => (
-    <QuickView marginBottom={10} alignItems="center" row onPress={() => {}}>
+    <QuickView marginBottom={10} alignItems="center" row onPress={() => this.handleOnPress(item)}>
       <Icon style={{ marginRight: 10 }} name="google-maps" type="material-community" size={16} />
       <Text>{item}</Text>
     </QuickView>

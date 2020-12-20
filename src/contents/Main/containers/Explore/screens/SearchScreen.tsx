@@ -229,6 +229,33 @@ class SearchScreen extends PureComponent<Props, State> {
           )}
           renderItem={this.renderItem}
         />
+        <QuickView
+          row
+          onPress={() => NavigationService.navigate(rootStack.exploreStack, {
+            screen: exploreStack.map,
+          })}
+          borderRadius={10}
+          center
+          backgroundColor={Color.white}
+          padding={10}
+          marginBottom={50}
+          style={{
+            position: 'absolute',
+            bottom: 5,
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 5,
+            },
+            shadowOpacity: 0.34,
+            shadowRadius: 6.27,
+
+            elevation: 10,
+          }}
+        >
+          <Icon name="map-outline" type="ionicon" />
+          <Text marginLeft={5}>Map</Text>
+        </QuickView>
       </>
     );
   };
@@ -253,37 +280,12 @@ class SearchScreen extends PureComponent<Props, State> {
           {search.length === 0 && _.isNull(popularCity) ? (
             <>
               <PopularCity onChange={(item: any) => this.handleOnPressCity(item)} />
-              <SearchHistory />
+              <SearchHistory onChange={(item: string) => this.updateSearch(item)} />
             </>
           ) : (this.renderFlatList())}
-          {/* <QuickView paddingVertical={20}>
-            <Text bold type="title">
-              {properties?.metadata?.total}
-              {' '}
-              kết quả tìm thấy
-            </Text>
-          </QuickView>
-          <FlatList
-            list={properties}
-            getList={(query?: TQuery) => getList(
-              { ...query, fields: this.fields, s: this.filter.filterObject },
-            )}
-            renderItem={this.renderItem}
-          /> */}
 
-          {/* Option 2 */}
-          {/* <PopularCity /> */}
-          {/* <FlatList
-            // ItemSeparatorComponent={() => (
-            //   <QuickView
-            //     height={1}
-            //     backgroundColor={Color.black}
-            //   />
-            // )}
-            data={[{}, {}, {}]}
-            renderItem={this.renderItemSuggestion}
-          /> */}
         </Body>
+
       </Container>
     );
   }

@@ -375,7 +375,7 @@ class DetailRoom extends Component<Props, State> {
           {/* <Button width={100} marginTop={20} titleStyle={{ fontWeight: 'bold' }} title="Save" onPress={this.handleBooking} /> */}
           <QuickView center row>
             <Text type="title" bold>
-              {convertPrice(data?.price * 100000, '.')}
+              {convertPrice(data?.price * 10, '.')}
               ₫
             </Text>
             <Text type="title">/ 1 tháng</Text>

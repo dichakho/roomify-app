@@ -39,46 +39,46 @@ interface Props {
   city: TArrayRedux;
 }
 class ExploreScreen extends PureComponent<Props> {
-  data = [
-    {
-      coverUrl:
-        'https://s3-alpha-sig.figma.com/img/0f14/5640/1a7cb0f8a6af33580734b2403203ba82?Expires=1606089600&Signature=LWR~Qr61oAz1u6CcCV3D32YamgrT6gONsGXWNXENmWiYJYtSx8DMI0bayS~vJeB1hDHiJ3owRomLgrjJmfU1YzXras~jUKue0ThKuGfqzSJEBAW9j1cYcRUHo3aRCT4uUoB0A42P1so2u40f2h5k2lI8Ia7PfxdtVYQUugKx6CsfAi31N6Cc6410FuYkkEjREFTvT~IgP3PL87ZhKaRJbuTCJpy45w1DMfXs6-6HJyxLCnz~icSHB5p-cTTNILezf8QcN0JNzdmkMYPWDlP1IGoynLrPTvz-zi9VsirDc3qUUCdTvsRpTfjQQYbGcJYdPp17leEV1wVAazTiZrCbhA__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA',
-      price: 1000000,
-      address: 'Thanh Khê',
-      area: '60m2',
-    },
-    {
-      coverUrl:
-        'https://s3-alpha-sig.figma.com/img/e288/b09e/ae82c548c98a8f408db14dd7b20ba32c?Expires=1606089600&Signature=DDtcMskAXmH3ItSwKJRcwQj5QC8OzS0DDX5AG0MBm7JJeWqXviyXUyyVMPBMkYeXFkicRkeJ3bpWIoycRxPHqgAiq~WX9R-vC6vWvensx2zjIojZRcC~4jHIfZgZnCqojPPzxLWBk1DJt5FxGkODXPSfB6v1S4v4eCMvLL1OH1-SEuzUbU9rPU7t9e~-8dpbKrbuZJsNRnw7u-e8nTZiHNxW-bXaqmxeI7zu72b8QYceVrxaWp9M~MLUjwqLQPdmlTFiYSWTkBXhko2Pf7Ql3vN1UG4FFVNBh-UXnxDl3gQ2ARJW2N1Mu1Io7BM5vdYler6DAhzHpCcKApAvHKLK8A__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA',
-      price: 800000,
-      address: 'Liên Chiểu',
-      area: '60m2',
-    },
-    {
-      coverUrl:
-        'https://s3-alpha-sig.figma.com/img/eb48/87a0/c4fa0f3907b14d0a3dbb91e7ca06cf1e?Expires=1606089600&Signature=AolM9N5z1TXDI2DWOqRMTFXRBMxKmmBVd3FTJyjQ1sJGEN8JIqP9zvdq79ygp~qB8x9efFBix1-s2eQuBtVaV~x8SowsEzi~ELTdKDmRCzB8cQ4anHoDiPucv~ikSf~Q3Q2h1zkcvP2rFIbHz3SPJCgltkscE3WlWkZhXhnjkvies6Umusv23YpplFBdLHunzIXKCENuKNtZLwCdfOzAbx51ApQSfVV1TCkcWBtfxSG~KeaYg0941Evu-zXPgKMzS0AM7P1JAg07RHdFqpW9szXsfn-dRp3olrOXyXV8r9fKSQkd0Jkqog~pNHGIzLwMyBkBxLQQa94-Z8qyZB7Qng__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA',
-      price: 1000000,
-      address: 'Hải Châu',
-      area: '60m2',
-    },
-  ];
+  // data = [
+  //   {
+  //     coverUrl:
+  //       'https://s3-alpha-sig.figma.com/img/0f14/5640/1a7cb0f8a6af33580734b2403203ba82?Expires=1606089600&Signature=LWR~Qr61oAz1u6CcCV3D32YamgrT6gONsGXWNXENmWiYJYtSx8DMI0bayS~vJeB1hDHiJ3owRomLgrjJmfU1YzXras~jUKue0ThKuGfqzSJEBAW9j1cYcRUHo3aRCT4uUoB0A42P1so2u40f2h5k2lI8Ia7PfxdtVYQUugKx6CsfAi31N6Cc6410FuYkkEjREFTvT~IgP3PL87ZhKaRJbuTCJpy45w1DMfXs6-6HJyxLCnz~icSHB5p-cTTNILezf8QcN0JNzdmkMYPWDlP1IGoynLrPTvz-zi9VsirDc3qUUCdTvsRpTfjQQYbGcJYdPp17leEV1wVAazTiZrCbhA__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA',
+  //     price: 1000000,
+  //     address: 'Thanh Khê',
+  //     area: '60m2',
+  //   },
+  //   {
+  //     coverUrl:
+  //       'https://s3-alpha-sig.figma.com/img/e288/b09e/ae82c548c98a8f408db14dd7b20ba32c?Expires=1606089600&Signature=DDtcMskAXmH3ItSwKJRcwQj5QC8OzS0DDX5AG0MBm7JJeWqXviyXUyyVMPBMkYeXFkicRkeJ3bpWIoycRxPHqgAiq~WX9R-vC6vWvensx2zjIojZRcC~4jHIfZgZnCqojPPzxLWBk1DJt5FxGkODXPSfB6v1S4v4eCMvLL1OH1-SEuzUbU9rPU7t9e~-8dpbKrbuZJsNRnw7u-e8nTZiHNxW-bXaqmxeI7zu72b8QYceVrxaWp9M~MLUjwqLQPdmlTFiYSWTkBXhko2Pf7Ql3vN1UG4FFVNBh-UXnxDl3gQ2ARJW2N1Mu1Io7BM5vdYler6DAhzHpCcKApAvHKLK8A__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA',
+  //     price: 800000,
+  //     address: 'Liên Chiểu',
+  //     area: '60m2',
+  //   },
+  //   {
+  //     coverUrl:
+  //       'https://s3-alpha-sig.figma.com/img/eb48/87a0/c4fa0f3907b14d0a3dbb91e7ca06cf1e?Expires=1606089600&Signature=AolM9N5z1TXDI2DWOqRMTFXRBMxKmmBVd3FTJyjQ1sJGEN8JIqP9zvdq79ygp~qB8x9efFBix1-s2eQuBtVaV~x8SowsEzi~ELTdKDmRCzB8cQ4anHoDiPucv~ikSf~Q3Q2h1zkcvP2rFIbHz3SPJCgltkscE3WlWkZhXhnjkvies6Umusv23YpplFBdLHunzIXKCENuKNtZLwCdfOzAbx51ApQSfVV1TCkcWBtfxSG~KeaYg0941Evu-zXPgKMzS0AM7P1JAg07RHdFqpW9szXsfn-dRp3olrOXyXV8r9fKSQkd0Jkqog~pNHGIzLwMyBkBxLQQa94-Z8qyZB7Qng__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA',
+  //     price: 1000000,
+  //     address: 'Hải Châu',
+  //     area: '60m2',
+  //   },
+  // ];
 
   fields = 'id,thumbnail,destination,averagePrice,averageArea';
 
-  dataDropdown = [
-    {
-      name: 'Đà Nẵng',
-      id: '1',
-    },
-    {
-      name: 'Hà Nội',
-      id: '2',
-    },
-    {
-      name: 'Thành phố Hồ Chí Minh',
-      id: '3',
-    },
-  ];
+  // dataDropdown = [
+  //   {
+  //     name: 'Đà Nẵng',
+  //     id: '1',
+  //   },
+  //   {
+  //     name: 'Hà Nội',
+  //     id: '2',
+  //   },
+  //   {
+  //     name: 'Thành phố Hồ Chí Minh',
+  //     id: '3',
+  //   },
+  // ];
 
   componentDidMount() {
     const { getCategory, getCity } = this.props;
@@ -183,20 +183,20 @@ class ExploreScreen extends PureComponent<Props> {
               <Icon name="magnify" type="material-community" color="#B1ADAD" />
             </QuickView>
           </QuickView>
-          <Button
+          {/* <Button
             height={50}
             title="Map"
             onPress={() => NavigationService.navigate(rootStack.exploreStack, {
               screen: exploreStack.map,
             })}
-          />
-          <Button
+          /> */}
+          {/* <Button
             height={50}
             title="List your space, property"
             onPress={() => NavigationService.navigate(rootStack.exploreStack, {
               screen: exploreStack.createProperty,
             })}
-          />
+          /> */}
           <CategoryList
             query={{ fields: this.fields, limit: 3, s: { 'category.id': data[0]?.id } }}
             categoryValue={data[0]}

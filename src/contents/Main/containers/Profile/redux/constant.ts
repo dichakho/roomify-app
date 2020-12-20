@@ -69,6 +69,11 @@ export enum RoleApi {
   USER = 'USER'
 }
 
+export enum RoomStatus {
+  OPEN = 'OPEN',
+  CLOSE = 'CLOSE',
+}
+
 /**
  * INITIAL_STATE
  */

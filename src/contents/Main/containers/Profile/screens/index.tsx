@@ -21,6 +21,7 @@ import _ from 'lodash';
 import rootStack from '@contents/routes';
 import profileStack from '../routes';
 import { RoleApi } from '../redux/constant';
+import exploreStack from '../../Explore/routes';
 
 const BLUE = '#007AFF';
 const GREY = '#8E8E93';
@@ -50,6 +51,7 @@ const list = [
   {
     name: 'My Account',
     type: 'screen',
+    stack: rootStack.profileStack,
     screen: profileStack.account,
     role: [RoleApi.USER, RoleApi.OWNER],
   },
@@ -59,13 +61,23 @@ const list = [
   {
     name: 'Đăng ký làm chủ nhà',
     type: 'screen',
+    stack: rootStack.profileStack,
     screen: profileStack.registerOwner,
     role: [RoleApi.USER],
   },
   {
     name: 'Phòng trọ của tôi',
     type: 'screen',
+    stack: rootStack.profileStack,
     screen: profileStack.myProperty,
+    role: [RoleApi.OWNER],
+  },
+  {
+    name: 'Tạo không gian, khu trọ',
+    type: 'screen',
+    stack: rootStack.exploreStack,
+
+    screen: exploreStack.createProperty,
     role: [RoleApi.OWNER],
   },
   // {
@@ -74,6 +86,8 @@ const list = [
   {
     name: 'Settings',
     type: 'screen',
+    stack: rootStack.profileStack,
+
     screen: profileStack.setting,
     role: [RoleApi.OWNER, RoleApi.USER],
   },
@@ -114,7 +128,7 @@ class Settings extends React.PureComponent<Props, State> {
   renderItemFlatlist = ({ item }: { item: any}) => {
     if (!_.isEmpty(_.intersection(Global.roleApi, item.role))) {
       return (
-        <QuickView onPress={() => NavigationService.navigate(rootStack.profileStack, { screen: item.screen })} height={50} center row>
+        <QuickView onPress={() => NavigationService.navigate(item.stack, { screen: item.screen })} height={50} center row>
           <QuickView flex={1}><Text>{item?.name}</Text></QuickView>
           <QuickView><Icon name="chevron-right" /></QuickView>
         </QuickView>
@@ -133,10 +147,9 @@ class Settings extends React.PureComponent<Props, State> {
         <Header title={t('header:profile')} />
         <QuickView paddingHorizontal={10}>
           {/* <GoToExampleButton /> */}
-          <LoginButton />
-          <LogoutButton />
+
           {/* <Button onPress={() => NavigationService.navigate(profileStack.registerOwner)} height={50} title="Đăng ký làm chủ nhà" /> */}
-          <GoToExampleButton />
+          {/* <GoToExampleButton /> */}
         </QuickView>
         <FlatList
           style={{ paddingHorizontal: 20 }}
@@ -144,6 +157,10 @@ class Settings extends React.PureComponent<Props, State> {
           ItemSeparatorComponent={this.ItemSeparatorComponent}
           renderItem={this.renderItemFlatlist}
         />
+        <QuickView paddingHorizontal={20}>
+          <LoginButton />
+          <LogoutButton />
+        </QuickView>
       </Container>
     );
   }

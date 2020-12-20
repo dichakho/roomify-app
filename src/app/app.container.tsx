@@ -69,6 +69,21 @@ class AppContainer extends React.Component<Props, State> {
 
     this.requestUserPermission();
     this.messageListener();
+    // showMessage({
+    //   message: 'Bạn đã được duyệt trở thành owner',
+    //   description: 'Bây giờ bạn có thể giới thiệu phòng trọ của mình đến với mọi người',
+    //   backgroundColor: Color.grey,
+    //   // icon: 'info',
+    //   duration: 5000,
+    //   hideStatusBar: true,
+    //   textStyle: { color: lightPrimaryColor },
+    //   titleStyle: { fontWeight: 'bold', fontSize: 16, color: lightPrimaryColor },
+    //   // style: { borderBottomRightRadius: 10, borderBottomLeftRadius: 10 },
+    //   onPress: () => {
+    //     // eslint-disable-next-line no-console
+    //     console.log('Message Click');
+    //   },
+    // });
   }
 
   requestUserPermission = async () => {

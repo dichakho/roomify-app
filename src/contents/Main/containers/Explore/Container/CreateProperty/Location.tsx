@@ -106,7 +106,6 @@ class Location extends PureComponent<Props, State> {
     this.setState({ checkNull });
     if (_.isEmpty(checkNull)) {
       const fullAddress = `${numberHouse} ${street}, ${subDistrict?.data.filter((s: any) => s.id === subDistrictValue)[0]?.name}, ${district?.data.filter((d: any) => d.id === districtValue)[0]?.name}, ${city?.data.filter((c: any) => c.id === cityValue)[0]?.name}`;
-      console.log('🚀 ~ file: Location.tsx ~ line 108 ~ Location ~ handleData= ~ fullAddress', fullAddress);
       // console.log({
       //   destinationId: subDistrictValue,
       //   logtitude: 108.17969,
@@ -149,7 +148,9 @@ class Location extends PureComponent<Props, State> {
     return (
       <Body scroll fullWidth showsVerticalScrollIndicator={false}>
 
-        <Text type="title" t="create_property:location" />
+        <Text type="title">
+          Địa chỉ
+        </Text>
         <SelectLocation
           onChange={this.handleOnChangeCity}
           data={city?.data}

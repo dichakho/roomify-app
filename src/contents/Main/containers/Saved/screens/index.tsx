@@ -175,7 +175,7 @@ class SavedListScreen extends PureComponent<Props, State> {
     return (
       <Container>
         <AuthPopup overlayIsVisible={overlayIsVisible} toggleOverlay={this.toggleOverlay} />
-        <Header title="Saved Item" />
+        <Header title="Yêu thích" />
         <Body>
           <FlatList
             // list={saved}

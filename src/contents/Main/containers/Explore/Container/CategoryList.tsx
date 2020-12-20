@@ -48,25 +48,41 @@ export class CategoryList extends Component<Props, State> {
     // console.log('query', nextProps.query);
 
     if (nextProps.query) {
+      // console.log('have change');
+      // this.getPropertiesByCondition(nextProps.query);
       return { queryString: nextProps.query };
     }
     return { ...prevState };
   }
 
   async componentDidMount() {
-    // const { getList, list } = this.props;
-    // if (list && getList) {
-    //   getList();
-    // }
     const { queryString } = this.state;
 
+    // if (queryString) {
+    //   // this.setState({ loading: true });
+    //   const encodeQuery = stringifyQuery(queryString);
+    //   const result = await get(`/properties?${encodeQuery}`);
+    //   this.setState({ dataProperty: result, loading: false });
+    // }
+    this.getPropertiesByCondition(queryString);
+  }
+
+  // shouldComponentUpdate(nextProps: any, nextState: any) {
+  //   console.log('nextProps', nextProps);
+  //   if (nextProps.query !== prevState.queryString) {
+  //     this.getPropertiesByCondition(nextProps.query);
+  //   }
+  //   return true;
+  // }
+
+  getPropertiesByCondition = async (queryString: TQuery) => {
     if (queryString) {
       // this.setState({ loading: true });
       const encodeQuery = stringifyQuery(queryString);
       const result = await get(`/properties?${encodeQuery}`);
       this.setState({ dataProperty: result, loading: false });
     }
-  }
+  };
 
   toggleOverlay = () => {
     const { overlayIsVisible } = this.state;

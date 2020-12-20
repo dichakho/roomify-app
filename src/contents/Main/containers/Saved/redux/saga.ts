@@ -18,6 +18,8 @@ export function* getListSavedSaga({ payload }: { payload: any }) {
     yield put(savedGetListSuccess(response));
     return true;
   } catch (error) {
+    console.log('error', error);
+
     yield put(savedGetListFail(yield* handleException(error)));
     return false;
   }

@@ -8,8 +8,7 @@ import { fromJS } from 'immutable';
  */
 export const PARENT_NAME = 'main';
 export const NAME = 'alert';
-export const PROPERTY = 'property';
-export const PAYLOAD_PROPERTY = 'payloadProperty';
+export const LIST = 'list';
 
 /**
  * TYPE
@@ -19,17 +18,16 @@ export const PAYLOAD_PROPERTY = 'payloadProperty';
 //   customerGetListSuccess: (state: any, action: any) => any;
 //   customerGetListFail: (state: any, action: any) => any;
 // };
-export type TListProperty = {
-  propertyGetList: (state: any, action: any) => any;
-  propertyGetListSuccess: (state: any, action: any) => any;
-  propertyGetListFail: (state: any, action: any) => any;
+export type TListNotification = {
+  notificationGetList: (state: any, action: any) => any;
+  notificationGetListSuccess: (state: any, action: any) => any;
+  notificationGetListFail: (state: any, action: any) => any;
 };
 
 /**
  * INITIAL_STATE
  */
 export const INITIAL_STATE = fromJS({
-  payloadProperty: {},
-  ...createArrayInitialState(PROPERTY),
+  ...createArrayInitialState(LIST),
 
 });

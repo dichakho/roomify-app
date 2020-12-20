@@ -129,15 +129,19 @@ const slice = createSlice({
 
       return state.set('searchHistory', data);
     },
+    setCityConfig: (state: any, action: any) => state.set('cityConfig', action.payload.data),
   },
   extraReducers: {
     [REHYDRATE]: (state, action) => {
       if (action.payload && action.payload.explore) {
         const city = action.payload.explore.get('city');
         const searchHistory = action.payload.explore.get('searchHistory');
+        const cityConfig = action.payload.explore.get('cityConfig');
+
         return INITIAL_STATE.merge({
           city: INITIAL_STATE.get('city').merge({ data: city.get('data') }),
           searchHistory: INITIAL_STATE.get('searchHistory').concat(searchHistory),
+          cityConfig,
         });
       }
       return state;
@@ -180,5 +184,6 @@ export const {
   createPropertySuccess,
   createPropertyFail,
   setSearchHistory,
+  setCityConfig,
 } = slice.actions;
 export default slice.reducer;

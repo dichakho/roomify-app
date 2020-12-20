@@ -178,11 +178,11 @@ class SavedListScreen extends PureComponent<Props, State> {
         <Header title="Yêu thích" />
         <Body>
           <FlatList
-            // list={saved}
-            data={DATA}
-            // getList={(query?: TQuery) => getList(
-            //   { ...query, fields: this.fields },
-            // )}
+            list={saved}
+            // data={DATA}
+            getList={(query?: TQuery) => getList(
+              { ...query, fields: this.fields },
+            )}
             renderItem={this.renderItem}
           />
         </Body>
@@ -190,13 +190,9 @@ class SavedListScreen extends PureComponent<Props, State> {
     );
   }
 }
-const mapStateToProps = (state: any) => {
-  console.log('123123', state.main.saved.toJS());
-
-  return {
-    // saved: parseArraySelector(applyArraySelector(state, favoritePropertySelector)),
-  };
-};
+const mapStateToProps = (state: any) => ({
+  saved: parseArraySelector(applyArraySelector(favoritePropertySelector, state)),
+});
 
 const mapDispatchToProps = (dispatch: any) => ({
   getList: (query?: TQuery) => dispatch(savedGetList({ query })),

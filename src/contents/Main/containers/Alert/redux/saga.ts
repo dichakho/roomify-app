@@ -3,26 +3,26 @@ import { stringifyQuery } from '@utils/redux';
 import { put, call, takeLatest } from 'redux-saga/effects';
 import {
   fetchCustomers,
-  fetchProperties,
+  fetchNotification,
 } from './api';
 import {
-  propertyGetList,
-  propertyGetListSuccess,
-  propertyGetListFail,
+  notificationGetList,
+  notificationGetListSuccess,
+  notificationGetListFail,
 } from './slice';
 
-export function* getListProperySaga({ payload }: { payload: any }) {
+export function* getListNotificationSaga({ payload }: { payload: any }) {
   try {
-    const response = yield call(fetchProperties, stringifyQuery(payload.query));
-    yield put(propertyGetListSuccess(response));
+    const response = yield call(fetchNotification, stringifyQuery(payload.query));
+    yield put(notificationGetListSuccess(response));
     return true;
   } catch (error) {
-    yield put(propertyGetListFail(yield* handleException(error)));
+    yield put(notificationGetListFail(yield* handleException(error)));
     return false;
   }
 }
 
 export default [
-  takeLatest(propertyGetList, getListProperySaga),
+  takeLatest(notificationGetList, getListNotificationSaga),
 
 ];

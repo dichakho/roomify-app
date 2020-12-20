@@ -22,11 +22,15 @@ import { vndPriceFormat } from '@utils/functions';
 import NavigationService from '@utils/navigation';
 import rootStack from '@contents/routes';
 import { TArrayRedux, TQuery } from '@utils/redux';
-import { applyArraySelector, parseArraySelector } from '@utils/selector';
+import {
+  applyArraySelector, applyObjectSelector, parseArraySelector, parseObjectSelector,
+} from '@utils/selector';
 import OverlayLoading from '@components/OverlayLoading';
 import { CategoryList } from '../Container/CategoryList';
 import exploreStack from '../routes';
-import { categoryGetList, cityGetList, propertyGetList } from '../redux/slice';
+import {
+  categoryGetList, cityGetList, propertyGetList, setCityConfig,
+} from '../redux/slice';
 import { categorySelector, cityListSelector, propertyListSelector } from '../redux/selector';
 
 interface Props {
@@ -37,8 +41,17 @@ interface Props {
   categories: TArrayRedux;
   getCity: (query ?: TQuery) => any;
   city: TArrayRedux;
+  cityConfig: any;
+  setConfigCity: (data: any) => any;
 }
 class ExploreScreen extends PureComponent<Props> {
+  category1: any;
+
+  category2: any;
+
+  category3: any;
+
+  category4: any;
   // data = [
   //   {
   //     coverUrl:
@@ -86,8 +99,27 @@ class ExploreScreen extends PureComponent<Props> {
     getCity({ fields: 'id,name' });
   }
 
+  handleChangeCityConfig = (value: number) => {
+    const { setConfigCity } = this.props;
+    setConfigCity(value);
+    const query1: any = { ...this.category1.props.query };
+    const query2: any = { ...this.category2.props.query };
+    const query3: any = { ...this.category3.props.query };
+    const query4: any = { ...this.category4.props.query };
+    query1.s.$and[1]['destination.city.id'] = value;
+    query2.s.$and[1]['destination.city.id'] = value;
+    query3.s.$and[1]['destination.city.id'] = value;
+    query4.s.$and[1]['destination.city.id'] = value;
+
+    this.category1.getPropertiesByCondition(query1);
+    this.category2.getPropertiesByCondition(query2);
+    this.category3.getPropertiesByCondition(query3);
+    this.category4.getPropertiesByCondition(query4);
+    // console.log('this.category1', this.category1.props.query.s.$and[1]['destination.city.id']);
+  };
+
   renderLeftComponent = () => {
-    const { city: { data, loading } } = this.props;
+    const { city: { data, loading }, cityConfig } = this.props;
     if (data.length === 0) {
       return <ActivityIndicator />;
     }
@@ -106,6 +138,8 @@ class ExploreScreen extends PureComponent<Props> {
             Location
           </Text>
           <Dropdown
+            defaultValue={cityConfig}
+            onChange={this.handleChangeCityConfig}
             activeColor={lightPrimaryColor}
             data={data}
             labelKey="name"
@@ -146,7 +180,12 @@ class ExploreScreen extends PureComponent<Props> {
 
   render() {
     const {
-      t, properties, getList, categories: { data, loading }, city,
+      t,
+      properties,
+      getList,
+      categories: { data, loading },
+      city,
+      cityConfig,
     } = this.props;
     if (loading) {
       return <OverlayLoading backgroundColor={Color.white} />;
@@ -198,25 +237,40 @@ class ExploreScreen extends PureComponent<Props> {
             })}
           /> */}
           <CategoryList
-            query={{ fields: this.fields, limit: 3, s: { 'category.id': data[0]?.id } }}
+            ref={(ref: any) => {
+              this.category1 = ref;
+            }}
+            query={{ fields: this.fields, limit: 3, s: { $and: [{ 'category.id': data[0]?.id }, { 'destination.city.id': cityConfig }] } }}
             categoryValue={data[0]}
             // data={this.data}
             mode={1}
           />
           <CategoryList
-            query={{ fields: this.fields, limit: 3, s: { 'category.id': data[1]?.id } }}
+            ref={(ref: any) => {
+              this.category2 = ref;
+            }}
+            // query={{ fields: this.fields, limit: 3, s: { 'category.id': data[1]?.id } }}
+            query={{ fields: this.fields, limit: 3, s: { $and: [{ 'category.id': data[1]?.id }, { 'destination.city.id': cityConfig }] } }}
             categoryValue={data[1]}
             // data={this.data}
             mode={2}
           />
           <CategoryList
-            query={{ fields: this.fields, limit: 3, s: { 'category.id': data[2]?.id } }}
+            ref={(ref: any) => {
+              this.category3 = ref;
+            }}
+            // query={{ fields: this.fields, limit: 3, s: { 'category.id': data[2]?.id } }}
+            query={{ fields: this.fields, limit: 3, s: { $and: [{ 'category.id': data[2]?.id }, { 'destination.city.id': cityConfig }] } }}
             categoryValue={data[2]}
             // data={this.data}
             mode={2}
           />
           <CategoryList
-            query={{ fields: this.fields, limit: 3, s: { 'category.id': data[3]?.id } }}
+            ref={(ref: any) => {
+              this.category4 = ref;
+            }}
+            // query={{ fields: this.fields, limit: 3, s: { 'category.id': data[3]?.id } }}
+            query={{ fields: this.fields, limit: 3, s: { $and: [{ 'category.id': data[3]?.id }, { 'destination.city.id': cityConfig }] } }}
             categoryValue={data[3]}
             // data={this.data}
             mode={2}
@@ -231,13 +285,14 @@ const mapStateToProps = (state: any) => ({
   properties: parseArraySelector(applyArraySelector(propertyListSelector, state)),
   categories: parseArraySelector(applyArraySelector(categorySelector, state)),
   city: parseArraySelector(applyArraySelector(cityListSelector, state)),
-  // properties: state,
+  cityConfig: state.main.explore.toJS().cityConfig,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
   getList: (query ?: TQuery) => dispatch(propertyGetList({ query })),
   getCategory: (query ?: TQuery) => dispatch(categoryGetList({ query })),
   getCity: (query ?: TQuery) => dispatch(cityGetList({ query })),
+  setConfigCity: (data: any) => dispatch(setCityConfig({ data })),
 });
 const withReduce = connect(mapStateToProps, mapDispatchToProps);
 

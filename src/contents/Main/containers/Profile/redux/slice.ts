@@ -17,6 +17,10 @@ import {
   TUpdateProfile,
   TMe,
   ME,
+  TBookedList,
+  TBookingList,
+  BOOKED_LIST,
+  BOOKING_LIST,
 } from './constant';
 
 const slice = createSlice({
@@ -32,8 +36,9 @@ const slice = createSlice({
     ...createArrayReducer<TAmenities>('amenitiesGetList', AMENITIES),
     ...createObjectReducer<TUpdateProfile>('updateProfile', UPDATE_PROFILE),
     ...createObjectReducer<TMe>('getProfile', ME),
-    clearDataUpdate: (state) => state.set('updateProfile', INITIAL_STATE.get('updateProfile'))
-    ,
+    clearDataUpdate: (state) => state.set('updateProfile', INITIAL_STATE.get('updateProfile')),
+    ...createArrayReducer<TBookedList>('bookedGetList', BOOKED_LIST),
+    ...createArrayReducer<TBookingList>('bookingGetList', BOOKING_LIST),
 
   },
   // extraReducers: {
@@ -75,5 +80,12 @@ export const {
   getProfileSuccess,
   getProfileFail,
   clearDataUpdate,
+  bookingGetList,
+  bookingGetListSuccess,
+  bookingGetListFail,
+  bookedGetList,
+  bookedGetListSuccess,
+  bookedGetListFail,
+
 } = slice.actions;
 export default slice.reducer;

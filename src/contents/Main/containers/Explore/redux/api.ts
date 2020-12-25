@@ -19,3 +19,7 @@ export const fetchDistrictApi = (id: number) => get(`/destinations/city/${id}/di
 export const fetchSubDistrictApi = (id: number) => get(`/destinations/city/district/${id}/sub-district`);
 
 export const createPropertyApi = (data: any) => post('/properties', data);
+
+export const favoritePropertyApi = (data: any) => post('/favorite-property', data);
+
+export const getListRoomApi = (queryString: string) => get(`/rooms?${queryString}`);

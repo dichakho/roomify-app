@@ -13,6 +13,8 @@ import { realtorLoginApi } from './api';
 
 export function* realtorLoginSaga({ payload }: { payload: any }) {
   try {
+    const fcmToken = yield AsyncStorage.getItem('fcmToken');
+    payload.data.registrationToken = fcmToken;
     const response = yield call(realtorLoginApi, payload.data);
     Global.token = response.token;
     Global.roleApi = response.role.map((r: any) => r.name);

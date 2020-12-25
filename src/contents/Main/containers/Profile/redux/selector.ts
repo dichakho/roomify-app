@@ -11,6 +11,8 @@ import {
   AMENITIES,
   UPDATE_PROFILE,
   ME,
+  BOOKED_LIST,
+  BOOKING_LIST,
 } from './constant';
 
 export const root = (state: any) => {
@@ -27,3 +29,7 @@ export const amenitiesSelector = createArraySelector(root, AMENITIES);
 export const updateProfileSelector = createArraySelector(root, UPDATE_PROFILE);
 
 export const getProfileSelector = createObjectSelector(root, ME);
+
+export const getBookedListSelector = createArraySelector(root, BOOKED_LIST);
+
+export const getBookingListSelector = createArraySelector(root, BOOKING_LIST);

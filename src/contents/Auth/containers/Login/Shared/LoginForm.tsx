@@ -61,12 +61,12 @@ class LoginForm extends PureComponent<Props> {
             console.log('loginData error: ', loginData.error);
           }}
         /> */}
-        <QuickView marginTop={20}>
+        <QuickView marginTop={80}>
           <AuthButton
             t="auth:login"
             // onPress={this.onSignIn}
-            color={Color.white}
-            outline
+            // color={Color.white}
+            // outline
             onPress={() => {
               reduxLogin({
                 username: this.username.getText(),
@@ -75,12 +75,12 @@ class LoginForm extends PureComponent<Props> {
             }}
             loading={loginData.loading}
           />
-          <AuthButton
+          {/* <AuthButton
             t="auth:register"
             titleColor={theme.colors.primary}
             backgroundColor={Color.white}
             onPress={() => {}}
-          />
+          /> */}
         </QuickView>
       </>
     );

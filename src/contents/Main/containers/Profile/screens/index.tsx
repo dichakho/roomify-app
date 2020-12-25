@@ -1,18 +1,14 @@
 import React from 'react';
-import { View, StyleSheet, SectionList } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import {
   Container,
   Header,
-  GoToExampleButton,
-  Button,
   FlatList,
   Text,
   QuickView,
 } from '@components';
-import { ListItem, Divider, Icon } from 'react-native-elements';
+import { Divider, Icon } from 'react-native-elements';
 import { withTranslation } from 'react-i18next';
-import SwitchChangeTheme from '@contents/Config/Shared/SwitchChangeTheme';
-import PickerChangeLanguage from '@contents/Config/Shared/PickerChangeLanguage';
 import LogoutButton from '@contents/Auth/containers/Login/Shared/LogoutButton';
 import LoginButton from '@contents/Auth/containers/Login/Shared/LoginButton';
 import NavigationService from '@utils/navigation';
@@ -21,9 +17,7 @@ import _ from 'lodash';
 import rootStack from '@contents/routes';
 import profileStack from '../routes';
 import { RoleApi } from '../redux/constant';
-
-const BLUE = '#007AFF';
-const GREY = '#8E8E93';
+import exploreStack from '../../Explore/routes';
 
 const styles = StyleSheet.create({
   container: {
@@ -50,6 +44,7 @@ const list = [
   {
     name: 'My Account',
     type: 'screen',
+    stack: rootStack.profileStack,
     screen: profileStack.account,
     role: [RoleApi.USER, RoleApi.OWNER],
   },
@@ -59,14 +54,40 @@ const list = [
   {
     name: 'Đăng ký làm chủ nhà',
     type: 'screen',
+    stack: rootStack.profileStack,
     screen: profileStack.registerOwner,
     role: [RoleApi.USER],
   },
   {
     name: 'Phòng trọ của tôi',
     type: 'screen',
+    stack: rootStack.profileStack,
     screen: profileStack.myProperty,
     role: [RoleApi.OWNER],
+  },
+  {
+    name: 'Tạo không gian, khu trọ',
+    type: 'screen',
+    stack: rootStack.exploreStack,
+
+    screen: exploreStack.createProperty,
+    role: [RoleApi.OWNER],
+  },
+  {
+    name: 'Danh sách khu trọ được đặt',
+    type: 'screen',
+    stack: rootStack.profileStack,
+
+    screen: profileStack.listBooking,
+    role: [RoleApi.OWNER],
+  },
+  {
+    name: 'Danh sách đã đặt',
+    type: 'screen',
+    stack: rootStack.profileStack,
+
+    screen: profileStack.listBooked,
+    role: [RoleApi.USER, RoleApi.OWNER],
   },
   // {
   //   name: 'Help & Support', type: 'screen',
@@ -74,6 +95,8 @@ const list = [
   {
     name: 'Settings',
     type: 'screen',
+    stack: rootStack.profileStack,
+
     screen: profileStack.setting,
     role: [RoleApi.OWNER, RoleApi.USER],
   },
@@ -112,13 +135,26 @@ class Settings extends React.PureComponent<Props, State> {
   );
 
   renderItemFlatlist = ({ item }: { item: any}) => {
-    if (!_.isEmpty(_.intersection(Global.roleApi, item.role))) {
+    const check = _.intersection(Global.roleApi, item.role);
+
+    if (!_.isEmpty(check)) {
+      if (item.role.length === 1
+        && item.role[0] === RoleApi.USER
+        && _.includes(Global.roleApi, RoleApi.OWNER)) {
+        return null;
+      }
       return (
-        <QuickView onPress={() => NavigationService.navigate(rootStack.profileStack, { screen: item.screen })} height={50} center row>
+        <QuickView
+          onPress={() => NavigationService.navigate(item.stack, { screen: item.screen })}
+          height={50}
+          center
+          row
+        >
           <QuickView flex={1}><Text>{item?.name}</Text></QuickView>
           <QuickView><Icon name="chevron-right" /></QuickView>
         </QuickView>
       );
+      // }
     }
     return null;
   };
@@ -131,19 +167,21 @@ class Settings extends React.PureComponent<Props, State> {
     return (
       <Container>
         <Header title={t('header:profile')} />
-        <QuickView paddingHorizontal={10}>
-          {/* <GoToExampleButton /> */}
-          <LoginButton />
-          <LogoutButton />
-          {/* <Button onPress={() => NavigationService.navigate(profileStack.registerOwner)} height={50} title="Đăng ký làm chủ nhà" /> */}
-          <GoToExampleButton />
-        </QuickView>
+        <QuickView paddingHorizontal={10} />
         <FlatList
           style={{ paddingHorizontal: 20 }}
           data={data}
           ItemSeparatorComponent={this.ItemSeparatorComponent}
           renderItem={this.renderItemFlatlist}
         />
+        <QuickView paddingHorizontal={20}>
+          <LoginButton />
+          <LogoutButton onPressCustom={() => {
+            this.setState({ data: [] });
+            Global.roleApi = [];
+          }}
+          />
+        </QuickView>
       </Container>
     );
   }

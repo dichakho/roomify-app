@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { PureComponent } from 'react';
 import {
   QuickView, Text, Container, Header, Body, Button, Input as AppInput, ImagePicker, FlatList, Image,
@@ -14,12 +15,14 @@ import { lightComponentColor } from '@themes/ThemeComponent/Common/CommonProps';
 import RNFetchBlob from 'rn-fetch-blob';
 import AsyncStorage from '@react-native-community/async-storage';
 import _ from 'lodash';
-import { post } from '@utils/api';
+import { post, put } from '@utils/api';
 import NavigationService from '@utils/navigation';
+import { ActivityIndicator, Switch } from 'react-native';
 import { amenitiesGetList } from '../redux/slice';
 import { amenitiesSelector } from '../redux/selector';
 import { roomGetDetail, roomGetList } from '../../Explore/redux/slice';
 import { detailRoomSelector } from '../../Explore/redux/selector';
+import { RoomStatus } from '../redux/constant';
 
 interface Props {
   getAmenities: (query?: TQuery) => any;
@@ -31,12 +34,16 @@ interface Props {
 }
 interface State {
   data: Array<any>;
-  description: string;
+  title: string | null;
+  description: string | null;
+  price: string | null;
+  area: string | null;
   checkNull: boolean;
   loading: boolean;
   overlayIsVisible: boolean;
   arrayImage: Array<any>;
   haveChange: boolean;
+  isEnabled: boolean | null;
 
 }
 class EditRoom extends PureComponent<Props, State> {
@@ -54,12 +61,16 @@ class EditRoom extends PureComponent<Props, State> {
     super(props);
     this.state = {
       data: [],
-      description: '',
+      description: null,
+      title: null,
+      price: null,
+      area: null,
       checkNull: false,
       loading: false,
       overlayIsVisible: false,
       arrayImage: [],
       haveChange: false,
+      isEnabled: null,
 
     };
   }
@@ -71,16 +82,43 @@ class EditRoom extends PureComponent<Props, State> {
   }
 
   static getDerivedStateFromProps(nextProps: any, prevState: any) {
-    if (prevState.data.length === 0 && nextProps?.amenities?.data !== 0 && nextProps?.detail?.data?.amenities !== 0) {
+    let titleVar = prevState.title;
+    let descriptionVar = prevState.description;
+    let priceVar = prevState.price;
+    let areaVar = prevState.area;
+    let isEnabledVar = prevState.isEnabled;
+
+    if (prevState.data.length === 0 && nextProps?.amenities?.data.length !== 0 && !_.isUndefined(nextProps?.detail?.data?.amenities) && nextProps?.detail?.data?.amenities.length !== 0) {
       const data = [...nextProps?.amenities?.data];
       const amenities = [...nextProps?.detail?.data?.amenities].map((a) => a.id);
+      // amenities = amenities;
       return { data: data.map((d) => ({ ...d, checked: _.includes(amenities, d.id) })) };
     }
-    if (prevState.arrayImage.length === 0) {
+    if (prevState.arrayImage.length === 0 && !_.isUndefined(nextProps?.detail?.data?.images) && nextProps?.detail?.data?.images.length !== 0) {
+      if (_.isNull(titleVar)) {
+        titleVar = nextProps?.detail?.data?.name;
+      }
+      if (_.isNull(descriptionVar)) {
+        descriptionVar = nextProps?.detail?.data?.description;
+      }
+      if (_.isNull(priceVar)) {
+        priceVar = nextProps?.detail?.data?.price;
+      }
+      if (_.isNull(areaVar)) {
+        areaVar = nextProps?.detail?.data?.area;
+      }
+      if (_.isNull(isEnabledVar)) {
+        isEnabledVar = nextProps?.detail?.data?.status === 'OPEN';
+      }
       const data = [...nextProps?.detail?.data?.images];
-      return { arrayImage: data.map((i: any) => ({ uri: i })) };
+      return {
+        arrayImage: data.map((i: any) => ({ uri: i })), title: titleVar, description: descriptionVar, price: priceVar, area: areaVar, isEnabled: isEnabledVar,
+      };
     }
-    return { ...prevState };
+
+    return {
+      ...prevState,
+    };
   }
 
   toggleItem = (id: number) => {
@@ -161,42 +199,44 @@ class EditRoom extends PureComponent<Props, State> {
     return urlImgages;
   };
 
-  handleCreateRoom = async () => {
+  handleEditRoom = async () => {
     this.setState({ loading: true });
-    const { route } = this.props;
-
-    const { description, data } = this.state;
-
-    // console.log();
-    const title = this.title.getText();
-    const price = this.price.getText();
-    const area = this.area.getText();
-    const amenityIds = data.filter((d) => d.checked).map((m) => m.id);
-    const img = this.images.getDataImage();
-    if (_.isEmpty(img) || _.isNull(title) || _.isNull(price) || _.isNull(area) || _.isEmpty(amenityIds)) {
-      this.setState({ checkNull: true });
-    } else {
-      // const imgUrl = await this.cloudinaryUpload();
-      const payload = {
-        name: title,
-        price: +price,
-        description,
-        area: +area,
-        // images: imgUrl,
-        propertyId: route.params,
-        amenityIds,
-      };
-      console.log('payload', payload);
-      try {
-        const result = await post('/rooms', payload);
-        if (result) {
-          this.setState({ loading: false, overlayIsVisible: true });
-        }
-      } catch (error) {
-        console.log('error', error);
-      }
+    const { route: { params } } = this.props;
+    const {
+      description, data, title, price, area, isEnabled,
+    } = this.state;
+    const { detail: { data: dataDetail } } = this.props;
+    // console.log('title', title);
+    // return 1;
+    const payload: any = {};
+    if (title !== dataDetail?.name) {
+      payload.name = title;
     }
-    // console.log('titleeeeee', title, price, amenityIds, description, registrationToken);
+    if (description !== dataDetail?.description) {
+      payload.description = description;
+    }
+    if (price !== dataDetail?.price) {
+      payload.price = price;
+    }
+    if (area !== dataDetail?.area) {
+      payload.area = area;
+    }
+    if (isEnabled !== dataDetail?.status) {
+      payload.status = isEnabled ? RoomStatus.OPEN : RoomStatus.CLOSE;
+    }
+    const amenities = data.filter((d) => d.checked).map((m) => m.id);
+    const amenitiesData = dataDetail?.amenities.map((d: any) => d.id);
+    if (!_.isEmpty(_.difference(amenities, amenitiesData))) {
+      payload.amenityIds = amenities;
+    }
+    // console.log('payload', payload);
+    try {
+      await put(`/rooms/${params}`, payload);
+      this.setState({ overlayIsVisible: true, loading: false });
+    } catch (error) {
+      console.log('error', error);
+      this.setState({ loading: false });
+    }
   };
 
   renderItemImage = ({ item }: { item: any}) => {
@@ -215,14 +255,55 @@ class EditRoom extends PureComponent<Props, State> {
     );
   };
 
+  handleCheckChange = () => {
+    let check = true;
+    const {
+      title, description, price, area, data, isEnabled,
+    } = this.state;
+    const { detail: { data: dataDetail } } = this.props;
+    if (title !== dataDetail?.name && title?.length !== 0) {
+      check = false;
+    }
+    if (description !== dataDetail?.description && description?.length !== 0) {
+      check = false;
+    }
+    if (price !== dataDetail?.price && price?.length !== 0) {
+      check = false;
+    }
+    if (area !== dataDetail?.area && area?.length !== 0) {
+      check = false;
+    }
+    // const copyData = [...dataDetail?.amenities];
+    const amenities = data?.filter((d) => d.checked);
+    // const amenitiesData = copyData?.map((d: any) => d.id);
+    if (amenities?.length !== dataDetail?.amenities?.length) {
+      check = false;
+    }
+
+    const status = isEnabled ? RoomStatus.OPEN : RoomStatus.CLOSE;
+    if (status !== dataDetail?.status) {
+      check = false;
+    }
+    return check;
+  };
+
+  toggleIsEnabled = () => {
+    this.setState((prevState: any) => ({ isEnabled: !prevState.isEnabled }));
+  };
+
   render() {
     const {
-      data, checkNull, overlayIsVisible, loading, haveChange,
+      data, checkNull, overlayIsVisible, loading, title, area, price, description, isEnabled,
     } = this.state;
-    const { route: { params }, getListRoom, detail: { data: detailData } } = this.props;
-    console.log('🚀 ~ file: EditRoom.tsx ~ line 197 ~ EditRoom ~ render ~ detail', detailData);
-    // console.log('🚀 ~ file: EditRoom.tsx ~ line 193 ~ EditRoom ~ render ~ params', params);
-
+    const { route: { params }, getListRoom, detail: { data: detailData, loading: detailLoading } } = this.props;
+    console.log('🚀 ~ file: EditRoom.tsx ~ line 285 ~ EditRoom ~ render ~ detailData', detailData);
+    if (detailLoading) {
+      return (
+        <QuickView center flex={1}>
+          <ActivityIndicator />
+        </QuickView>
+      );
+    }
     return (
       <Container>
         <Header backIcon title="Cập nhật phòng" />
@@ -233,7 +314,7 @@ class EditRoom extends PureComponent<Props, State> {
           <QuickView>
             <Text center color={lightPrimaryColor} type="title" bold>Thông báo</Text>
             <Text marginVertical={10} center>
-              Tạo phòng thành công
+              Cập nhật phòng thành công
             </Text>
             <QuickView paddingHorizontal={80}>
               <Button
@@ -250,37 +331,30 @@ class EditRoom extends PureComponent<Props, State> {
         <Body scroll dismissKeyboard>
           <QuickView scroll paddingHorizontal={20} flex={1}>
             {/* Tiêu đề phòng */}
-            <AppInput
-              value={detailData?.name}
-              labelProps={{ marginTop: 20 }}
-              inputStyle={{ fontSize: 16 }}
-              ref={(ref: any) => { this.title = ref; }}
-              containerStyle={{
-                paddingHorizontal: 0,
-                // marginBottom: 20,
-                backgroundColor: Color.white,
-                borderWidth: 0,
-              // borderBottomWidth: 1,
-              // borderColor: 'red',
-              }}
+            <Input
+              value={title || ''}
+              onChangeText={(value: string) => this.setState({ title: value, haveChange: true })}
+            // ref={(ref: any) => { this.title = ref; }}
+              containerStyle={{ paddingHorizontal: 0, borderColor: 'red' }}
               inputContainerStyle={{
                 borderColor: Color.black,
-                borderBottomWidth: 1,
-              // ...hasErrors('description'),
+                paddingHorizontal: 10,
+                // ...hasErrors('description'),
               }}
               label="Tiêu đề phòng"
-              showLabel
-              validationField="empty"
-              errorMessage="Nhập tiêu đề phòng"
-          // labelStyle={{
-          //   color: lightComponentColor.textColor,
-          //   fontWeight: 'normal',
-          // }}
-              placeholder="Phòng sạch, đẹp, có gác ..."
+              labelStyle={{
+                color: lightComponentColor.textColor,
+                fontWeight: 'normal',
+                marginTop: 20,
+                marginBottom: 10,
+              }}
+              placeholder="Môi trường sống văn hóa, sạch sẽ ..."
+              inputStyle={{ fontSize: 16 }}
+              placeholderTextColor={lightComponentColor.textColorSecondary}
             />
             {/* Nội dung mô tả */}
             <Input
-              value={detailData?.description}
+              value={description || ''}
               onChangeText={(value: string) => this.setState({ description: value })}
             // ref={(ref: any) => { this.title = ref; }}
               multiline
@@ -304,63 +378,73 @@ class EditRoom extends PureComponent<Props, State> {
             />
 
             {/* Giá tiền */}
-            <AppInput
-              value={detailData?.price}
-              keyboardType="number-pad"
-              // labelProps={{ marginTop: 20 }}
-              inputStyle={{ fontSize: 16 }}
-              ref={(ref: any) => { this.price = ref; }}
-              containerStyle={{
-                paddingHorizontal: 0,
-                // marginBottom: 20,
-                backgroundColor: Color.white,
-                borderWidth: 0,
-              // borderBottomWidth: 1,
-              // borderColor: 'red',
-              }}
+            <Input
+              value={`${price}` || ''}
+              onChangeText={(value: string) => this.setState({ price: value })}
+            // ref={(ref: any) => { this.title = ref; }}
+              containerStyle={{ paddingHorizontal: 0, borderColor: 'red' }}
               inputContainerStyle={{
                 borderColor: Color.black,
-                borderBottomWidth: 1,
-              // ...hasErrors('description'),
+                paddingHorizontal: 10,
+                // ...hasErrors('description'),
               }}
+              labelStyle={{
+                color: lightComponentColor.textColor,
+                fontWeight: 'normal',
+                marginTop: 20,
+                marginBottom: 10,
+              }}
+              inputStyle={{ fontSize: 16 }}
+              placeholderTextColor={lightComponentColor.textColorSecondary}
               label="Giá tiền"
-              showLabel
               placeholder="Nhập giá tiền"
-              validationField="empty"
-              errorMessage="Nhập giá tiền"
+              // errorMessage="Nhập giá tiền"
             />
 
             {/* Diện tích */}
-            <AppInput
-              value={detailData?.area}
-              keyboardType="number-pad"
-              // labelProps={{ marginTop: 20 }}
-              inputStyle={{ fontSize: 16 }}
-              ref={(ref: any) => { this.area = ref; }}
-              containerStyle={{
-                paddingHorizontal: 0,
-                // marginBottom: 20,
-                backgroundColor: Color.white,
-                borderWidth: 0,
-              // borderBottomWidth: 1,
-              // borderColor: 'red',
-              }}
+            <Input
+              value={area || ''}
+              onChangeText={(value: string) => this.setState({ area: value })}
+            // ref={(ref: any) => { this.title = ref; }}
+              containerStyle={{ paddingHorizontal: 0, borderColor: 'red' }}
               inputContainerStyle={{
                 borderColor: Color.black,
-                borderBottomWidth: 1,
-              // ...hasErrors('description'),
+                paddingHorizontal: 10,
+                // ...hasErrors('description'),
               }}
-              labelProps={{ marginTop: 20 }}
+              labelStyle={{
+                color: lightComponentColor.textColor,
+                fontWeight: 'normal',
+                marginTop: 20,
+                marginBottom: 10,
+              }}
+              inputStyle={{ fontSize: 16 }}
+              placeholderTextColor={lightComponentColor.textColorSecondary}
               label="Diện tích"
-              showLabel
               placeholder="Nhập diện tích"
-              validationField="empty"
-              errorMessage="Nhập diện tích"
+              // errorMessage="Nhập giá tiền"
             />
+
+            <QuickView>
+              <Text marginVertical={10}>Trạng thái (CLOSE/OPEN)</Text>
+              <Switch
+        // trackColor={{ false: '#767577', true: '#81b0ff' }}
+        // thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+        // ios_backgroundColor="#3e3e3e"
+                onValueChange={this.toggleIsEnabled}
+                value={isEnabled || false}
+              />
+            </QuickView>
+
             {/* Hình ảnh */}
-            <QuickView marginTop={10}>
+            <QuickView marginTop={20}>
               <Text marginVertical={10}>Hình ảnh</Text>
-              <FlatList showsHorizontalScrollIndicator={false} horizontal data={detailData?.images} renderItem={this.renderItemImage} />
+              <FlatList
+                showsHorizontalScrollIndicator={false}
+                horizontal
+                data={detailData?.images}
+                renderItem={this.renderItemImage}
+              />
               {/* {detailData?.images.map((i:string) => <Image source={{ uri: i }} />)} */}
               {/* <ImagePicker
                 multi
@@ -379,7 +463,7 @@ class EditRoom extends PureComponent<Props, State> {
             </QuickView>
 
             {/* Tiện ích */}
-            <QuickView>
+            <QuickView marginTop={20}>
               <Text marginVertical={10}>Tiện ích</Text>
               <QuickView row justifyContent="space-between" style={{ flexWrap: 'wrap' }}>
                 {data.map((item) => (
@@ -419,8 +503,8 @@ class EditRoom extends PureComponent<Props, State> {
                 ))}
               </QuickView>
             </QuickView>
-            {checkNull ? <Text center error>Vui lòng nhập các trường còn trống </Text> : null}
-            <Button disabled={!haveChange} loading={loading} marginTop={20} title="Cập nhật" onPress={this.handleCreateRoom} />
+            {/* {checkNull ? <Text center error>Vui lòng nhập các trường còn trống </Text> : null} */}
+            <Button disabled={this.handleCheckChange()} loading={loading} marginTop={20} title="Cập nhật" onPress={this.handleEditRoom} />
           </QuickView>
         </Body>
       </Container>

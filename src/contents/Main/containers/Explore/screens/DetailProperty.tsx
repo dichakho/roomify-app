@@ -15,7 +15,7 @@ import { Color } from '@themes/Theme';
 import { lightPrimaryColor } from '@themes/ThemeComponent/Common/Color';
 import { Icon } from 'react-native-elements';
 import NavigationService from '@utils/navigation';
-import { FlatList, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
 import { parallaxHeaderHeight } from '@themes/ThemeComponent/ParallaxScrollView';
 import { applyArraySelector, applyObjectSelector, parseObjectSelector } from '@utils/selector';
 import OverlayLoading from '@components/OverlayLoading';
@@ -27,6 +27,7 @@ import {
 } from '../redux/slice';
 import { propertyDetailSelector, roomsOfPropertySelector } from '../redux/selector';
 import exploreStack from '../routes';
+import WishlistIcon from '../Container/WishListIcon';
 
 interface Props {
   detail: any;
@@ -56,7 +57,8 @@ class DetailProperty extends PureComponent<Props, State> {
         width: 40,
         height: 40,
         borderRadius: 20,
-        backgroundColor: 'rgba(255, 255, 255, 0.7)',
+        // backgroundColor: 'rgba(255, 255, 255, 0.7)',
+        backgroundColor: Color.grey,
         justifyContent: 'center',
         alignItems: 'center',
       }}
@@ -64,6 +66,14 @@ class DetailProperty extends PureComponent<Props, State> {
       <Icon name="chevron-left" size={24} type="entypo" />
     </TouchableOpacity>
   );
+
+  renderRightComponent = () => {
+    const { detail: { data } } = this.props;
+
+    return (
+      <WishlistIcon id={data?.id} active={data?.isFavorited} />
+    );
+  };
 
   renderForeground = () => {
     const height = 120;
@@ -156,6 +166,7 @@ class DetailProperty extends PureComponent<Props, State> {
         placement="right"
         centerComponent={this.renderCenterComponent()}
         centerContainerStyle={{ borderWidth: 1 }}
+
       />
     );
   };
@@ -229,7 +240,7 @@ class DetailProperty extends PureComponent<Props, State> {
             <Button
               onPress={() => NavigationService.navigate(
                 exploreStack.detailRoom,
-                { id: item?.id },
+                { id: item?.id, price: item?.price },
               )}
               clear
               title="Xem thêm"
@@ -248,7 +259,14 @@ class DetailProperty extends PureComponent<Props, State> {
 
   render() {
     const { route, detail: { data, loading }, roomsOfProperty } = this.props;
-
+    // console.log('🚀 ~ file: DetailProperty.tsx ~ line 262 ~ DetailProperty ~ render ~ data', data);
+    if (loading) {
+      return (
+        <QuickView center>
+          <ActivityIndicator />
+        </QuickView>
+      );
+    }
     return (
       <Container>
         <ParallaxScrollView
@@ -257,16 +275,17 @@ class DetailProperty extends PureComponent<Props, State> {
               leftComponent={this.renderLeftComponent()}
               position="absolute"
               transparent
+              rightComponent={this.renderRightComponent()}
             />
           )}
           imageBackgroundColor="rgba(0, 0, 0, 0.2)"
           renderForeground={this.renderForeground}
           renderStickyHeader={this.renderStickyHeader}
           backgroundImageSource={{
-            // uri: data?.thumbnail,
-            uri: 'https://picsum.photos/1500/1500',
+            uri: data?.thumbnail,
+            // uri: 'https://picsum.photos/1500/1500',
           }}
-          headerBackgroundColor="#012066"
+          headerBackgroundColor={Color.grey}
         >
           <Body fullHeight>
             {/* {

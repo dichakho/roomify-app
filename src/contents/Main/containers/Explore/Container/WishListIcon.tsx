@@ -5,7 +5,11 @@ import React, { Component } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { QuickView, Text } from '@components';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Color } from '@themes/Theme';
+import { Icon } from 'react-native-elements';
+import _ from 'lodash';
+import { post } from '@utils/api';
+import { favoritePropertyApi } from '../redux/api';
 // import { toggleFavoriteProject } from '../redux/api';
 
 interface Props {
@@ -14,25 +18,37 @@ interface Props {
   onPress?: () => any;
 }
 interface State {
-  active: boolean;
+  active: boolean | null;
 }
 class WishlistIcon extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    const { active } = this.props;
     this.state = {
-      active,
+      active: null,
     };
+  }
+
+  static getDerivedStateFromProps(nextProps: any, prevState: any) {
+    if (_.isNull(prevState.active)) {
+      return { active: nextProps.active };
+    }
+    return { ...prevState };
   }
 
   toggleStatus = async (id: number | undefined) => {
     const { active } = this.state;
     if (id) {
+      const data = {
+        propertyId: id,
+      };
       try {
-        // const result = await toggleFavoriteProject(id);
-        this.setState({ active: !active });
+        // await favoritePropertyApi(data);
+        await post('/favorite-property', data);
+        this.setState((prevState: any) => ({ active: !prevState.active }));
         // return result;
-      } catch (error) {}
+      } catch (error) {
+        console.log('error', error);
+      }
     } else {
     }
   };
@@ -47,11 +63,23 @@ class WishlistIcon extends Component<Props, State> {
 
   render() {
     const { active } = this.state;
+    const { active: activeProps } = this.props;
+    console.log('active', active);
+    console.log('activeProps', activeProps);
+
     return (
       <TouchableOpacity onPress={() => this.onPress()}>
-        <QuickView row alignItems="center">
+        <QuickView
+          borderRadius={20}
+          width={40}
+          height={40}
+          backgroundColor={Color.grey}
+          center
+          // alignItems="center"
+        >
           <Icon
-            name={active ? 'heart' : 'heart-outline'}
+            type="entypo"
+            name={active ? 'heart' : 'heart-outlined'}
             color="#D36363"
             size={24}
           />

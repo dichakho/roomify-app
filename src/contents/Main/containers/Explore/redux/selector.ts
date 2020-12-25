@@ -17,6 +17,7 @@ import {
   DISTRICT,
   SUB_DISTRICT,
   CREATE_PROPERTY,
+  ALL_ROOM,
 
 } from './constant';
 
@@ -46,3 +47,5 @@ export const districtListSelector = createArraySelector(root, DISTRICT);
 export const subDistrictListSelector = createArraySelector(root, SUB_DISTRICT);
 
 export const createPropertySelector = createArraySelector(root, CREATE_PROPERTY);
+
+export const allRoomSelector = createArraySelector(root, ALL_ROOM);

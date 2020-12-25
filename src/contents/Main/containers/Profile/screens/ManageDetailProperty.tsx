@@ -294,6 +294,7 @@ class ManageDetailProperty extends PureComponent<Props, State> {
           shadowOpacity: 0.20,
           shadowRadius: 1.41,
           elevation: 2,
+          marginHorizontal: 5,
         }}
       >
         <QuickView width={100}>
@@ -432,7 +433,7 @@ class ManageDetailProperty extends PureComponent<Props, State> {
             // uri: data?.thumbnail,
             uri: 'https://picsum.photos/1500/1500',
           }}
-          headerBackgroundColor="#012066"
+          headerBackgroundColor={lightPrimaryColor}
         >
           <Body fullHeight>
             {/* {
@@ -466,7 +467,7 @@ class ManageDetailProperty extends PureComponent<Props, State> {
               </QuickView> */}
               <QuickView marginTop={10}>
                 <Text color={lightPrimaryColor} bold type="title">Danh sách phòng</Text>
-                <FlatList style={{ padding: 5 }} data={roomsOfProperty?.data} renderItem={this.renderItem} />
+                <FlatList data={roomsOfProperty?.data} renderItem={this.renderItem} />
               </QuickView>
               {/* <Swipeable renderRightActions={this.renderLeftActions}>
                 <Text>"hello"</Text>

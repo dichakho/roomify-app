@@ -6,19 +6,15 @@ import { createArrayReducer, createObjectReducer } from '@utils/redux';
 import {
   INITIAL_STATE,
   NAME,
-  PROPERTY,
-  TListProperty,
+  LIST,
+  TListNotification,
 } from './constant';
 
 const slice = createSlice({
   name: NAME,
   initialState: INITIAL_STATE,
   reducers: {
-    pushPayloadProperty: (state: any, action: any) => {
-      console.log('action', action);
-    },
-
-    ...createArrayReducer<TListProperty>(`${PROPERTY}GetList`, PROPERTY),
+    ...createArrayReducer<TListNotification>('notificationGetList', LIST),
   },
   // extraReducers: {
   //   [REHYDRATE]: (state, action) => {
@@ -42,9 +38,8 @@ const slice = createSlice({
   // },
 });
 export const {
-  pushPayloadProperty,
-  propertyGetList,
-  propertyGetListSuccess,
-  propertyGetListFail,
+  notificationGetList,
+  notificationGetListSuccess,
+  notificationGetListFail,
 } = slice.actions;
 export default slice.reducer;

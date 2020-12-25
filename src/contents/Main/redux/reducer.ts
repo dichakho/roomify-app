@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import explore from '@contents/Main/containers/Explore/redux/slice';
 import saved from '@contents/Main/containers/Saved/redux/slice';
 import profile from '@contents/Main/containers/Profile/redux/slice';
+import alert from '@contents/Main/containers/Alert/redux/slice';
 import { immutableTransform } from '@utils/redux';
 
 const persistConfig = {
@@ -19,6 +20,7 @@ const main = persistReducer(
     explore,
     saved,
     profile,
+    alert,
   }),
 );
 export default main;

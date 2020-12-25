@@ -144,7 +144,7 @@ class SavedListScreen extends PureComponent<Props, State> {
           <QuickView style={{ borderWidth: 0 }} alignItems="flex-end" flex={1}>
             <Text color={lightPrimaryColor} fontWeight="medium">
 
-              {vndPriceFormat(item?.averagePrice)}
+              {vndPriceFormat(item?.averagePrice * 10)}
               {' '}
               VND
             </Text>
@@ -175,14 +175,14 @@ class SavedListScreen extends PureComponent<Props, State> {
     return (
       <Container>
         <AuthPopup overlayIsVisible={overlayIsVisible} toggleOverlay={this.toggleOverlay} />
-        <Header title="Saved Item" />
+        <Header title="Yêu thích" />
         <Body>
           <FlatList
-            // list={saved}
-            data={DATA}
-            // getList={(query?: TQuery) => getList(
-            //   { ...query, fields: this.fields },
-            // )}
+            list={saved}
+            // data={DATA}
+            getList={(query?: TQuery) => getList(
+              { ...query, fields: this.fields },
+            )}
             renderItem={this.renderItem}
           />
         </Body>
@@ -190,13 +190,9 @@ class SavedListScreen extends PureComponent<Props, State> {
     );
   }
 }
-const mapStateToProps = (state: any) => {
-  console.log('123123', state.main.saved.toJS());
-
-  return {
-    // saved: parseArraySelector(applyArraySelector(state, favoritePropertySelector)),
-  };
-};
+const mapStateToProps = (state: any) => ({
+  saved: parseArraySelector(applyArraySelector(favoritePropertySelector, state)),
+});
 
 const mapDispatchToProps = (dispatch: any) => ({
   getList: (query?: TQuery) => dispatch(savedGetList({ query })),

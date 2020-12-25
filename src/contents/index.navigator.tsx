@@ -13,6 +13,7 @@ import { loginSelector } from './Auth/containers/Login/redux/selector';
 import { ThemeEnum } from './Config/redux/constant';
 import ExploreStack from './Main/containers/Explore/index.stack';
 import ProfileStack from './Main/containers/Profile/index.stack';
+import RoomateStack from './Main/containers/Roomate/index.stack';
 
 const Stack = createStackNavigator();
 
@@ -47,6 +48,7 @@ export default function RootStack() {
       <Stack.Screen name={rootStack.modalStack} component={ModalStack} />
       <Stack.Screen name={rootStack.exploreStack} component={ExploreStack} />
       <Stack.Screen name={rootStack.profileStack} component={ProfileStack} />
+      <Stack.Screen name={rootStack.roomateStack} component={RoomateStack} />
     </Stack.Navigator>
   );
 }

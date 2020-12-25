@@ -8,6 +8,7 @@ const rootStack = {
   mainBottomTab: 'MainBottomTab',
   exploreStack: 'ExploreStack',
   profileStack: 'ProfileStack',
+  roomateStack: 'RoomateStack',
 };
 
 export default rootStack;

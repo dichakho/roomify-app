@@ -15,14 +15,18 @@ import {
   Header,
   Body,
   Button,
+  FlatList,
+  Image,
   // Body,
   // Image,
   // Button,
   // Carousel,
 } from '@components';
 import { connect } from 'react-redux';
-import { applyObjectSelector, parseObjectSelector } from '@utils/selector';
-import { TObjectRedux } from '@utils/redux';
+import {
+  applyArraySelector, applyObjectSelector, parseArraySelector, parseObjectSelector,
+} from '@utils/selector';
+import { TArrayRedux, TObjectRedux, TQuery } from '@utils/redux';
 import { convertPrice, vndPriceFormat } from '@utils/functions';
 import { Color, lightPrimaryColor } from '@themes/ThemeComponent/Common/Color';
 import { Icon, Overlay } from 'react-native-elements';
@@ -31,8 +35,8 @@ import OverlayLoading from '@components/OverlayLoading';
 import NavigationService from '@utils/navigation';
 import _, { result } from 'lodash';
 import { post } from '@utils/api';
-import { bookingRoom, roomGetDetail } from '../redux/slice';
-import { bookingRoomSelector, detailRoomSelector } from '../redux/selector';
+import { allRoomGetList, bookingRoom, roomGetDetail } from '../redux/slice';
+import { allRoomSelector, bookingRoomSelector, detailRoomSelector } from '../redux/selector';
 import exploreStack from '../routes';
 
 const { width: screenWidth } = Dimensions.get('window');
@@ -60,6 +64,8 @@ interface Props {
   detail: TObjectRedux;
   booking: (id: number) => any;
   bookingSelector: TObjectRedux;
+  getSuggesstion: (query ?: TQuery) => any;
+  suggestion: TArrayRedux;
 }
 interface State {
   scrollY: any;
@@ -114,19 +120,26 @@ class DetailRoom extends Component<Props, State> {
   }
 
   componentDidMount() {
-    const { getDetail, route: { params: { id } } } = this.props;
+    const { getDetail, route: { params: { id, price } }, getSuggesstion } = this.props;
+    console.log('🚀 ~ file: DetailRoom.tsx ~ line 124 ~ DetailRoom ~ componentDidMount ~ price', price);
     getDetail(id);
+    getSuggesstion({ s: { $and: [{ price: { $gte: price - 50000 } }, { price: { $lte: price + 50000 } }] } });
   }
 
   handleBooking = async () => {
     console.log('123');
     const { route: { params: { id } }, booking } = this.props;
-    const results = await post('/booking', {
-      roomId: id,
-    });
-    if (results) {
+    try {
+      await post('/booking', {
+        roomId: id,
+      });
       this.setState({ overlayIsVisible: true });
+    } catch (error) {
+      console.log('error', error);
     }
+    // if (results) {
+    //   this.setState({ overlayIsVisible: true });
+    // }
     // booking(id);
   };
 
@@ -177,11 +190,48 @@ class DetailRoom extends Component<Props, State> {
   }
   ;
 
+  renderSuggestionItem = ({ item }: { item: any}) => {
+    const { getDetail, getSuggesstion } = this.props;
+    return (
+      <QuickView
+        style={{ width: 140 }}
+        onPress={() => {
+          getDetail(item?.id);
+          getSuggesstion({ s: { $and: [{ price: { $gte: item?.price - 50000 } }, { price: { $lte: item?.price + 50000 } }] } });
+        }}
+        // onPress={() => this.handleOnPress(item?.id)}
+        marginRight={20}
+      >
+        <Image
+          source={{ uri: item?.images[0] }}
+          width={140}
+          height={100}
+        />
+        <QuickView marginTop={15}>
+          <Text numberOfLines={2} fontSize="small" bold>
+            {item?.name}
+          </Text>
+          <Text marginTop={5} fontSize="small">
+            {Math.floor(item?.area)}
+            m2
+          </Text>
+          <Text bold marginTop={5} fontSize="small">
+            {convertPrice(item?.price * 10, '.')}
+            ₫
+          </Text>
+        </QuickView>
+      </QuickView>
+    );
+  };
+
   render() {
     const { scrollY, overlayIsVisible } = this.state;
-    const { route: { params: { id } }, detail: { data, loading }, bookingSelector } = this.props;
-    console.log('bookingSelector', bookingSelector);
-
+    const {
+      route: { params: { id } },
+      detail: { data, loading },
+      bookingSelector,
+      suggestion: { data: suggestionData },
+    } = this.props;
     if (loading || _.isEmpty(data)) {
       return <OverlayLoading backgroundColor={Color.white} />;
     }
@@ -287,6 +337,12 @@ class DetailRoom extends Component<Props, State> {
                 </Text>
               </QuickView>
             </QuickView>
+            {/* Mô tả */}
+            <QuickView paddingVertical={20}>
+              <Text bold type="paragraph">Mô tả</Text>
+              <Text marginTop={10}>{data?.description}</Text>
+            </QuickView>
+            {/* Tiện ích */}
             <QuickView paddingVertical={20}>
               <Text bold type="paragraph">Tiện ích</Text>
               <QuickView paddingVertical={10} style={{ flexWrap: 'wrap' }} row>
@@ -298,7 +354,7 @@ class DetailRoom extends Component<Props, State> {
                 ))}
               </QuickView>
             </QuickView>
-
+            {/* Map */}
             <QuickView
               style={{
                 // ...StyleSheet.absoluteFillObject,
@@ -349,7 +405,11 @@ class DetailRoom extends Component<Props, State> {
               {/* <Button marginVertical={10} title="Xem bản đồ" onPress={() => NavigationService.navigate(exploreStack.mapDetailRoom)} /> */}
             </QuickView>
             {/* <Button marginVertical={10} title="Xem bản đồ" onPress={() => NavigationService.navigate(exploreStack.mapDetailRoom)} /> */}
-
+            {/* Gợi ý */}
+            <QuickView paddingVertical={20}>
+              <Text bold type="paragraph">Gợi ý</Text>
+              <FlatList showsHorizontalScrollIndicator={false} horizontal style={{ marginTop: 20 }} data={suggestionData} renderItem={this.renderSuggestionItem} />
+            </QuickView>
           </Body>
 
         </Animated.ScrollView>
@@ -375,7 +435,7 @@ class DetailRoom extends Component<Props, State> {
           {/* <Button width={100} marginTop={20} titleStyle={{ fontWeight: 'bold' }} title="Save" onPress={this.handleBooking} /> */}
           <QuickView center row>
             <Text type="title" bold>
-              {convertPrice(data?.price * 100000, '.')}
+              {convertPrice(data?.price * 10, '.')}
               ₫
             </Text>
             <Text type="title">/ 1 tháng</Text>
@@ -390,11 +450,13 @@ class DetailRoom extends Component<Props, State> {
 const mapStateToProps = (state: any) => ({
   detail: parseObjectSelector(applyObjectSelector(detailRoomSelector, state)),
   bookingSelector: parseObjectSelector(applyObjectSelector(bookingRoomSelector, state)),
+  suggestion: parseArraySelector(applyArraySelector(allRoomSelector, state)),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
   getDetail: (id: number) => dispatch(roomGetDetail({ id })),
   booking: (id: number) => dispatch(bookingRoom({ id })),
+  getSuggesstion: (query ?: TQuery) => dispatch(allRoomGetList({ query })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailRoom);

@@ -11,3 +11,7 @@ export const fetchAmenitiesApi = (queryString: string) => get(`/amenities?${quer
 export const updateSelfInfoApi = (data: any) => patch('/auth/me', data);
 
 export const getProfileApi = () => get('/auth/me');
+
+export const getListBookedApi = () => get('/booking/mine/booking');
+// change
+export const getListBookingApi = () => get('/booking/mine/booked');

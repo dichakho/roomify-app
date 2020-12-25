@@ -2,9 +2,11 @@
  * authStack
  */
 const authStack = {
-  loginScreen: 'LoginScreen',
+  loginScreen: 'Login',
   registerStack: 'registerStack',
   forgotPasswordStack: 'forgotPasswordStack',
+  registerScreen: 'Sign Up',
+  mainScreen: 'MainScreen',
 };
 
 export default authStack;

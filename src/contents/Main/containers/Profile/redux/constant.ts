@@ -13,6 +13,8 @@ export const MY_PROPERTY = 'myProperty';
 export const AMENITIES = 'amenities';
 export const UPDATE_PROFILE = 'updateProfile';
 export const ME = 'me';
+export const BOOKED_LIST = 'bookedList';
+export const BOOKING_LIST = 'bookingList';
 
 /**
  * TYPE
@@ -57,6 +59,16 @@ export type TMe = {
   getProfileSuccess: (state: any, action: any) => any;
   getProfileFail: (state: any, action: any) => any;
 };
+export type TBookedList = {
+  bookedGetList: (state: any, action: any) => any;
+  bookedGetListSuccess: (state: any, action: any) => any;
+  bookedGetListFail: (state: any, action: any) => any;
+};
+export type TBookingList = {
+  bookingGetList: (state: any, action: any) => any;
+  bookingGetListSuccess: (state: any, action: any) => any;
+  bookingGetListFail: (state: any, action: any) => any;
+};
 
 /**
  * ENUM
@@ -84,5 +96,6 @@ export const INITIAL_STATE = fromJS({
   ...createArrayInitialState(AMENITIES),
   ...createObjectInitialState(UPDATE_PROFILE),
   ...createObjectInitialState(ME),
-
+  ...createArrayInitialState(BOOKING_LIST),
+  ...createArrayInitialState(BOOKED_LIST),
 });

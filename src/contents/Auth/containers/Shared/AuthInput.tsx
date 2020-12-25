@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { withTheme, ThemeProps } from 'react-native-elements';
 import { InputProps } from '@components/Common/Input';
 import { Input } from '@components';
+import { Color } from '@themes/Theme';
 
 export interface AuthInputProps extends InputProps{
   leftIconName?: string;
@@ -9,14 +10,15 @@ export interface AuthInputProps extends InputProps{
 
 class AuthInput extends PureComponent<AuthInputProps> {
   static defaultProps = {
-    backgroundColor: '#F1F8FE',
-    color: '#727A8E',
-    placeholderTextColor: '#727A8E',
+    backgroundColor: Color.grey,
+    // color: '#727A8E',
+    placeholderTextColor: Color.black,
     height: 50,
     center: true,
-    textCenter: true,
-    shadow: true,
-    rightIconColor: '#315DF7',
+    // textCenter: true,
+    // shadow: true,
+    rightIconColor: Color.black,
+    containerStyle: { borderWidth: 1 },
   };
 
   input: any;
@@ -28,7 +30,7 @@ class AuthInput extends PureComponent<AuthInputProps> {
   render() {
     const { leftIconName, theme, ...otherProps } = this.props;
     const leftIcon = leftIconName ? {
-      name: leftIconName, size: 22, color: '#315DF7', marginTop: 3,
+      name: leftIconName, size: 22, color: Color.black, marginTop: 3,
     } : undefined;
     return (
       <Input
@@ -36,6 +38,8 @@ class AuthInput extends PureComponent<AuthInputProps> {
         {...otherProps}
         fontSize={18}
         leftIcon={leftIcon}
+        containerStyle={{ borderBottomWidth: 0, borderColor: Color.grey }}
+        inputContainerStyle={{ borderBottomWidth: 1, borderColor: Color.black }}
       />
     );
   }

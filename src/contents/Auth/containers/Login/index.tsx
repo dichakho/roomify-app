@@ -1,30 +1,24 @@
 import React, { PureComponent } from 'react';
-import { QuickView, Container, Avatar } from '@components';
+import {
+  QuickView, Container, Avatar, Text,
+} from '@components';
+import { Color } from '@themes/Theme';
+import { lightPrimaryColor } from '@themes/ThemeComponent/Common/Color';
 import LoginForm from './Shared/LoginForm';
 import LoginBackIcon from './Shared/LoginBackIcon';
 
 class LoginScreen extends PureComponent {
   render() {
     return (
-      <Container style={{ borderWidth: 1, borderColor: 'red' }} dismissKeyboard>
+      <Container dismissKeyboard>
         <QuickView
+          flex={1}
           paddingHorizontal={20}
-          backgroundImage={{
-            source: require('@assets/images/loginBackground.png'),
-          }}
+          backgroundColor={Color.grey}
         >
           <LoginBackIcon />
-          <QuickView marginBottom={20} marginTop={60} center>
-            <Avatar
-              size="xlarge"
-              rounded
-              source={{
-                uri:
-                  'https://www.easy-profile.com/support.html?controller=attachment&task=download&tmpl=component&id=2883',
-              }}
-              title="M"
-              marginBottom={10}
-            />
+          <QuickView marginBottom={50} marginTop={150} center>
+            <Text bold color={lightPrimaryColor} fontSize={30}>Welcome, Roomifier</Text>
           </QuickView>
           <LoginForm />
         </QuickView>

@@ -6,5 +6,6 @@ const mainBottomTab = {
   savedStack: 'BookmarkStack',
   alertStack: 'AlertStack',
   profileStack: 'ProfileStack',
+
 };
 export default mainBottomTab;

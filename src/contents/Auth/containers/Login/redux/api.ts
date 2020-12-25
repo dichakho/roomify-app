@@ -3,3 +3,5 @@ import { post } from '@utils/api';
 import { ILogInInput } from './model';
 
 export const realtorLoginApi = (data: ILogInInput) => post('/auth/login', data);
+
+export const registerApi = (data: ILogInInput) => post('/auth/register', data);

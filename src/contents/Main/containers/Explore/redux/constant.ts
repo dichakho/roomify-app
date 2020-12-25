@@ -19,6 +19,7 @@ export const CITY = 'city';
 export const DISTRICT = 'district';
 export const SUB_DISTRICT = 'subDistrict';
 export const CREATE_PROPERTY = 'createProperty';
+export const ALL_ROOM = 'allRoom';
 
 /**
  * TYPE
@@ -76,6 +77,11 @@ export type TCreateProperty = {
   createPropertyFail: (state: any, action: any) => any;
 };
 
+export type TAllRoom = {
+  allRoomGetList: (state: any, action: any) => any;
+  allRoomGetListSuccess: (state: any, action: any) => any;
+  allRoomGetListFail: (state: any, action: any) => any;
+};
 /**
  * INITIAL_STATE
  */
@@ -91,6 +97,7 @@ export const INITIAL_STATE = fromJS({
   ...createArrayInitialState(DISTRICT),
   ...createArrayInitialState(SUB_DISTRICT),
   ...createObjectInitialState(CREATE_PROPERTY),
+  ...createArrayInitialState(ALL_ROOM),
   searchHistory: [],
   cityConfig: 1,
 });

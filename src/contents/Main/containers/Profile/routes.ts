@@ -10,6 +10,8 @@ const profileStack = {
   createRoom: 'CreateRoomScreen',
   editRoom: 'EditRoomScreen',
   manageDetailProperty: 'ManageDetailProperty',
+  listBooking: 'ListBooking',
+  listBooked: 'ListBooked',
 };
 
 export default profileStack;

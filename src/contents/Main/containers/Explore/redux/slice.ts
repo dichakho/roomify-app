@@ -26,6 +26,8 @@ import {
   SUB_DISTRICT,
   CREATE_PROPERTY,
   TCreateProperty,
+  TAllRoom,
+  ALL_ROOM,
 } from './constant';
 
 const slice = createSlice({
@@ -130,6 +132,7 @@ const slice = createSlice({
       return state.set('searchHistory', data);
     },
     setCityConfig: (state: any, action: any) => state.set('cityConfig', action.payload.data),
+    ...createArrayReducer<TAllRoom>('allRoomGetList', ALL_ROOM),
   },
   extraReducers: {
     [REHYDRATE]: (state, action) => {
@@ -185,5 +188,8 @@ export const {
   createPropertyFail,
   setSearchHistory,
   setCityConfig,
+  allRoomGetList,
+  allRoomGetListSuccess,
+  allRoomGetListFail,
 } = slice.actions;
 export default slice.reducer;

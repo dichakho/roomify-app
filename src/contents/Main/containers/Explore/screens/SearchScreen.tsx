@@ -18,6 +18,7 @@ import rootStack from '@contents/routes';
 import { setIdIntoParams } from '@utils/appHelper';
 import { get } from '@utils/api';
 import _ from 'lodash';
+import Geolocation from '@react-native-community/geolocation';
 import exploreStack from '../routes';
 import { propertyListSelector } from '../redux/selector';
 import { propertyGetList, setSearchHistory } from '../redux/slice';
@@ -45,14 +46,12 @@ class SearchScreen extends PureComponent<Props, State> {
   callSuggestions = (_.debounce(() => {
     const { search } = this.state;
     const { getList } = this.props;
-    console.log('call suggestions');
     this.filter.clearFilter();
     // this.filter.deleteFilterByKey('destination.name');
     // this.filter.mergeFilter('destination.name', '$contL', search, 'OR');
     // this.filter.mergeFilter('destination.parent.name', '$contL', search, 'OR');
     // this.filter.mergeFilter('destination.parent.parent.name', '$contL', search, 'OR');
-    this.filter.filterObject = { $or: [{ 'destination.name': { $contL: search } }, { 'destination.district.name': { $contL: search } }, { 'destination.city.name': { $contL: search } }] };
-    console.log('filterObject', this.filter.filterObject);
+    this.filter.filterObject = { $or: [{ address: { $contL: search } }, { 'destination.name': { $contL: search } }, { 'destination.district.name': { $contL: search } }, { 'destination.city.name': { $contL: search } }] };
 
     getList(
       { fields: this.fields, s: this.filter.filterObject },
@@ -233,6 +232,8 @@ class SearchScreen extends PureComponent<Props, State> {
           row
           onPress={() => NavigationService.navigate(rootStack.exploreStack, {
             screen: exploreStack.map,
+            params: { s: this.filter.filterObject },
+            // params: { id: 1 },
           })}
           borderRadius={10}
           center
@@ -260,6 +261,26 @@ class SearchScreen extends PureComponent<Props, State> {
     );
   };
 
+  locateCurrentPosition = () => {
+    console.log('123');
+
+    Geolocation.getCurrentPosition(
+      (position) => {
+        console.log(JSON.stringify(position));
+
+        const initialPosition = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+        console.log('initialPosition', initialPosition);
+
+        // this.setState({ initialPosition });
+      },
+      (error) => console.log('error', error.message),
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 },
+    );
+  };
+
   render() {
     const { properties, getList, history } = this.props;
     // console.log('🚀 ~ file: SearchScreen.tsx ~ line 188 ~ SearchScreen ~ render ~ properties', properties);
@@ -279,6 +300,14 @@ class SearchScreen extends PureComponent<Props, State> {
           {/* Option 1 */}
           {search.length === 0 && _.isNull(popularCity) ? (
             <>
+
+              <QuickView onPress={this.locateCurrentPosition} paddingVertical={20}>
+                <QuickView row>
+                  <QuickView height={20} style={{ borderLeftWidth: 1, borderColor: 'red' }} />
+                  <Text marginBottom={10} bold> Khu trọ gần tôi</Text>
+                </QuickView>
+
+              </QuickView>
               <PopularCity onChange={(item: any) => this.handleOnPressCity(item)} />
               <SearchHistory onChange={(item: string) => this.updateSearch(item)} />
             </>

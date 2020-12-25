@@ -8,6 +8,10 @@ import {
   NAME,
   TListSaved,
   LIST,
+  TListRoomate,
+  ROOMATE,
+  TDetailRoomate,
+  DETAIL_ROOMATE,
 } from './constant';
 
 const slice = createSlice({
@@ -15,6 +19,8 @@ const slice = createSlice({
   initialState: INITIAL_STATE,
   reducers: {
     ...createArrayReducer<TListSaved>(`${NAME}GetList`, LIST),
+    ...createArrayReducer<TListRoomate>('roomateGetList', ROOMATE),
+    ...createObjectReducer<TDetailRoomate>('roomateGetDetail', DETAIL_ROOMATE),
   },
   // extraReducers: {
   //   [REHYDRATE]: (state, action) => {
@@ -41,5 +47,11 @@ export const {
   savedGetList,
   savedGetListSuccess,
   savedGetListFail,
+  roomateGetList,
+  roomateGetListSuccess,
+  roomateGetListFail,
+  roomateGetDetail,
+  roomateGetDetailSuccess,
+  roomateGetDetailFail,
 } = slice.actions;
 export default slice.reducer;

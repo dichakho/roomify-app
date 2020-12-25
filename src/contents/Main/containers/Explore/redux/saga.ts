@@ -12,6 +12,7 @@ import {
   fetchDistrictApi,
   fetchSubDistrictApi,
   createPropertyApi,
+  getListRoomApi,
 } from './api';
 import {
   propertyGetList,
@@ -44,6 +45,9 @@ import {
   createProperty,
   createPropertySuccess,
   createPropertyFail,
+  allRoomGetList,
+  allRoomGetListSuccess,
+  allRoomGetListFail,
 } from './slice';
 
 export function* getListPropertySaga({ payload }: { payload: any }) {
@@ -52,6 +56,8 @@ export function* getListPropertySaga({ payload }: { payload: any }) {
     yield put(propertyGetListSuccess(response));
     return true;
   } catch (error) {
+    console.log('error', error);
+
     yield put(propertyGetListFail(yield* handleException(error)));
     return false;
   }
@@ -162,6 +168,17 @@ export function* createPropertySaga({ payload }: { payload: any}) {
   }
 }
 
+export function* getAllRoomSaga({ payload }: { payload: any}) {
+  try {
+    const response = yield call(getListRoomApi, stringifyQuery(payload.query));
+    yield put(allRoomGetListSuccess(response));
+    return true;
+  } catch (error) {
+    yield put(allRoomGetListFail(yield* handleException(error)));
+    return false;
+  }
+}
+
 export default [
   takeLatest(propertyGetList, getListPropertySaga),
   takeLatest(categoryGetList, getListCategorySaga),
@@ -173,4 +190,5 @@ export default [
   takeLatest(districtGetList, getDistrictSaga),
   takeLatest(subDistrictGetList, getSubDistrictSaga),
   takeLatest(createProperty, createPropertySaga),
+  takeLatest(allRoomGetList, getAllRoomSaga),
 ];

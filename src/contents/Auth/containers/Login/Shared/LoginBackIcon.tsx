@@ -14,7 +14,7 @@ class LoginBackIcon extends PureComponent<any> {
         <Icon
           name="chevron-left"
           type="entypo"
-          color={Color.white}
+          color={Color.black}
           size={30}
           onPress={() => NavigationService.goBack()}
           containerStyle={{

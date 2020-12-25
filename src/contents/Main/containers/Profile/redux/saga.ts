@@ -7,6 +7,8 @@ import {
   fetchAmenitiesApi,
   updateSelfInfoApi,
   getProfileApi,
+  getListBookedApi,
+  getListBookingApi,
 } from './api';
 import {
 
@@ -25,7 +27,12 @@ import {
   getProfile,
   getProfileSuccess,
   getProfileFail,
-
+  bookingGetList,
+  bookingGetListSuccess,
+  bookingGetListFail,
+  bookedGetList,
+  bookedGetListSuccess,
+  bookedGetListFail,
 } from './slice';
 
 export function* registerOwnerSaga({ payload }: { payload: any }) {
@@ -83,10 +90,34 @@ export function* getProfileSaga() {
   }
 }
 
+export function* getBookedListSaga() {
+  try {
+    const response = yield call(getListBookedApi);
+    yield put(bookedGetListSuccess(response));
+    return true;
+  } catch (error) {
+    yield put(bookedGetListFail(yield* handleException(error)));
+    return false;
+  }
+}
+
+export function* getBookingListSaga() {
+  try {
+    const response = yield call(getListBookingApi);
+    yield put(bookingGetListSuccess(response));
+    return true;
+  } catch (error) {
+    yield put(bookingGetListFail(yield* handleException(error)));
+    return false;
+  }
+}
+
 export default [
   takeLatest(registerOwner, registerOwnerSaga),
   takeLatest(myPropertyGetList, fetchMyPropertySaga),
   takeLatest(amenitiesGetList, fetchAmenitiesSaga),
   takeLatest(updateProfile, updateProfileSaga),
   takeLatest(getProfile, getProfileSaga),
+  takeLatest(bookedGetList, getBookedListSaga),
+  takeLatest(bookingGetList, getBookingListSaga),
 ];

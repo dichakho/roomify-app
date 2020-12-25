@@ -25,6 +25,8 @@ import exploreStack from './containers/Explore/routes';
 import ExploreScreen from './containers/Explore/screens';
 import ProfileScreen from './containers/Profile/screens';
 import profileStack from './containers/Profile/routes';
+import roomateStack from './containers/Roomate/routes';
+import ListRoomate from './containers/Roomate/screens';
 
 const BottomTabs = createBottomTabNavigator();
 
@@ -99,6 +101,41 @@ function MainBottomTab(props: any) {
             <Icon name="search" type="ionicons" color={color} size={28} />
           ) : (
             <Icon name="search" type="ionicons" color="#000000" size={24} />
+          ),
+        }}
+      />
+      <BottomTabs.Screen
+        name={roomateStack.index}
+        component={ListRoomate}
+        options={{
+          tabBarLabel: ({ focused, color }) => focused ? (
+            <Text
+              color={lightPrimaryColor}
+              fontSize="medium"
+              t="bottom_tab:roomate"
+            />
+          ) : (
+            <Text
+              fontSize="small"
+              color="#000000"
+              type="subtitle"
+              t="bottom_tab:roomate"
+            />
+          ),
+          tabBarIcon: ({ focused, color, size }) => focused ? (
+            <Icon
+              name="addusergroup"
+              type="antdesign"
+              color={color}
+              size={26}
+            />
+          ) : (
+            <Icon
+              name="addusergroup"
+              type="antdesign"
+              color="#000000"
+              size={22}
+            />
           ),
         }}
       />

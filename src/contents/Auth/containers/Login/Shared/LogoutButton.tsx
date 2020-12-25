@@ -9,9 +9,10 @@ import { logout } from '../redux/slice';
 import { loginSelector } from '../redux/selector';
 
 interface Props extends AuthButtonProps {
-  reduxLogout?: () => any;
+  reduxLogout: () => any;
   requireLogin?: boolean;
   loginSelectorData: TObjectRedux;
+  onPressCustom?: any;
 }
 class LoginButton extends PureComponent<Props> {
   static defaultProps = {};
@@ -21,12 +22,20 @@ class LoginButton extends PureComponent<Props> {
       reduxLogout,
       requireLogin,
       loginSelectorData: { data },
+      onPressCustom,
       ...otherProps
     } = this.props;
     const token = data.get('token');
     if (token) {
       return (
-        <AuthButton {...otherProps} t="auth:logout" onPress={reduxLogout} />
+        <AuthButton
+          {...otherProps}
+          t="auth:logout"
+          onPress={() => {
+            reduxLogout();
+            onPressCustom();
+          }}
+        />
       );
     }
     return <QuickView />;

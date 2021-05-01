@@ -82,7 +82,7 @@ const list = [
     role: [RoleApi.OWNER],
   },
   {
-    name: 'Danh sách đã đặt',
+    name: 'Danh sách bạn đã đặt',
     type: 'screen',
     stack: rootStack.profileStack,
 
@@ -93,7 +93,7 @@ const list = [
   //   name: 'Help & Support', type: 'screen',
   // },
   {
-    name: 'Settings',
+    name: 'Cài đặt',
     type: 'screen',
     stack: rootStack.profileStack,
 

@@ -1,6 +1,9 @@
+import rootStack from '@contents/routes';
 import { handleException } from '@utils/exception';
+import NavigationService from '@utils/navigation';
 import { stringifyQuery } from '@utils/redux';
 import { put, call, takeLatest } from 'redux-saga/effects';
+import profileStack from '../../Profile/routes';
 import {
   fetchProperties,
   fetchCategories,
@@ -13,6 +16,7 @@ import {
   fetchSubDistrictApi,
   createPropertyApi,
   getListRoomApi,
+  getNearMeApi,
 } from './api';
 import {
   propertyGetList,
@@ -48,6 +52,9 @@ import {
   allRoomGetList,
   allRoomGetListSuccess,
   allRoomGetListFail,
+  nearMeGetList,
+  nearMeGetListSuccess,
+  nearMeGetListFail,
 } from './slice';
 
 export function* getListPropertySaga({ payload }: { payload: any }) {
@@ -158,10 +165,13 @@ export function* createPropertySaga({ payload }: { payload: any}) {
     console.log('payload.data', payload.data);
 
     const response = yield call(createPropertyApi, payload.data);
+    yield call(NavigationService.navigate, rootStack.profileStack, {
+      screen: profileStack.myProperty,
+    });
     yield put(createPropertySuccess(response));
     return true;
   } catch (error) {
-    console.log('error', error);
+    console.log('error error', error);
 
     yield put(createPropertyFail(yield* handleException(error)));
     return false;
@@ -179,6 +189,19 @@ export function* getAllRoomSaga({ payload }: { payload: any}) {
   }
 }
 
+export function* getNearMeSaga({ payload }: { payload: any}) {
+  try {
+    console.log('payloaf', payload);
+
+    const response = yield call(getNearMeApi, stringifyQuery(payload.query), payload.longitude, payload.latitude, encodeURI('Hòa Khánh'));
+    yield put(nearMeGetListSuccess(response));
+    return true;
+  } catch (error) {
+    yield put(nearMeGetListFail(yield* handleException(error)));
+    return false;
+  }
+}
+
 export default [
   takeLatest(propertyGetList, getListPropertySaga),
   takeLatest(categoryGetList, getListCategorySaga),
@@ -191,4 +214,5 @@ export default [
   takeLatest(subDistrictGetList, getSubDistrictSaga),
   takeLatest(createProperty, createPropertySaga),
   takeLatest(allRoomGetList, getAllRoomSaga),
+  takeLatest(nearMeGetList, getNearMeSaga),
 ];

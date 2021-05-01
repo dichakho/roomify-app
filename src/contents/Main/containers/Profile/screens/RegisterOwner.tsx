@@ -27,6 +27,7 @@ interface State {
   checkNull: boolean;
   loading: boolean;
   overlayIsVisible: boolean;
+  errorRegister: string | null;
 }
 class RegisterOwner extends PureComponent<Props, State> {
   name: any;
@@ -41,6 +42,7 @@ class RegisterOwner extends PureComponent<Props, State> {
       checkNull: false,
       loading: false,
       overlayIsVisible: false,
+      errorRegister: null,
     };
   }
 
@@ -93,9 +95,15 @@ class RegisterOwner extends PureComponent<Props, State> {
         householdRegistrationImgs: imgUrl,
         nameOwner: this.name.getText(),
       };
-      const result = await post('/owner-registration', payload);
-      if (result.status === 'PENDING') {
-        this.setState({ loading: false, overlayIsVisible: true });
+      try {
+        const result = await post('/owner-registration', payload);
+        if (result.status === 'PENDING') {
+          this.setState({ loading: false, overlayIsVisible: true });
+        }
+      } catch (error) {
+        console.log('errorRegister', error);
+
+        this.setState({ errorRegister: error.message, overlayIsVisible: true });
       }
       // register(payload);
       // console.log('payload', payload);
@@ -103,7 +111,9 @@ class RegisterOwner extends PureComponent<Props, State> {
   };
 
   render() {
-    const { checkNull, loading, overlayIsVisible } = this.state;
+    const {
+      checkNull, loading, overlayIsVisible, errorRegister,
+    } = this.state;
     const { registerStatus } = this.props;
     return (
       <Container>
@@ -111,7 +121,7 @@ class RegisterOwner extends PureComponent<Props, State> {
           <QuickView>
             <Text center color={lightPrimaryColor} type="title" bold>Thông báo</Text>
             <Text marginVertical={10} center>
-              {`Yêu cầu của bạn sẽ được quản trị viên
+              {!_.isNull(errorRegister) ? errorRegister : `Yêu cầu của bạn sẽ được quản trị viên
 xét duyệt trong thời gian sớm nhất`}
             </Text>
             <QuickView paddingHorizontal={80}>

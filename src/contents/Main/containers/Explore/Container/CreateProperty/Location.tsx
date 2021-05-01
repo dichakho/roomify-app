@@ -125,7 +125,7 @@ class Location extends PureComponent<Props, State> {
       //       });
       pushData({
         destinationId: subDistrictValue,
-        logtitude: result.results[0].geometry.location.lng,
+        longitude: result.results[0].geometry.location.lng,
         latitude: result.results[0].geometry.location.lat,
         address: `${numberHouse} ${street}`,
 

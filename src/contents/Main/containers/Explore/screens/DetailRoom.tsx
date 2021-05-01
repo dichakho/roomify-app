@@ -71,6 +71,7 @@ interface State {
   scrollY: any;
   activeSlide: number;
   overlayIsVisible: boolean;
+  errorBooking: string| null;
 }
 class DetailRoom extends Component<Props, State> {
   // data = [
@@ -116,6 +117,7 @@ class DetailRoom extends Component<Props, State> {
       scrollY: new Animated.Value(0),
       activeSlide: 0,
       overlayIsVisible: false,
+      errorBooking: null,
     };
   }
 
@@ -136,6 +138,7 @@ class DetailRoom extends Component<Props, State> {
       this.setState({ overlayIsVisible: true });
     } catch (error) {
       console.log('error', error);
+      this.setState({ errorBooking: error.message, overlayIsVisible: true });
     }
     // if (results) {
     //   this.setState({ overlayIsVisible: true });
@@ -225,7 +228,7 @@ class DetailRoom extends Component<Props, State> {
   };
 
   render() {
-    const { scrollY, overlayIsVisible } = this.state;
+    const { scrollY, overlayIsVisible, errorBooking } = this.state;
     const {
       route: { params: { id } },
       detail: { data, loading },
@@ -242,7 +245,7 @@ class DetailRoom extends Component<Props, State> {
           <QuickView>
             <Text center color={lightPrimaryColor} type="title" bold>Thông báo</Text>
             <Text marginVertical={10} center>
-              Chủ nhà sẽ liên hệ với bạn trong thời gian sớm nhất
+              {!_.isNull(errorBooking) ? errorBooking : 'Chủ nhà sẽ liên hệ với bạn trong thời gian sớm nhất'}
             </Text>
             <QuickView paddingHorizontal={80}>
               <Button

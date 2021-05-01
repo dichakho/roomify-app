@@ -10,6 +10,7 @@ import { lightComponentColor } from '@themes/ThemeComponent/Common/CommonProps';
 import _ from 'lodash';
 import { applyObjectSelector, parseObjectSelector } from '@utils/selector';
 import { TObjectRedux } from '@utils/redux';
+import { lightPrimaryColor } from '@themes/ThemeComponent/Common/Color';
 import { createProperty, pushPayloadProperty } from '../../redux/slice';
 import { createPropertySelector } from '../../redux/selector';
 
@@ -22,6 +23,7 @@ interface Props {
 }
 interface State {
   checkNull: Array<string>;
+  loadingCreate: boolean;
 }
 class Confirmation extends PureComponent<Props, State> {
   title: any;
@@ -32,10 +34,12 @@ class Confirmation extends PureComponent<Props, State> {
     super(props);
     this.state = {
       checkNull: [],
+      loadingCreate: false,
     };
   }
 
   handleData = () => {
+    this.setState({ loadingCreate: true });
     const { pushData, dataPost, create } = this.props;
     const checkNull = [];
     const title = this.title.getText();
@@ -64,9 +68,9 @@ class Confirmation extends PureComponent<Props, State> {
 
   render() {
     const { dataPost, createPayload } = this.props;
-    const { checkNull } = this.state;
-    console.log('dataPost', dataPost);
-    console.log('createPayload', createPayload);
+    const { checkNull, loadingCreate } = this.state;
+    // console.log('dataPost', dataPost);
+    // console.log('createPayload', createPayload);
 
     const hasErrors = (key: any) => (checkNull.includes(key) ? { borderColor: 'red' } : null);
     return (
@@ -165,7 +169,7 @@ class Confirmation extends PureComponent<Props, State> {
               placeholder="Môi trường sống văn hóa, sạch sẽ ..."
             /> */}
           <QuickView flex={1} justifyContent="flex-end">
-            <Button title="Đăng bài" outline onPress={this.handleData} />
+            <Button loading={loadingCreate} title="Đăng bài" onPress={this.handleData} />
           </QuickView>
         </QuickView>
         {/* <Button title="Đăng phòng" outline /> */}

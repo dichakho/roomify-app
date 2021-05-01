@@ -28,6 +28,8 @@ import {
   TCreateProperty,
   TAllRoom,
   ALL_ROOM,
+  TNearMe,
+  NEAR_ME,
 } from './constant';
 
 const slice = createSlice({
@@ -63,6 +65,7 @@ const slice = createSlice({
     },
     clearListRoom: (state: any) => state.set(LIST_ROOM, INITIAL_STATE.get(LIST_ROOM)),
     ...createObjectReducer<TDetailRoom>('roomGetDetail', DETAIL_ROOM),
+    clearDetailRoom: (state: any) => state.set(DETAIL_ROOM, INITIAL_STATE.get(DETAIL_ROOM)),
     ...createObjectReducer<TBookingRoom>('bookingRoom', BOOKING),
     cityGetList: (state: any, action: any) => state
       .setIn([CITY, 'loading'], true)
@@ -133,6 +136,7 @@ const slice = createSlice({
     },
     setCityConfig: (state: any, action: any) => state.set('cityConfig', action.payload.data),
     ...createArrayReducer<TAllRoom>('allRoomGetList', ALL_ROOM),
+    ...createArrayReducer<TNearMe>('nearMeGetList', NEAR_ME),
   },
   extraReducers: {
     [REHYDRATE]: (state, action) => {
@@ -191,5 +195,9 @@ export const {
   allRoomGetList,
   allRoomGetListSuccess,
   allRoomGetListFail,
+  nearMeGetList,
+  nearMeGetListSuccess,
+  nearMeGetListFail,
+  clearDetailRoom,
 } = slice.actions;
 export default slice.reducer;

@@ -19,8 +19,8 @@ import { propertyGetList } from '../redux/slice';
 import { propertyListSelector } from '../redux/selector';
 import exploreStack from '../routes';
 
-const LATITUDE = 16.06375;
-const LONGITUDE = 108.17969;
+const LATITUDE = 16.0544068;
+const LONGITUDE = 108.2021667;
 // const coordinates = [
 //   {
 //     name: 'Nearby the beach & Nguyen Tat Thanh street studio',
@@ -214,10 +214,12 @@ class MapScreen extends PureComponent<Props, State> {
           ref={(map) => { this.map = map; }}
           style={{ flex: 1 }}
           initialRegion={{
-            latitude: properties?.data[0]?.latitude,
-            longitude: properties?.data[0]?.longitude,
-            latitudeDelta: 0.00922,
-            longitudeDelta: 0.00421,
+            latitude: properties?.data[0]?.latitude || LATITUDE,
+            longitude: properties?.data[0]?.longitude || LONGITUDE,
+            // latitude: LATITUDE,
+            // longitude: LONGITUDE,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
             // latitudeDelta: 1,
             // longitudeDelta: 1,
           }}

@@ -20,6 +20,7 @@ export const DISTRICT = 'district';
 export const SUB_DISTRICT = 'subDistrict';
 export const CREATE_PROPERTY = 'createProperty';
 export const ALL_ROOM = 'allRoom';
+export const NEAR_ME = 'nearMe';
 
 /**
  * TYPE
@@ -82,6 +83,12 @@ export type TAllRoom = {
   allRoomGetListSuccess: (state: any, action: any) => any;
   allRoomGetListFail: (state: any, action: any) => any;
 };
+
+export type TNearMe = {
+  nearMeGetList: (state: any, action: any) => any;
+  nearMeGetListSuccess: (state: any, action: any) => any;
+  nearMeGetListFail: (state: any, action: any) => any;
+};
 /**
  * INITIAL_STATE
  */
@@ -98,6 +105,7 @@ export const INITIAL_STATE = fromJS({
   ...createArrayInitialState(SUB_DISTRICT),
   ...createObjectInitialState(CREATE_PROPERTY),
   ...createArrayInitialState(ALL_ROOM),
+  ...createArrayInitialState(NEAR_ME),
   searchHistory: [],
   cityConfig: 1,
 });

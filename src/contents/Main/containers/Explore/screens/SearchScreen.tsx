@@ -24,6 +24,7 @@ import { propertyListSelector } from '../redux/selector';
 import { propertyGetList, setSearchHistory } from '../redux/slice';
 import PopularCity from '../Container/Search/PopularCity';
 import SearchHistory from '../Container/Search/SearchHistory';
+import ExploreStack from '../index.stack';
 
 interface State {
   search: string;
@@ -261,24 +262,21 @@ class SearchScreen extends PureComponent<Props, State> {
     );
   };
 
-  locateCurrentPosition = () => {
+  locateCurrentPosition = async () => {
     console.log('123');
 
-    Geolocation.getCurrentPosition(
-      (position) => {
-        console.log(JSON.stringify(position));
-
-        const initialPosition = {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        };
-        console.log('initialPosition', initialPosition);
-
-        // this.setState({ initialPosition });
-      },
-      (error) => console.log('error', error.message),
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 },
-    );
+    Geolocation.getCurrentPosition((position) => {
+      const initialPosition = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      };
+      console.log('initialPosition', initialPosition);
+      NavigationService.navigate(exploreStack.propertyNearMe, { id: 1, name: '123', position: initialPosition });
+      // const result = await get(`https://maps.googleapis.com/maps/api/geocode/json?&key=AIzaSyCv45asCJthye8h1mrrDxl66PBzUnBcbzA&latlng=${initialPosition.latitude},${initialPosition.longitude}`);
+      // this.setState({ initialPosition });
+    },
+    (error) => console.log('error', error.message),
+    { enableHighAccuracy: true, timeout: 10000 });
   };
 
   render() {

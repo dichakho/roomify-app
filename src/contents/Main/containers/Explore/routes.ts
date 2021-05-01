@@ -11,6 +11,7 @@ const exploreStack = {
   detailRoom: 'DetailRoom',
   mapDetailRoom: 'MapDetailRoomScreen',
   propertyByCity: 'PropertyByCity',
+  propertyNearMe: 'PropertyNearMe',
 };
 
 export default exploreStack;

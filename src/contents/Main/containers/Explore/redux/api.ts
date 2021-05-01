@@ -23,3 +23,5 @@ export const createPropertyApi = (data: any) => post('/properties', data);
 export const favoritePropertyApi = (data: any) => post('/favorite-property', data);
 
 export const getListRoomApi = (queryString: string) => get(`/rooms?${queryString}`);
+
+export const getNearMeApi = (queryString: string, longitude: any, latitude: any, subString: any) => get(`/properties/near-me?latitude=${latitude}&longtitude=${longitude}&&sub-district=${subString}&${queryString}`);

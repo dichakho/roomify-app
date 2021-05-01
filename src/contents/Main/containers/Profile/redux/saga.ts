@@ -90,9 +90,9 @@ export function* getProfileSaga() {
   }
 }
 
-export function* getBookedListSaga() {
+export function* getBookedListSaga({ payload }: { payload: any }) {
   try {
-    const response = yield call(getListBookedApi);
+    const response = yield call(getListBookedApi, stringifyQuery(payload.query));
     yield put(bookedGetListSuccess(response));
     return true;
   } catch (error) {
@@ -101,9 +101,9 @@ export function* getBookedListSaga() {
   }
 }
 
-export function* getBookingListSaga() {
+export function* getBookingListSaga({ payload }: { payload: any }) {
   try {
-    const response = yield call(getListBookingApi);
+    const response = yield call(getListBookingApi, stringifyQuery(payload.query));
     yield put(bookingGetListSuccess(response));
     return true;
   } catch (error) {

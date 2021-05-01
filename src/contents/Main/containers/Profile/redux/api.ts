@@ -12,6 +12,6 @@ export const updateSelfInfoApi = (data: any) => patch('/auth/me', data);
 
 export const getProfileApi = () => get('/auth/me');
 
-export const getListBookedApi = () => get('/booking/mine/booking');
+export const getListBookedApi = (queryString: string) => get(`/booking/mine/booking?${queryString}`);
 // change
-export const getListBookingApi = () => get('/booking/mine/booked');
+export const getListBookingApi = (queryString: string) => get(`/booking/mine/booked?${queryString}`);

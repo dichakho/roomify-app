@@ -20,7 +20,7 @@ import NavigationService from '@utils/navigation';
 import { ActivityIndicator, Switch } from 'react-native';
 import { amenitiesGetList } from '../redux/slice';
 import { amenitiesSelector } from '../redux/selector';
-import { roomGetDetail, roomGetList } from '../../Explore/redux/slice';
+import { clearDetailRoom, roomGetDetail, roomGetList } from '../../Explore/redux/slice';
 import { detailRoomSelector } from '../../Explore/redux/selector';
 import { RoomStatus } from '../redux/constant';
 
@@ -31,6 +31,7 @@ interface Props {
   getListRoom: (id: number, query?: TQuery) => any;
   getDetail: (id: number) => any;
   detail: TObjectRedux;
+  clear: () => any;
 }
 interface State {
   data: Array<any>;
@@ -76,7 +77,10 @@ class EditRoom extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    const { getAmenities, getDetail, route: { params } } = this.props;
+    const {
+      getAmenities, getDetail, route: { params }, clear,
+    } = this.props;
+    clear();
     getAmenities({ fields: 'id,name,iconName,iconType', limit: 100 });
     getDetail(params);
   }
@@ -87,7 +91,21 @@ class EditRoom extends PureComponent<Props, State> {
     let priceVar = prevState.price;
     let areaVar = prevState.area;
     let isEnabledVar = prevState.isEnabled;
-
+    if (_.isNull(titleVar) && !_.isUndefined(nextProps?.detail?.data)) {
+      titleVar = nextProps?.detail?.data?.name;
+    }
+    if (_.isNull(descriptionVar) && !_.isUndefined(nextProps?.detail?.data)) {
+      descriptionVar = nextProps?.detail?.data?.description;
+    }
+    if (_.isNull(priceVar) && !_.isUndefined(nextProps?.detail?.data)) {
+      priceVar = nextProps?.detail?.data?.price;
+    }
+    if (_.isNull(areaVar) && !_.isUndefined(nextProps?.detail?.data)) {
+      areaVar = nextProps?.detail?.data?.area;
+    }
+    if (_.isNull(isEnabledVar) && !_.isUndefined(nextProps?.detail?.data)) {
+      isEnabledVar = nextProps?.detail?.data?.status === 'OPEN';
+    }
     if (prevState.data.length === 0 && nextProps?.amenities?.data.length !== 0 && !_.isUndefined(nextProps?.detail?.data?.amenities) && nextProps?.detail?.data?.amenities.length !== 0) {
       const data = [...nextProps?.amenities?.data];
       const amenities = [...nextProps?.detail?.data?.amenities].map((a) => a.id);
@@ -95,21 +113,21 @@ class EditRoom extends PureComponent<Props, State> {
       return { data: data.map((d) => ({ ...d, checked: _.includes(amenities, d.id) })) };
     }
     if (prevState.arrayImage.length === 0 && !_.isUndefined(nextProps?.detail?.data?.images) && nextProps?.detail?.data?.images.length !== 0) {
-      if (_.isNull(titleVar)) {
-        titleVar = nextProps?.detail?.data?.name;
-      }
-      if (_.isNull(descriptionVar)) {
-        descriptionVar = nextProps?.detail?.data?.description;
-      }
-      if (_.isNull(priceVar)) {
-        priceVar = nextProps?.detail?.data?.price;
-      }
-      if (_.isNull(areaVar)) {
-        areaVar = nextProps?.detail?.data?.area;
-      }
-      if (_.isNull(isEnabledVar)) {
-        isEnabledVar = nextProps?.detail?.data?.status === 'OPEN';
-      }
+      // if (_.isNull(titleVar)) {
+      //   titleVar = nextProps?.detail?.data?.name;
+      // }
+      // if (_.isNull(descriptionVar)) {
+      //   descriptionVar = nextProps?.detail?.data?.description;
+      // }
+      // if (_.isNull(priceVar)) {
+      //   priceVar = nextProps?.detail?.data?.price;
+      // }
+      // if (_.isNull(areaVar)) {
+      //   areaVar = nextProps?.detail?.data?.area;
+      // }
+      // if (_.isNull(isEnabledVar)) {
+      //   isEnabledVar = nextProps?.detail?.data?.status === 'OPEN';
+      // }
       const data = [...nextProps?.detail?.data?.images];
       return {
         arrayImage: data.map((i: any) => ({ uri: i })), title: titleVar, description: descriptionVar, price: priceVar, area: areaVar, isEnabled: isEnabledVar,
@@ -221,7 +239,7 @@ class EditRoom extends PureComponent<Props, State> {
     if (area !== dataDetail?.area) {
       payload.area = area;
     }
-    if (isEnabled !== dataDetail?.status) {
+    if (isEnabled !== (dataDetail?.status === RoomStatus.OPEN)) {
       payload.status = isEnabled ? RoomStatus.OPEN : RoomStatus.CLOSE;
     }
     const amenities = data.filter((d) => d.checked).map((m) => m.id);
@@ -229,7 +247,7 @@ class EditRoom extends PureComponent<Props, State> {
     if (!_.isEmpty(_.difference(amenities, amenitiesData))) {
       payload.amenityIds = amenities;
     }
-    // console.log('payload', payload);
+    console.log('payload', payload);
     try {
       await put(`/rooms/${params}`, payload);
       this.setState({ overlayIsVisible: true, loading: false });
@@ -521,6 +539,7 @@ const mapDispatchToProps = (dispatch: any) => ({
   getAmenities: (query?: TQuery) => dispatch(amenitiesGetList({ query })),
   getListRoom: (id: number, query?: TQuery) => dispatch(roomGetList({ id, query })),
   getDetail: (id: number) => dispatch(roomGetDetail({ id })),
+  clear: () => dispatch(clearDetailRoom()),
 
 });
 

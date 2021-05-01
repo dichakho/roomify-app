@@ -28,6 +28,7 @@ import { RectButton } from 'react-native-gesture-handler';
 import _ from 'lodash';
 import rootStack from '@contents/routes';
 import moment from 'moment';
+import { del } from '@utils/api';
 import { propertyDetailSelector, roomsOfPropertySelector } from '../../Explore/redux/selector';
 import {
   clearDetail, clearListRoom, propertyGetDetail, roomGetList,
@@ -48,6 +49,7 @@ interface Props {
 interface State {
   deleteOverlay: boolean;
   deleteRoomId: number;
+  deleted: boolean;
 }
 class ManageDetailProperty extends PureComponent<Props, State> {
   swipe: any;
@@ -57,6 +59,7 @@ class ManageDetailProperty extends PureComponent<Props, State> {
     this.state = {
       deleteOverlay: false,
       deleteRoomId: 0,
+      deleted: false,
     };
   }
 
@@ -75,7 +78,7 @@ class ManageDetailProperty extends PureComponent<Props, State> {
     clear();
     clearRoomList();
     getDetailProperty(id);
-    getListRoom(id);
+    getListRoom(id, {});
   }
 
   renderRightComponent = () => {
@@ -256,20 +259,23 @@ class ManageDetailProperty extends PureComponent<Props, State> {
     </QuickView>
   );
 
-  handleDeleteRoom = () => {
+  handleDeleteRoom = async () => {
     const { deleteRoomId } = this.state;
     if (deleteRoomId !== 0) {
       console.log('deleteRoomId', deleteRoomId);
 
-      // try {
-      //   const
-      // } catch (error) {
-
-      // }
+      try {
+        const result = await del(`/rooms/${deleteRoomId}`);
+        if (result.statusCode === 200) {
+          this.setState({ deleted: true });
+        }
+      } catch (error) {
+        console.log('error', error);
+      }
     }
   };
 
-  renderItem = ({ item }: {item: any}) => (
+  renderItem = ({ item, index }: { item: any; index: number}) => (
     <Swipeable
       ref={(ref: any) => {
         this.swipe = ref;
@@ -375,7 +381,7 @@ class ManageDetailProperty extends PureComponent<Props, State> {
 
   render() {
     const { detail: { data, loading }, roomsOfProperty } = this.props;
-    const { deleteOverlay } = this.state;
+    const { deleteOverlay, deleted } = this.state;
     return (
       <Container>
         <Overlay
@@ -385,36 +391,64 @@ class ManageDetailProperty extends PureComponent<Props, State> {
         // height={200}
           overlayStyle={{ borderRadius: 8, height: 180, width: '80%' }}
         >
-          <QuickView>
-            <Text center bold type="title" color={lightPrimaryColor} marginTop={20}>
-              Thông báo
-            </Text>
-            <Text center fontSize={16} marginTop={12} marginHorizontal={20}>
-              Bạn có chắc chắn muốn xóa phòng ?
-            </Text>
-            <QuickView
-              row
-              justifyContent="space-between"
-              paddingHorizontal={20}
+
+          {!deleted ? (
+            <QuickView>
+              <Text center bold type="title" color={lightPrimaryColor} marginTop={20}>
+                Thông báo
+              </Text>
+              <Text center fontSize={16} marginTop={12} marginHorizontal={20}>
+                Bạn có chắc chắn muốn xóa phòng ?
+              </Text>
+              <QuickView
+                row
+                justifyContent="space-between"
+                paddingHorizontal={20}
             // width={250}
             // marginHorizontal={50}
             // center
-              marginTop={12}
-            >
-              <Button
-                outline
-                title="Hủy"
-                width={110}
-                onPress={this.toggleOverlayDelete}
-              />
-              <Button
-                title="Xác nhận"
-                titleColor="#FFFFFF"
-                width={110}
-                onPress={this.handleDeleteRoom}
-              />
+                marginTop={12}
+              >
+                <Button
+                  outline
+                  title="Hủy"
+                  width={110}
+                  onPress={this.toggleOverlayDelete}
+                />
+                <Button
+                  title="Xác nhận"
+                  titleColor="#FFFFFF"
+                  width={110}
+                  onPress={this.handleDeleteRoom}
+                />
+              </QuickView>
             </QuickView>
-          </QuickView>
+          ) : (
+            <QuickView>
+              <Text center bold type="title" color={lightPrimaryColor} marginTop={20}>
+                Thông báo
+              </Text>
+              <Text center fontSize={16} marginTop={12} marginHorizontal={20}>
+                Xóa phòng thành công
+              </Text>
+              <QuickView
+                paddingHorizontal={20}
+            // width={250}
+            // marginHorizontal={50}
+                center
+                marginTop={12}
+              >
+                <Button
+                  outline
+                  title="Đóng"
+                  width={110}
+                  onPress={this.toggleOverlayDelete}
+                />
+
+              </QuickView>
+            </QuickView>
+          )}
+
         </Overlay>
         <ParallaxScrollView
           renderFixedHeader={() => (
